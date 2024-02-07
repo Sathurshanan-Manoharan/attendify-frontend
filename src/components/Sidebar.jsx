@@ -10,9 +10,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import Logo from "../assets/AttendifyLogo.png";
+import sidebarItems from "../data/SidebarItems";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   const drawerWidth = 240;
@@ -34,27 +34,19 @@ function Sidebar() {
     >
       <img src={Logo} alt="logo" style={{ marginTop: "10px", height: "60px" }} />
 
-      <Divider />
       <List
         sx={{
           //white
           color: "white",
         }}
       >
-        {[
-          "Dashboard",
-          "Attendance",
-          "Timetable",
-          "Directory",
-          "Reports",
-          "Settings",
-        ].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
+        {sidebarItems.map((item) => (
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton to={item.path} component={Link} >
               <ListItemIcon sx={{ color: "white" }}>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {item.icon}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}

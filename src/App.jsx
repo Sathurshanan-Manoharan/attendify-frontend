@@ -1,18 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+
 import SessionAttendance from "./pages/SessionAttendance";
 import UpdateUser from "./pages/UpdateUser";
+import Layout from "./pages/Layout";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route path="/attendance" element={<SessionAttendance />} />
+      <Route path="/login" element={<UpdateUser />} />
+    </Route>
+  )
+);
+
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/session-attendance" element={<SessionAttendance />} />
-        <Route path="/update-user" element={<UpdateUser />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -1,5 +1,7 @@
+import { Typography } from "@mui/material";
+
 export default function SessionAttendance() {
   return (
-    <div>SessionAttendance</div>
+    <Typography>Session Attendance</Typography>
   )
 }

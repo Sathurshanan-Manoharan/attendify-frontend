@@ -1,5 +1,7 @@
+import { Typography } from "@mui/material";
+
 export default function UpdateUser() {
   return (
-    <div>UpdateUser</div>
+    <Typography>Update User</Typography>
   )
 }

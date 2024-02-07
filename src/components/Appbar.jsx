@@ -14,7 +14,7 @@ export default function MenuAppBar() {
         position="fixed"
         sx={{
           width: `calc(100% - ${drawerWidth}px)`,
-          height: `148px`,
+          height: `68px`,
           ml: `${drawerWidth}px`,
           color: "#004AAD",
           background: "white",
