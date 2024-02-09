@@ -8,10 +8,12 @@ import {
 import SessionAttendance from "./pages/SessionAttendance";
 import UpdateUser from "./pages/UpdateUser";
 import Layout from "./pages/Layout";
+import Dashboard from "./pages/Dashboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
+    <Route element={<Layout />}>
+      <Route path="/" element={<Dashboard />} />
       <Route path="/attendance" element={<SessionAttendance />} />
       <Route path="/login" element={<UpdateUser />} />
     </Route>
