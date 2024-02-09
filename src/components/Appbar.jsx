@@ -5,6 +5,8 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { Divider } from "@mui/material";
 import Logo from "../assets/Sathu-Image.jpg";
+import Badge from "@mui/material/Badge";
+import MailIcon from "@mui/icons-material/Mail";
 
 export default function MenuAppBar() {
   const drawerWidth = 240;
@@ -20,8 +22,17 @@ export default function MenuAppBar() {
           background: "white",
         }}
       >
-        <Toolbar sx={{ display: "flex", justifyContent: "right" }}>
-          <Stack direction="row" spacing={2}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+            alignItems: "center",
+          }}
+        >
+          <Stack direction="row" spacing={2} alignItems={"center"}>
+            <Badge badgeContent={4} color="secondary">
+              <MailIcon />
+            </Badge>
             <Avatar alt="Remy Sharp" src={Logo} />
           </Stack>
         </Toolbar>
