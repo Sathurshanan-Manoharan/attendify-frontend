@@ -10,6 +10,8 @@ const sidebarItems = [
   { name: "Timetable", path: "/timetable", icon: <ViewTimelineIcon /> },
   { name: "Reports", path: "/reports", icon: <AssessmentIcon /> },
   { name: "Settings", path: "/settings", icon: <SettingsIcon /> },
+  { name: "Add Student", path: "/addstudent", icon: <SettingsIcon /> },
+  { name: "Add Lecturer", path: "/addlecturer", icon: <SettingsIcon /> },
 ];
 
 export default sidebarItems;
