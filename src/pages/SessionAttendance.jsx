@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from "@mui/material/IconButton";
-import { Select } from "@mui/material";
+import Select from "@mui/material/Select";
 
 function SessionAttendance() {
 
@@ -17,10 +17,10 @@ function SessionAttendance() {
       <Typography variant="h4" color="#004AAD" fontWeight="bold" >Session Attendance</Typography>
       <br></br>
 
-      <Card variant="elevation" sx={{boxShadow: '0px 0px 20px 10px rgba(0, 0, 0, 0.035)', }}>
+      <Card variant="elevation" sx={{boxShadow: '0px 0px 20px 10px rgba(0, 0, 0, 0.035)', borderRadius: '20px', }}>
         <CardContent sx={{paddingBottom:'2px'}}>
           <Grid container spacing={2} alignItems="center" >
-            <Grid item xs={5.1} >
+            <Grid item xs={5.6} >
               <FormControl>
                 <TextField label="What are you looking for?"
                   variant="filled"
@@ -28,10 +28,10 @@ function SessionAttendance() {
                   fullWidth
                   sx={{'& .MuiFilledInput-root': {
                     borderRadius: '20px',},
-                      width:'500px'}}></TextField>
+                      width:'400pt'}}></TextField>
               </FormControl>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={2.2}>
               <FormControl fullWidth>
               <TextField select label="Tutorial Group" fullwidth variant="outlined" >
                   <MenuItem value="">None</MenuItem>
@@ -49,7 +49,11 @@ function SessionAttendance() {
                   <MenuItem value="absent">Absent</MenuItem>
                 </TextField>
               </FormControl>
-
+            </Grid>
+            <Grid item xs={2} sm={2} md={2}>
+              <Button variant="contained" color="primary" fullWidth sx={{height: '41pt'}}>
+                Search
+              </Button>
             </Grid>
           </Grid>
         </CardContent>
