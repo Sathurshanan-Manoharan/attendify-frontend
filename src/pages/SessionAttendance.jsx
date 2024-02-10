@@ -19,7 +19,7 @@ function SessionAttendance() {
       <Card variant="elevation" sx={{boxShadow: '0px 0px 20px 10px rgba(0, 0, 0, 0.035)', }}>
         <CardContent sx={{paddingBottom:'2px'}}>
           <Grid container spacing={2} alignItems="center" >
-            <Grid item xs={4} >
+            <Grid item xs={4.2} >
               <FormControl>
                 <TextField label="What are you looking for?"
                   variant="filled"
@@ -28,6 +28,16 @@ function SessionAttendance() {
                   sx={{'& .MuiFilledInput-root': {
                     borderRadius: '20px',},
                       width:'400px'}}></TextField>
+              </FormControl>
+            </Grid>
+            <Grid item xs={3}>
+              <FormControl fullWidth>
+              <TextField select label="Tutorial Group" fullwidth variant="outlined">
+                  <MenuItem value="">None</MenuItem>
+                  <MenuItem value="group1">Group 1</MenuItem>
+                  <MenuItem value="group2">Group 2</MenuItem>
+                  <MenuItem value="group3">Group 3</MenuItem>
+              </TextField>
               </FormControl>
             </Grid>
           </Grid>
