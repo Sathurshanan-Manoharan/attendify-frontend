@@ -3,24 +3,27 @@ import { CardHeader, Typography, TextField, Select, MenuItem, FormControl, Input
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
+/*
 const squareCardStyle = {
   height: "700px", // Set a fixed height to create a square card
   width: "1000px", // Allow the width to adjust based on content or container
   overflow: "hidden", // Hide overflow content if any
   borderRadius: "10px", // Rounded corners
-};
+};*/
 
 function AddLecturer() {
   return (
-    <div>
-      <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "2rem", marginBottom: "12px" }}>
+    <>
+      <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: "12px" }}>
         Home/Update User/<span style={{ color: "#004AAD" }}>Add Lecturer</span>
       </Typography>
 
-      <Card style={{ ...squareCardStyle }}>
+      <Card 
+      // style={{ ...squareCardStyle }}
+      >
         <CardHeader
           title={
-            <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "3rem", color: "#004AAD" }}>
+            <Typography variant="h3" sx={{ fontWeight: "bold", fontSize: "2.5rem", color: "#004AAD" }}>
               Add Lecturer
             </Typography>
           }
@@ -37,7 +40,7 @@ function AddLecturer() {
                 label="First Name"
                 name="firstName"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                
               />
             </Grid>
             <Grid item xs={6}>
@@ -50,7 +53,7 @@ function AddLecturer() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                 
               />
             </Grid>
             <Grid item xs={6}>
@@ -63,7 +66,7 @@ function AddLecturer() {
                 label="Lecturer ID"
                 name="lecturerID"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                
               />
             </Grid>
             <Grid item xs={6}>
@@ -76,7 +79,7 @@ function AddLecturer() {
                 label="Email"
                 name="Email"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                
               />
             </Grid>
             <Grid item xs={6}>
@@ -86,7 +89,7 @@ function AddLecturer() {
                   labelId="ContractTypeLabel"
                   id="ContractType"
                   label="Contract Type"
-                  sx={{ borderRadius: "10px" }} // Apply borderRadius to the Select component
+                   
                 >
                   <MenuItem value="Full-time Lecturer"><Typography fontWeight="bold">Full-time Lecturer</Typography></MenuItem>
                   <MenuItem value="Visiting Lecturer"><Typography fontWeight="bold">Visiting Lecturer</Typography></MenuItem>
@@ -101,7 +104,7 @@ function AddLecturer() {
                   labelId="SpecialRoleLabel"
                   id="SpecialRole"
                   label="Special Role"
-                  sx={{ borderRadius: "10px" }} // Apply borderRadius to the Select component
+                  
                 >
                   <MenuItem value="Option 1"><Typography fontWeight="bold">None</Typography></MenuItem>
                   <MenuItem value="Option 2"><Typography fontWeight="bold">Level Coordinator</Typography></MenuItem>
@@ -111,19 +114,17 @@ function AddLecturer() {
               </FormControl>
             </Grid>
           </Grid>
-          <br />
-          <br />
           <Grid container justifyContent="center" marginTop={2}>
             <Button
               variant="contained"
-              sx={{ backgroundColor: "#004AAD", color: "white", width: "800px", borderRadius: "10px" }} // Apply borderRadius to the Button
+              sx={{ backgroundColor: "#004AAD", color: "white",fontSize: "1rem" ,width: "800px", borderRadius: "10px", marginTop: "20px" }} // Apply borderRadius to the Button
             >
               Create Lecturer
             </Button>
           </Grid>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
 
