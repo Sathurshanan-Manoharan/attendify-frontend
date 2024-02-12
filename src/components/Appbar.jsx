@@ -20,6 +20,7 @@ export default function MenuAppBar() {
           ml: `${drawerWidth}px`,
           color: "#004AAD",
           background: "white",
+          zIndex: "9999",
         }}
       >
         <Toolbar

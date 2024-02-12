@@ -3,37 +3,44 @@ import { CardHeader, Typography, TextField, Select, MenuItem, FormControl, Input
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
+/*
 const squareCardStyle = {
   height: "700px", // Set a fixed height to create a square card
   width: "1000px", // Allow the width to adjust based on content or container
   overflow: "hidden", // Hide overflow content if any
   borderRadius: "10px", // Rounded corners
+  zIndex: "-9999", 
 };
 
 const RectangularCardStyle = {
   height: "1000px", // Set a fixed height to create a square card
-  width: "1600px", // Allow the width to adjust based on content or container
+  width: "1000px", // Allow the width to adjust based on content or container
   overflow: "hidden", // Hide overflow content if any
   borderRadius: "10px", // Rounded corners
-};
+};*/
 
 // Dummy data for demonstration
 const students = [
   { id: 1, name: 'John Doe', studentID: '12345', iitEmail: 'john@example.com', course: 'Computer Science', level: '5', tutorialGroup: "O" },
-  { id: 2, name: 'Jane Doe', studentID: '67890', iitEmail: 'jane@example.com', course: 'Engineering', level: '5', tutorialGroup: "O" }
+  { id: 2, name: 'Jane Doe', studentID: '67890', iitEmail: 'jane@example.com', course: 'Engineering', level: '5', tutorialGroup: "O" },
+  { id: 3, name: 'Mark Doe', studentID: '34523', iitEmail: 'Mark@example.com', course: 'Computer Science', level: '5', tutorialGroup: "O" },
+  { id: 4, name: 'Smith Doe', studentID: '45323', iitEmail: 'Smith@example.com', course: 'Engineering', level: '5', tutorialGroup: "O" },
+  { id: 5, name: 'Andrew Doe', studentID: '63452', iitEmail: 'Andrew@example.com', course: 'Engineering', level: '5', tutorialGroup: "O" }
 ];
 
 function AddStudent() {
   return (
-    <div>
-      <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "2rem", marginBottom: "12px" }}>
+    <>
+      <Typography variant="h5" sx={{ fontWeight: "bold",  marginBottom: "12px" }}>
         Home/<span style={{ color: "#004AAD" }}>attendance</span>
       </Typography>
 
-      <Card style={{ ...squareCardStyle }}>
+      <Card 
+     // style={{ ...squareCardStyle }}
+      >
         <CardHeader
           title={
-            <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "3rem", color: "#004AAD" }}>
+            <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "2.5rem", color: "#004AAD" }}>
               Add a student
             </Typography>
           }
@@ -50,7 +57,7 @@ function AddStudent() {
                 label="First Name"
                 name="firstName"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                
               />
             </Grid>
             <Grid item xs={6}>
@@ -63,7 +70,7 @@ function AddStudent() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+               
               />
             </Grid>
             <Grid item xs={6}>
@@ -76,7 +83,7 @@ function AddStudent() {
                 label="Student ID"
                 name="studentID"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+               
               />
             </Grid>
             <Grid item xs={6}>
@@ -89,7 +96,7 @@ function AddStudent() {
                 label="IIT Email"
                 name="iitEmail"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                
               />
             </Grid>
             <Grid item xs={6}>
@@ -102,7 +109,7 @@ function AddStudent() {
                 label="Course"
                 name="course"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                
               />
             </Grid>
             <Grid item xs={6}>
@@ -115,7 +122,7 @@ function AddStudent() {
                 label="Level"
                 name="level"
                 autoComplete="off"
-                sx={{ borderRadius: "10px" }} // Apply borderRadius to the entire TextField
+                
               />
             </Grid>
             <Grid item xs={6}>
@@ -125,7 +132,7 @@ function AddStudent() {
                   labelId="tutorialGroupLabel"
                   id="tutorialGroup"
                   label="Tutorial Group"
-                  sx={{ borderRadius: "10px" }} // Apply borderRadius to the Select component
+                
                 >
                   {[...Array(26)].map((_, index) => (
                     <MenuItem key={index} value={String.fromCharCode(65 + index)}>
@@ -138,30 +145,29 @@ function AddStudent() {
               </FormControl>
             </Grid>
           </Grid>
-          <br />
-          <br />
           <Grid container justifyContent="center" marginTop={2}>
             <Button
               variant="contained"
-              sx={{ backgroundColor: "#004AAD", color: "white", width: "800px", borderRadius: "10px" }} // Apply borderRadius to the Button
+              sx={{ backgroundColor: "#004AAD", color: "white",fontSize: "1rem", width: "800px", borderRadius: "10px", marginTop: '20px' }} // Apply borderRadius to the Button
             >
               Create Student
             </Button>
           </Grid>
         </CardContent>
       </Card>
-                    <br />
 
       {/* Adding another card below */}
-      <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "3rem", color: "#004AAD", marginTop: "24px" }}>
+      <Typography variant="h5" sx={{ fontWeight: "bold", color: "#004AAD", marginTop: "24px" }}>
         Existing Students
       </Typography>
 
-      <Card style={{ ...RectangularCardStyle }}>
+      <Card 
+      //style={{ ...RectangularCardStyle }}
+      >
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={9}>
-              <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "2rem", color: "#004AAD" }}>
+              <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "2.5rem", color: "#004AAD" }}>
                 Directory
               </Typography>
             </Grid>
@@ -183,24 +189,24 @@ function AddStudent() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ fontSize: "1.2rem", fontWeight: "bold" }}>ID</TableCell>
-                  <TableCell style={{ fontSize: "1.2rem", fontWeight: "bold" }}>NAME</TableCell>
-                  <TableCell style={{ fontSize: "1.2rem", fontWeight: "bold" }}>LEVEL</TableCell>
-                  <TableCell style={{ fontSize: "1.2rem", fontWeight: "bold" }}>COURSE</TableCell>
-                  <TableCell style={{ fontSize: "1.2rem", fontWeight: "bold" }}>IIT EMAIL</TableCell>
-                  <TableCell style={{ fontSize: "1.2rem", fontWeight: "bold" }}>TUTORIAL GROUP</TableCell>
+                  <TableCell style={{ fontSize: "1.2rem" , fontWeight: "bold" , textAlign: "center" }}>ID</TableCell>
+                  <TableCell style={{ fontSize: "1.2rem" , fontWeight: "bold" , textAlign: "center" }}>NAME</TableCell>
+                  <TableCell style={{ fontSize: "1.2rem" , fontWeight: "bold" , textAlign: "center" }}>LEVEL</TableCell>
+                  <TableCell style={{ fontSize: "1.2rem" , fontWeight: "bold" , textAlign: "center" }}>COURSE</TableCell>
+                  <TableCell style={{ fontSize: "1.2rem" , fontWeight: "bold" , textAlign: "center" }}>IIT EMAIL</TableCell>
+                  <TableCell style={{ fontSize: "1.2rem" , fontWeight: "bold" , textAlign: "center" }}>TUTORIAL GROUP</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {/* You can map through your data and create rows */}
                 {students.map((student) => (
                   <TableRow key={student.id}>
-                    <TableCell>{student.studentID}</TableCell>
-                    <TableCell>{student.name}</TableCell>
-                    <TableCell>{student.level}</TableCell>
-                    <TableCell>{student.course}</TableCell>
-                    <TableCell>{student.iitEmail}</TableCell>
-                    <TableCell>{student.tutorialGroup}</TableCell>
+                    <TableCell style={{textAlign: "center" }}>{student.studentID}</TableCell>
+                    <TableCell style={{textAlign: "center" }}>{student.name}</TableCell>
+                    <TableCell style={{textAlign: "center" }}>{student.level}</TableCell>
+                    <TableCell style={{textAlign: "center" }}>{student.course}</TableCell>
+                    <TableCell style={{textAlign: "center" }}>{student.iitEmail}</TableCell>
+                    <TableCell style={{textAlign: "center" }}>{student.tutorialGroup}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -208,7 +214,7 @@ function AddStudent() {
           </TableContainer>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
 
