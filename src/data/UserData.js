@@ -180,6 +180,7 @@ const userData =
           "check-out": "11:50",
           "tutorialGroup": "Group B"
         }
-      ]
+      ];
 
 export default userData;      
+
