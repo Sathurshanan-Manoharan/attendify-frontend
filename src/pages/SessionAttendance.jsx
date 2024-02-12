@@ -11,51 +11,63 @@ import SearchIcon from '@mui/icons-material/Search';
 import IconButton from "@mui/material/IconButton";
 import Select from "@mui/material/Select";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import  userData  from "../data/UserData";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 
-//Creates 
 
 function SessionAttendance() {
 
+  //List of all the columns stored as objects 
   const columns = [
-    { field: 'id', headerName: 'ID', flex: 1, headerAlign: 'center' },
-    { field: 'name', headerName: 'NAME', flex: 1, headerAlign: 'center' },
-    { field: 'date', headerName: 'DATE', flex: 1, headerAlign: 'center' },
-    { field: 'check-in', headerName: 'CHECK IN', flex: 1, headerAlign: 'center' },
-    { field: 'check-out', headerName: 'CHECK OUT', flex: 1, headerAlign: 'center' },
-    { field: 'status', headerName: 'STATUS', flex: 1, headerAlign: 'center', renderCell: (params) => (
-      <div style={{
+    { field: 'id', headerName: 'ID', width: 150, headerAlign: 'center', align: 'center', },
+    { field: 'name', headerName: 'NAME', flex: 1, headerAlign: 'center', align: 'center' },
+    { field: 'date', headerName: 'DATE', flex: 1, headerAlign: 'center', align: 'center' },
+    { field: 'check-in', headerName: 'CHECK IN', flex: 1, headerAlign: 'center', align: 'center' },
+    { field: 'check-out', headerName: 'CHECK OUT', flex: 1, headerAlign: 'center', align: 'center' },
+    { field: 'status', headerName: 'STATUS', flex: 1, headerAlign: 'center', align: 'center', renderCell: (params) => (
+      <Box sx={{
         backgroundColor: params.value === 'Present' ? '#BCEAB8' : params.value === 'Absent' ? '#F0C6C6' : 'inherit',
-        borderRadius: '20px',
-        padding: '16px',
+        borderRadius: '100px',
+        paddingTop: '7px', paddingBottom: '7px', paddingRight: '40px', paddingLeft: '40px',
         color:params.value === 'Present' ? '#2C5702' : params.value === 'Absent' ? 'BB0000' : 'inherit',
         textAlign: 'center'
-      }}>{params.value}</div>
+      }}>{params.value}</Box>
     )},
   ];
 
+  //List of all the data entries stored as objects
   const rows = userData;
 
   return (
     //<ThemeProvider theme={textFont}>
-    <div>
-      <div style={{ marginBottom: '10px'}}>
-      <Typography variant="h4" color="#004AAD" fontWeight="bold" >Session Attendance</Typography>
+    <Box>
+      <Box sx={{ marginBottom: '20px', marginTop: '0px'}}>
+      
+      <Box sx={{ marginBottom: '20px', marginTop: '0px'}}>
+      <Typography variant="h7" sx={{ fontWeight: "bold",}}>
+          Dashboard/Attendance/<span style={{ color: "#004AAD" }}>Session Attendance</span>
+      </Typography>
+      </Box>
 
-      <Card variant="elevation" sx={{boxShadow: '40px 0px 20px 10px rgba(0, 0, 0, 0.035)', borderRadius: '14px', }}>
+      <Box sx={{ marginBottom: '20px', marginTop: '0px'}}>
+        <Typography variant="h4" color="#004AAD" fontWeight="bold" >Session Attendance</Typography>
+      </Box>
+        
+
+      <Card variant="elevation" sx={{boxShadow: '0px 0px 20px 10px rgba(0, 0, 0, 0.035)', borderRadius: '14px', }}>
         <CardContent sx={{paddingBottom:'2px'}}>
           <Grid container spacing={2} alignItems="center" >
-            <Grid item xs={5.6} >
-              <FormControl>
+            <Grid item xs={5.6} fullWidth={true} >
+              <FormControl xs={5.6} fullWidth={true}>
                 <TextField label="What are you looking for?"
                   variant="filled"
                   InputProps={{endAdornment: (<IconButton><SearchIcon /></IconButton>), disableUnderline: true,}}
                   fullWidth={true}
                   sx={{'& .MuiFilledInput-root': {
                     borderRadius: '6px',},
-                      width:'400pt'}}></TextField>
+                  }}></TextField>
               </FormControl>
             </Grid>
             <Grid item xs={2.2}>
@@ -85,26 +97,26 @@ function SessionAttendance() {
           </Grid>
         </CardContent>
       </Card>
-      </div>
+      </Box>
 
-      <div>
-        <Card variant="elevation" sx={{boxShadow: '0px 0px 20px 10px rgba(0, 0, 0, 0.305)', borderRadius: '14px', }}>
+      <Box>
+        <Card variant="elevation" sx={{boxShadow: '0px 0px 20px 10px rgba(0, 0, 0, 0.035)', borderRadius: '14px', }}>
           <CardContent>
             <Typography variant="h6" color="#004AAD" fontWeight="bold">Attendance Overview</Typography>
-            <hr style={{marginBottom: '20px', marginTop: '12px'}}></hr>
-            <div style={{ height: 400, width: '100%' }}>
+            <Divider sx={{marginBottom: '20px', marginTop: '12px'}}></Divider>
+            <Box sx={{ height: 500, width: '100%' }}>
               <DataGrid 
                 rows={rows}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5, 10, 20]}
-                checkboxSelection={false}
+                sx={{textAlign: "center"}}
               />
-            </div>
+            </Box>
           </CardContent>
         </Card>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
