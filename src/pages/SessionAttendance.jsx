@@ -104,7 +104,6 @@ function SessionAttendance() {
           <CardContent>
             <Typography variant="h6" color="#004AAD" fontWeight="bold">Attendance Overview</Typography>
             <Divider sx={{marginBottom: '20px', marginTop: '12px'}}></Divider>
-            <Box sx={{ height: 500, width: '100%' }}>
               <DataGrid 
                 rows={rows}
                 columns={columns}
@@ -112,7 +111,6 @@ function SessionAttendance() {
                 rowsPerPageOptions={[5, 10, 20]}
                 sx={{textAlign: "center"}}
               />
-            </Box>
           </CardContent>
         </Card>
       </Box>
