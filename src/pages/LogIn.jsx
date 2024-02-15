@@ -1,31 +1,125 @@
-import React from 'react'
+import React from 'react';
+import { Grid, Typography, Paper, TextField, Button,SvgIcon ,Divider,InputAdornment } from '@mui/material';
+import { styled } from '@mui/system';
 
-const login = () => {
+
+
+
+
+const LeftColumnPaper = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#004AAD',
+  // padding: '-250px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  
+}));
+
+const RightColumnPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  backgroundImage: `url('../src/assets/Group 17.png')`, // Replace with your actual image path
+  backgroundSize: 'cover',
+  // backgroundPosition: 'center',
+}));
+
+const Login = () => {
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Your form submission logic goes here
+  };
+
   return (
     <div>
-        <div className='bg-slate-800 boder boder-slate-600 rounded-md shadow-lg backdrop-filter backdrop-blur-lg bg-opacity-30 relative '>
-            <h1 className='text-4xl font-bold text-center'>
-              Login
-            </h1>
-            <form action="">
-              <div className='relative my-4'>
-                <input type="text" className='block w-72 py-2.5 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500  focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer' placeholder='' />
-                <label htmlFor="" className='absolute text-sm duration-300 tranform-translate scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark-blue-500 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6'>Username</label>
-                {/* block w-72 py-2.5 px-0 text-sm */}
-              </div>
+      <Grid container>
+        {/* Left Column */}
+        <Grid item xs={0}>
+          <LeftColumnPaper elevation={2} style={{ width: '100%', height: '100%' }}>
+            <img src="../src/assets/logo.png"alt="Left Column Image" style={{ maxWidth: '80%', maxHeight: '80%',marginTop: '-150px'} } />
+            <img src="../src/assets/picture.png"alt="Left Column Image" style={{ maxWidth: '70%', maxHeight: '70%',marginTop: '-100px' }} />
+            <Typography variant="h6" style={{ color: 'white', position: 'absolute', top: '680px' }}> Streamlining Attendance, Empowering Efficiency!</Typography> 
+          </LeftColumnPaper>
+        </Grid>
 
-              <div className='relative my-4'>
-                <input type="password" className='block w-72 py-2.5 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500  focus:outline-none focus:ring-0 focus:text-white focus:border-blue-600 peer' placeholder='' />
-                <label htmlFor="" className='absolute text-sm duration-300 tranform-translate scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark-blue-500 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6'>Your Password</label>
-              </div>
+        {/* Right Column */}
+        <Grid item xs={0}>
+          <RightColumnPaper elevation={3} style={{ width: '100%', height: '100%'}}>
+            <Typography variant="h2" style={{ fontWeight: 'bold', color: '#004AAD',paddingTop:'60px' }}>Welcome Back!</Typography>
+            <Typography >Unlock Learning with Ease! Your passport to </Typography>
+            <Typography>hassle-free attendance management.Let's make </Typography>
+            <Typography>every moment count!</Typography>
+            <div style={{ marginTop: '55px' }}>
+            {/* Form */}
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Email"
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  sx={{ width: '60%', marginBottom: 1, backgroundColor: 'white' }}
 
-              <button type='submit' className='w-full mb-4 text-[18px] mt-8 rounded blue-500 py-2 hover:bg-blue-600 transition-colors duration-300'>
+                  InputProps={{
+                    endAdornment: (
+                          <InputAdornment position='end'>
+                            <img src="../src/assets/mail.png"  alt="Image" style={{ height: '20px', width: '25px'}} />
+                          </InputAdornment>
+                        ),
+                      }}
+                />
+
+
+                <TextField
+                  label="Password"
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  sx={{ width: '60%', marginBottom: 2 , backgroundColor: 'white'}}
+
+
+                  InputProps={{
+                    endAdornment: (
+                          <InputAdornment position="end">
+                            <img src="../src/assets/password.png"  alt="Image" style={{ height: '20px', width: '25px'}} />
+                          </InputAdornment>
+                        ),
+                      }}
+                />
+
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ width: '60%',height:'50px',marginTop: '60px' }} >
                   Login
-              </button>
-            </form>
-        </div>
+                </Button>
+
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px',marginBottom: '30px' }}>
+                  <div style={{ margin: '10px 0', width: '30%' }}>
+                    <Divider variant="middle" />
+                  </div>
+
+                  <Typography style={{ margin: '0 15px', color: 'black' }}>OR</Typography>
+
+                  <div style={{ margin: '10px 0', width: '30%' }}>
+                    <Divider variant="middle" />
+                  </div>
+                </div>
+
+
+                
+
+
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white',color: 'black',width: '60%' ,height:'50px'}}>
+                {/* <SvgIcon component={FcGoogle} style={{ marginRight: '15px', fontSize: '5px' }} /> Continue with Google */}
+                <img src="../src/assets/google.png" style={{ maxWidth: '100%', maxHeight: '80%'} } />
+                <Typography style={{ color: 'black' }}>Continue with Google</Typography>
+                </Button>
+
+              </form>
+            </div>
+          </RightColumnPaper>
+        </Grid>
+      </Grid>
     </div>
-  )
+  );
 }
 
-export default login
+export default Login;
