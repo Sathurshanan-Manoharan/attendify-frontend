@@ -12,7 +12,7 @@ const TimeSlot = ({ time, isSelected, onSelect }) => {
     </div>
   );
 };
-
+// dummmy comment
 TimeSlot.propTypes = {
   time: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
