@@ -32,7 +32,24 @@ const Login = () => {
   //Sign in with Google button (Seperated for ease)
   const signIn = () => {
     const authProvider = new GoogleAuthProvider();
-    signInWithPopup(authentication, authProvider);
+    signInWithPopup(authentication, authProvider)
+    .then((result) => {
+      //Google access token used to access API
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      //The signed-in user info
+      const user = result.user;
+      console.log(user)
+      //IdP data available using getAdditionalUserInfo(result)
+    }).catch((error) => {
+      //Error handling
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.customData.email;
+      //The AuthCredential type that was used
+      const credential = GoogleAuthProvider.credentialFromError(error);
+    });
+
   };
 
 
@@ -116,7 +133,7 @@ const Login = () => {
                 </div>
               
               </form>
-
+              //Button uses firebase
               <Button onClick={signIn} type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white',color: 'black',width: '60%' ,height:'50px'}}>
               {/* <SvgIcon component={FcGoogle} style={{ marginRight: '15px', fontSize: '5px' }} /> Continue with Google */}
               <img src="../src/assets/google.png" style={{ maxWidth: '100%', maxHeight: '80%'} } />
