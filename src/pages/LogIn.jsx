@@ -1,8 +1,9 @@
 import React from 'react';
 import { Grid, Typography, Paper, TextField, Button,SvgIcon ,Divider,InputAdornment } from '@mui/material';
 import { styled } from '@mui/system';
-
-
+//import firebase from 'firebase/app';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { authentication } from '../../firebase.config';
 
 
 
@@ -24,12 +25,23 @@ const RightColumnPaper = styled(Paper)(({ theme }) => ({
   // backgroundPosition: 'center',
 }));
 
+
+
 const Login = () => {
+
+  //Sign in with Google button (Seperated for ease)
+  const signIn = () => {
+    const authProvider = new GoogleAuthProvider();
+    signInWithPopup(authentication, authProvider);
+  };
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Your form submission logic goes here
   };
+  
 
   return (
     <div>
@@ -102,18 +114,15 @@ const Login = () => {
                     <Divider variant="middle" />
                   </div>
                 </div>
-
-
-                
-
-
-                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white',color: 'black',width: '60%' ,height:'50px'}}>
-                {/* <SvgIcon component={FcGoogle} style={{ marginRight: '15px', fontSize: '5px' }} /> Continue with Google */}
-                <img src="../src/assets/google.png" style={{ maxWidth: '100%', maxHeight: '80%'} } />
-                <Typography style={{ color: 'black' }}>Continue with Google</Typography>
-                </Button>
-
+              
               </form>
+
+              <Button onClick={signIn} type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white',color: 'black',width: '60%' ,height:'50px'}}>
+              {/* <SvgIcon component={FcGoogle} style={{ marginRight: '15px', fontSize: '5px' }} /> Continue with Google */}
+              <img src="../src/assets/google.png" style={{ maxWidth: '100%', maxHeight: '80%'} } />
+              <Typography style={{ color: 'black' }}>Continue with Google</Typography>
+              </Button>
+
             </div>
           </RightColumnPaper>
         </Grid>
