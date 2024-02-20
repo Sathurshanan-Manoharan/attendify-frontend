@@ -1,5 +1,10 @@
-import { Grid, Typography, Paper, TextField, Button ,Divider,InputAdornment } from '@mui/material';
+import React from 'react';
+import { Grid, Typography, Paper, TextField, Button,SvgIcon ,Divider,InputAdornment } from '@mui/material';
 import { styled } from '@mui/system';
+
+
+
+
 
 const LeftColumnPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: '#004AAD',
@@ -15,7 +20,11 @@ const LeftColumnPaper = styled(Paper)(({ theme }) => ({
 const RightColumnPaper = styled(Paper)(({ theme }) => ({
   backgroundImage: `url('../src/assets/Group 17.png')`, // Replace with your actual image path
   backgroundSize: 'cover',
-  height: '950px'
+  height: '950px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center'
 }));
 
 const Login = () => {
@@ -43,7 +52,7 @@ const Login = () => {
         {/* Right Column */}
         <Grid item sx={{ position: 'absolute', top:0, right: 0, height:'100%' ,width:'60%',bottom:0}}>
           <RightColumnPaper>
-            <Typography variant="h2" sx={{ fontWeight: 'bold', color: '#004AAD',paddingTop:'150px' }}>Welcome Back!</Typography>
+            <Typography variant="h2" sx={{ fontWeight: 'bold', color: '#004AAD',paddingTop:'20px' }}>Welcome Back!</Typography>
             <Typography >Unlock Learning with Ease! Your passport to </Typography>
             <Typography>hassle-free attendance management.Let's make </Typography>
             <Typography>every moment count!</Typography>
@@ -54,7 +63,7 @@ const Login = () => {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  sx={{ width: '55%', backgroundColor: 'white',height:'2px',marginTop:'12%' }}
+                  sx={{ width: '60%', backgroundColor: 'white',height:'2px',marginTop:'12%',marginLeft: '20%' }}
 
                   InputProps={{
                     endAdornment: (
@@ -71,7 +80,7 @@ const Login = () => {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  sx={{ width: '55%', backgroundColor: 'white',height:'1px' ,marginTop: '8%'}}
+                  sx={{ width: '60%', backgroundColor: 'white',height:'1px' ,marginTop: '12%',marginLeft: '20%' }}
 
 
                   InputProps={{
@@ -83,7 +92,7 @@ const Login = () => {
                       }}
                 />
 
-                 <Button type="submit" variant="contained" color="primary"  sx={{ width: '50%',height:'50px',marginTop: '120px' }} >
+                 <Button type="submit" variant="contained" color="primary"  sx={{ width: '50%',height:'50px',marginTop: '120px',marginLeft: '25%' }} >
                   Login
                 </Button> 
 
@@ -98,9 +107,14 @@ const Login = () => {
                     <Divider variant="middle" />
                   </div>
                 </div> 
-                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white', color: 'black', width: '50%', height: '50px' }}>
+
+
+                
+
+
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white', color: 'black', width: '50%', height: '50px',marginLeft: '25%'  }}>
                 <img src="../src/assets/google.png" style={{ maxWidth: '100%', maxHeight: '80%' }} /> 
-                <Typography sx={{ color: 'black' }}>Continue with Google</Typography>
+                <Typography sx={{ color: 'black',fontSize:15 }}>Continue with Google</Typography>
               </Button> 
 
 
@@ -113,3 +127,4 @@ const Login = () => {
 }
 
 export default Login;
+
