@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Logo from "../assets/AttendifyLogo.png";
 import sidebarItems from "../data/SidebarItems";
 import { Link } from "react-router-dom";
+import Collapse from "@mui/material/Collapse";
 
 function Sidebar() {
   const drawerWidth = 240;
@@ -46,6 +47,14 @@ function Sidebar() {
             </ListItemButton>
           </ListItem>
         ))}
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }}>
+              {/* <ListItemIcon>hi</ListItemIcon> */}
+              <ListItemText primary="Starred" />
+            </ListItemButton>
+          </List>
+        </Collapse>
       </List>
       <Divider />
     </Drawer>

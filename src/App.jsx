@@ -12,7 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import AddLecturer from "./pages/AddLecturer";
 import AddStudent from "./pages/AddStudent";
 import Timetable from "./pages/Timetable";
-// import { Login } from "@mui/icons-material";
+import Login from "./pages/LogIn";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,7 +24,7 @@ const router = createBrowserRouter(
       <Route path="/updateUser" element={<UpdateUser />} />
       <Route path="/addlecturer" element={<AddLecturer />} />
       <Route path="/addstudent" element={<AddStudent />} />
-      {/* <Route path="/login" element={<Login />} /> */}
+      <Route path="/login" element={<Login />} />
     </Route>
   )
 );
