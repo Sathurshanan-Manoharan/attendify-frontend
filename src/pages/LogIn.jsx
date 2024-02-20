@@ -98,11 +98,6 @@ const Login = () => {
                     <Divider variant="middle" />
                   </div>
                 </div> 
-
-
-                
-
-
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white', color: 'black', width: '50%', height: '50px' }}>
                 <img src="../src/assets/google.png" style={{ maxWidth: '100%', maxHeight: '80%' }} /> 
                 <Typography sx={{ color: 'black' }}>Continue with Google</Typography>
