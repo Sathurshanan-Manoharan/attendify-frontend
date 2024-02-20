@@ -2,29 +2,46 @@ import { Grid, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { useEffect, useState } from "react";
 
 function Dashboard() {
-  const now = new Date();
   // get the current day of the week
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const dayOfWeek = daysOfWeek[now.getDay()];
+  const [date, setDate] = useState(new Date(Date.now()));
 
-  // get the current time
-  const time = now.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
+  useEffect(() => {
+    const clock = setInterval(() => {
+      const now = new Date(Date.now());
+      setDate(now);
+    }, 1000 * 60);
+  }, []);
 
-  // display the result
-  console.log(`${dayOfWeek} ${time}`);
+  const options = {
+    weekday: "long",
+  };
+  const day = date.getDate();
+  const suffix = getDaySuffix(day);
+
+  function getDaySuffix(day) {
+    if (day >= 11 && day <= 13) {
+      return "th";
+    }
+    const lastDigit = day % 10;
+    switch (lastDigit) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  }
+
+  const formattedDate = `${day}${suffix},${date.toLocaleDateString(
+    "en-US",
+    options
+  )}`;
 
   return (
     <>
@@ -36,23 +53,29 @@ function Dashboard() {
       </Typography>
 
       <Grid container spacing={2}>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Card
             variant="outlined"
             sx={{ boxShadow: 2, borderRadius: "12px", border: "none" }}
           >
             <CardContent>
               <Typography variant="h3" padding="10px">
-                <strong>{dayOfWeek}</strong>
+                <strong> {formattedDate}</strong>
               </Typography>
               <Typography variant="h3" color="#004AAD" padding="10px">
-                <strong>{time}</strong>
+                <strong>
+                  {date.toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })}
+                </strong>
               </Typography>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <Card
             variant="outlined"
             sx={{ boxShadow: 2, borderRadius: "12px", border: "none" }}
