@@ -1,10 +1,5 @@
-import React from 'react';
-import { Grid, Typography, Paper, TextField, Button,SvgIcon ,Divider,InputAdornment } from '@mui/material';
+import { Grid, Typography, Paper, TextField, Button ,Divider,InputAdornment } from '@mui/material';
 import { styled } from '@mui/system';
-
-
-
-
 
 const LeftColumnPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: '#004AAD',
@@ -103,11 +98,6 @@ const Login = () => {
                     <Divider variant="middle" />
                   </div>
                 </div> 
-
-
-                
-
-
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: 'white', color: 'black', width: '50%', height: '50px' }}>
                 <img src="../src/assets/google.png" style={{ maxWidth: '100%', maxHeight: '80%' }} /> 
                 <Typography sx={{ color: 'black' }}>Continue with Google</Typography>
