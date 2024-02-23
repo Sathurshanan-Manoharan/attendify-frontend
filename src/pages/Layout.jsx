@@ -13,9 +13,8 @@ function Layout() {
         component="main"
         sx={{
           flexGrow: 1,
-          bgcolor: "background.default",
+          bgcolor: "#FAFBFF",
           p: 3,
-          height: "1000px",
           marginTop: "64px",
         }}
       >
