@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import { Grid, Divider, Typography, Button, MenuItem, TextField ,FormHelperText,FormControl,Select,InputLabel,Autocomplete} from '@mui/material';
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Box from "@mui/material/Box";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 function Timetable() {
   const [time, setTime] = React.useState('');
@@ -9,6 +18,9 @@ function Timetable() {
   const handleChange = (event) => {
     setTime(event.target.value);
   };
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const timeSlots = ['8.30', '9:00', '9.30', '10:00', '10:30', '11.30', '12.00', '12.30', '13:00', '13:30','14.00','14.30','15.00','15.30','16.00','16.30','17.00','17.30'];  
+  
 
   const lectures = [
     { label: '12/11/23 Tuesday SDGP Session 1 - 08:30', value: 1 },
@@ -17,6 +29,16 @@ function Timetable() {
   ];
 
   return (
+    <Box>
+      <Box sx={{ marginBottom: "20px", marginTop: "0px" }}>  
+    <Card
+    variant="elevation"
+    sx={{
+      boxShadow: "0px 0px 20px 10px rgba(0, 0, 0, 0.035)",            
+      borderRadius: "12px",
+      border: "none",
+    }}>
+      <CardContent>
     <Grid container>
       {/* left column */}
       <Grid item xs={6}>
@@ -124,7 +146,128 @@ function Timetable() {
         </button>
       </Grid>
     </Grid>
+    </CardContent>
+    </Card>
+    </Box>
+    {/* Timetable */}
+    <Box>
+    <Card
+          variant="elevation"
+          sx={{            
+            boxShadow: 2,
+            borderRadius: "12px",
+            border: "none",
+          }}
+        >          
+          <CardContent>
+             <Typography variant="h4" color="#004AAD" fontWeight="bold">
+              Schedule Viewport
+            </Typography>
+            <Divider sx={{ marginBottom: "20px", marginTop: "12px" }}></Divider>
+            <TableContainer> 
+            <Table sx={{width:'1100px'}}>
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width:'157px',
+                      backgroundColor:'#CEE3F8',
+                    }}
+                  >
+                    Sunday
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width:'157px',                     
+                    }}
+                  >
+                    Monday
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width:'157px',
+                    }}
+                  >
+                    Tuesday
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width:'157px',
+                    }}
+                  >
+                    Wednesday
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width:'157px',
+                    }}
+                  >
+                    Thursday
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width:'157px',
+                    }}
+                  >
+                    Friday
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width:'157px',
+                      backgroundColor:'#CEE3F8',
+                    }}
+                  >
+                    Saturday
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>              
+            {timeSlots.map((time) => (
+              <TableRow key={time} style={{ height: '50px'}}>
+                {daysOfWeek.map((day, dayIndex) => (
+                  <TableCell key={`${day}-${time}`} style={{ backgroundColor: day === 'Sunday' || day === 'Saturday' ? '#CEE3F8' : 'inherit', borderRight: dayIndex === daysOfWeek.length - 1 ? 'none' : '1px solid #ddd',position:"relative", height: '15px', padding: 0, left:0}}>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
+                      {/* {dayIndex === 0 && <div style={{ backgroundColor: '#fff', marginLeft: '5px' }}>{day === 'Sunday' ? time : ''}</div>} */}
+                      {dayIndex !== daysOfWeek.length && (
+                        <React.Fragment>
+                          <div style={{ marginLeft:'-110px' }}>{time}</div>
+                          <div style={{ position: 'absolute', top: '0%', bottom: '0%', left: '25%', width: '1px', backgroundColor: '#ddd' , marginLeft:'10px' }}></div>                        
+                        </React.Fragment>
+                      )}
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}                  
+          </TableBody>              
+          </Table>
+          </TableContainer>           
+          </CardContent>
+        </Card>     
+    </Box>
+    </Box>      
   );
 }
 
-export default Timetable;
+export default Timetable; 
