@@ -19,7 +19,7 @@ function Timetable() {
     setTime(event.target.value);
   };
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const timeSlots = ['8.30', '9:00', '9.30', '10:00', '10:30', '11.30', '12.00', '12.30', '13:00', '13:30','14.00','14.30','15.00','15.30','16.00','16.30','17.00','17.30'];  
+  const timeSlots = ['8.30', '10.30', '13.30', '15.30'] ;  
   
 
   const lectures = [
@@ -165,7 +165,7 @@ function Timetable() {
             </Typography>
             <Divider sx={{ marginBottom: "20px", marginTop: "12px" }}></Divider>
             <TableContainer> 
-            <Table sx={{width:'1100px'}}>
+            <Table sx={{width:'1200px'}}>
               <TableHead>
                 <TableRow>
                   <TableCell
@@ -244,7 +244,7 @@ function Timetable() {
               </TableHead>
               <TableBody>              
             {timeSlots.map((time) => (
-              <TableRow key={time} style={{ height: '50px'}}>
+              <TableRow key={time} style={{ height: '200px'}}>
                 {daysOfWeek.map((day, dayIndex) => (
                   <TableCell key={`${day}-${time}`} style={{ backgroundColor: day === 'Sunday' || day === 'Saturday' ? '#CEE3F8' : 'inherit', borderRight: dayIndex === daysOfWeek.length - 1 ? 'none' : '1px solid #ddd',position:"relative", height: '15px', padding: 0, left:0}}>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
