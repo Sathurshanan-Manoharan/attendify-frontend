@@ -10,11 +10,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import Profile from "./Profile";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
+import RouterBreadcrumbs from "./RouterBreadcrumbs";
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info("You clicked a breadcrumb.");
-}
 
 export default function MenuAppBar() {
   const drawerWidth = 240;
@@ -39,28 +36,9 @@ export default function MenuAppBar() {
             alignItems: "center",
           }}
         >
-          <div role="presentation" onClick={handleClick}>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link underline="hover" color="inherit" href="/">
-                MUI
-              </Link>
-              <Link
-                underline="hover"
-                color="inherit"
-                href="/material-ui/getting-started/installation/"
-              >
-                Core
-              </Link>
-              <Link
-                underline="hover"
-                color="text.primary"
-                href="/material-ui/react-breadcrumbs/"
-                aria-current="page"
-              >
-                Breadcrumbs
-              </Link>
-            </Breadcrumbs>
-          </div>
+
+        <RouterBreadcrumbs />
+
           <Stack direction="row" spacing={2} alignItems={"center"}>
             <Badge badgeContent={4} color="secondary">
               <MailIcon />
