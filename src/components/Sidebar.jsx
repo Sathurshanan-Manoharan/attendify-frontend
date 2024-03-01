@@ -64,7 +64,7 @@ function Sidebar() {
           </ListItem>
         ))} */}
 
-        <ListItemButton to={"/dashboard"} component={Link}>
+        <ListItemButton to={"/"} component={Link}>
           <ListItemIcon sx={{ color: "white" }}>
             <DashboardIcon />
           </ListItemIcon>
