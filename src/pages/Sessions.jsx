@@ -1,97 +1,25 @@
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
-import { DataGrid } from "@mui/x-data-grid";
-import userData from "../data/UserData";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
-function SessionAttendance() {
-  //List of all the columns stored as objects
-  const columns = [
-    {
-      field: "id",
-      headerName: "ID",
-      width: 150,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "name",
-      headerName: "NAME",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "date",
-      headerName: "DATE",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "check-in",
-      headerName: "CHECK IN",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "check-out",
-      headerName: "CHECK OUT",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "status",
-      headerName: "STATUS",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => (
-        <Box
-          sx={{
-            backgroundColor:
-              params.value === "Present"
-                ? "#BCEAB8"
-                : params.value === "Absent"
-                ? "#F0C6C6"
-                : "inherit",
-            borderRadius: "100px",
-            paddingTop: "7px",
-            paddingBottom: "7px",
-            paddingRight: "40px",
-            paddingLeft: "40px",
-            color:
-              params.value === "Present"
-                ? "#2C5702"
-                : params.value === "Absent"
-                ? "BB0000"
-                : "inherit",
-            textAlign: "center",
-          }}
-        >
-          {params.value}
-        </Box>
-      ),
-    },
-  ];
+function Sessions() {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate("/attendance")
+    }
 
-  //List of all the data entries stored as objects
-  const rows = userData;
 
   return (
-    //<ThemeProvider theme={textFont}>
-    <Box>
+    <>
       <Box sx={{ marginBottom: "20px", marginTop: "0px" }}>
         <Box sx={{ marginBottom: "12px", marginTop: "0px" }}>
           <Typography variant="h4" color="#004AAD" fontWeight="bold">
@@ -185,34 +113,41 @@ function SessionAttendance() {
           </CardContent>
         </Card>
       </Box>
-
-      <Box>
-        <Card
-          variant="elevation"
-          sx={{
-            // boxShadow: "0px 0px 20px 10px rgba(0, 0, 0, 0.035)",
-            boxShadow: 2,
-            borderRadius: "12px",
-            border: "none",
-          }}
-        >
-          <CardContent>
-            <Typography variant="h6" color="#004AAD" fontWeight="bold">
-              Attendance Overview
-            </Typography>
-            <Divider sx={{ marginBottom: "20px", marginTop: "12px" }}></Divider>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5, 10, 20]}
-              sx={{ textAlign: "center" }}
-            />
-          </CardContent>
-        </Card>
-      </Box>
-    </Box>
+      <Card onClick={handleClick}
+        sx={{
+          cursor: "pointer",
+          transition: "background-color 0.3s ease",
+          "&:hover": {
+            backgroundColor: "#f0f0f0", // Change to the desired hover background color
+          },
+        }}
+      >
+        <CardContent>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                8.30 AM
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                Software Development Group Project
+              </Typography>
+              <Typography variant="h6">SE-O</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="body">March 1st, 2023</Typography>
+              <Typography variant="body">SP-5LA</Typography>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+    </>
   );
 }
 
-export default SessionAttendance;
+export default Sessions;
