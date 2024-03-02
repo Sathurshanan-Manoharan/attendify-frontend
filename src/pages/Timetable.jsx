@@ -19,7 +19,7 @@ const options = [
   'Cancel Lecture', 
 ];
 
-function TimetableNew() {
+function Timetable() {
   const [time, setTime] = React.useState('');
 
   const handleChange = (event) => {
@@ -324,4 +324,4 @@ function TimetableNew() {
         </Box>        
     );
 }
-export default TimetableNew;
+export default Timetable;
