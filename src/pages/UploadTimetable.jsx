@@ -161,11 +161,11 @@ function UploadTimetable() {
               Tutorial Group
             </Typography>
             <FormControl fullWidth variant="outlined" required sx={{ marginBottom: '10px' }}>
-              <InputLabel id="SpecialRoleLabel">Select an option</InputLabel>
+              <InputLabel id="TutorialGroup">Select an option</InputLabel>
               <Select
-                labelId="SpecialRoleLabel"
-                id="SpecialRole"
-                label="Special Role"
+                labelId="TutorialGroup"
+                id="TutorialGroup"
+                label="Tutorial Group"
               >
                  {[...Array(26)].map((_, index) => (
                     <MenuItem
@@ -177,6 +177,54 @@ function UploadTimetable() {
                       </Typography>
                     </MenuItem>
                   ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="h7"
+              sx={{ fontWeight: "bold", color: "#black", marginBottom: "10px" }}
+            >
+              Level
+            </Typography>
+            <FormControl fullWidth variant="outlined" required sx={{ marginBottom: '10px' }}>
+              <InputLabel id="Level">Select an option</InputLabel>
+              <Select
+                labelId="Level"
+                id="Level"
+                label="Level"
+              >
+                <MenuItem value="Level 1">
+              Level 1
+            </MenuItem>
+            <MenuItem value="Level 2">
+              Level 2
+            </MenuItem>
+            <MenuItem value="Level 3">
+              Level 3
+            </MenuItem>
+            <MenuItem value="Level 4">
+              Level 4
+            </MenuItem>
+            <MenuItem value="Level 5">
+              Level 5
+            </MenuItem>
+            <MenuItem value="Level 6">
+              Level 6
+            </MenuItem>
+            <MenuItem value="Level 7">
+              Level 7
+            </MenuItem>
+            <MenuItem value="Level 8">
+              Level 8
+            </MenuItem>
+            <MenuItem value="Foundation Level">
+              Foundation Level
+            </MenuItem>
+            <MenuItem value="Advance Level">
+              Advance Level
+            </MenuItem>
+
               </Select>
             </FormControl>
           </Grid>
