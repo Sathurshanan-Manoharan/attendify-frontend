@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardHeader,
   Typography,
-  TextField,
   Select,
   MenuItem,
   FormControl,
@@ -14,11 +13,34 @@ import {
 } from "@mui/material";
 
 function UploadTimetable() {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleUpload  = async (event) => {
+    const file = event.target.files[0]; // Get the first selected file
+    const formData = new FormData();
+    formData.append('file', file); // Append the file to the FormData object
+  
+    try {
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      console.log(data); // Log the response from the backend
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
   return (
-    <Card sx={{ maxWidth: 600, marginTop: 0 }}> {/* Adjusted marginTop value */}
+    <Card sx={{ maxWidth: 600, marginTop: 0 }}>
       <CardHeader
         title="Upload Timetable"
-        sx={{ backgroundColor: "#004AAD", color: "white" }}
+        sx={{ backgroundColor: "#white", color: "#004AAD" }}
       />
       <CardContent>
         <Grid container spacing={2}>
@@ -35,10 +57,11 @@ function UploadTimetable() {
                 labelId="CourseType"
                 id="CourseType"
                 label="Course Type"
-              ><MenuItem value="Foundation Certificate in Higher Education – Business">
-              Foundation Certificate in Higher Education – Business
-            </MenuItem>
-            <MenuItem value="Foundation Certificate in Higher Education – IT">
+              >
+                <MenuItem value="Foundation Certificate in Higher Education – Business">
+                  Foundation Certificate in Higher Education – Business
+                </MenuItem>
+                <MenuItem value="Foundation Certificate in Higher Education – IT">
               Foundation Certificate in Higher Education – IT
             </MenuItem>
             <MenuItem value="BSc (Hons) Business Information Systems">
@@ -149,7 +172,6 @@ function UploadTimetable() {
             <MenuItem value="Professional Certificate in Python for Application Development – Level 2">
               Professional Certificate in Python for Application Development – Level 2
             </MenuItem>
-            
               </Select>
             </FormControl>
           </Grid>
@@ -167,16 +189,16 @@ function UploadTimetable() {
                 id="TutorialGroup"
                 label="Tutorial Group"
               >
-                 {[...Array(26)].map((_, index) => (
-                    <MenuItem
-                      key={index}
-                      value={String.fromCharCode(65 + index)}
-                    >
-                      <Typography >
-                        {String.fromCharCode(65 + index)}
-                      </Typography>
-                    </MenuItem>
-                  ))}
+                {[...Array(26)].map((_, index) => (
+                  <MenuItem
+                    key={index}
+                    value={String.fromCharCode(65 + index)}
+                  >
+                    <Typography >
+                      {String.fromCharCode(65 + index)}
+                    </Typography>
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -194,10 +216,8 @@ function UploadTimetable() {
                 id="Level"
                 label="Level"
               >
-                <MenuItem value="Level 1">
-              Level 1
-            </MenuItem>
-            <MenuItem value="Level 2">
+                <MenuItem value="Level 1">Level 1</MenuItem>
+                <MenuItem value="Level 2">
               Level 2
             </MenuItem>
             <MenuItem value="Level 3">
@@ -224,30 +244,47 @@ function UploadTimetable() {
             <MenuItem value="Advance Level">
               Advance Level
             </MenuItem>
-
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              variant="contained"
-              sx={{marginLeft: "150px", marginBottom: "10px",
-              marginRight: "10px", padding : "20px", width: "0.5em",height:"auto",backgroundColor: "white", color: "black", borderRadius: "50%"  }}
-              fullWidth
-              
-            >
-              + 
-            </Button>
+            <input
+              type="file"
+              accept=".csv"
+              style={{ display: "none" }}
+              id="fileInput"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="fileInput">
+              <Button
+                variant="contained"
+                component="span"
+                sx={{
+                  marginLeft: "150px",
+                  marginBottom: "10px",
+                  marginRight: "10px",
+                  padding: "20px",
+                  width: "0.5em",
+                  height: "auto",
+                  backgroundColor: "white",
+                  color: "black",
+                  borderRadius: "50%"
+                }}
+              >
+                +
+              </Button>
+            </label>
             <Typography
               variant="h7"
-              sx={{ margingLeft: "50px", color: "#black", marginBottom: "10px" }}
+              sx={{ marginLeft: "50px", color: "#black", marginBottom: "10px" }}
             >
-             Add CSV
+              Add CSV
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Button
               variant="contained"
+              onClick={handleUpload}
               sx={{ width: "auto", backgroundColor: "#004AAD", color: "white" }}
               fullWidth
             >
