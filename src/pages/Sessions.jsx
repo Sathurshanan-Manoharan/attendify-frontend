@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, Input } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -10,6 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from 'axios';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 function Sessions() {
     const navigate = useNavigate();
@@ -17,9 +20,60 @@ function Sessions() {
         navigate("/attendance")
     }
 
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    function fileChangeHandler(event) {
+      setSelectedFile(event.target.files[0]);
+    }
+
+    async function uploadHandler() {
+      try {
+        const csvForm = new FormData();
+        csvForm.append('csvFile', selectedFile);
+
+        const response = await axios.post('http://127.0.0.1:3000/api/v1/attendance', csvForm, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
 
   return (
     <>
+      <Box sx={{marginBottom: "30px"}}>
+        <Typography variant="h4" color="#004AAD" fontWeight="bold">Upload CSV File</Typography>
+        <Button
+        component="label"
+        variant="contained"
+        
+      >
+        Select File
+        <input type="file" accept=".csv" onChange={fileChangeHandler} style={{ display: 'none' }} />
+      </Button>
+      {selectedFile && (
+        <Typography variant="body1" color="textSecondary">
+          {selectedFile.name}
+        </Typography>
+      )}
+
+        <Box>
+        <Button
+          variant="contained"
+          onClick={uploadHandler}
+          disabled={!selectedFile}
+          startIcon={<CloudUploadIcon />}
+        >
+          Upload
+        </Button>
+        </Box>
+      </Box>
+      
+
       <Box sx={{ marginBottom: "20px", marginTop: "0px" }}>
         <Box sx={{ marginBottom: "12px", marginTop: "0px" }}>
           <Typography variant="h4" color="#004AAD" fontWeight="bold">
