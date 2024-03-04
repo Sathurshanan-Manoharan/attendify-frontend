@@ -314,7 +314,7 @@ function AddStudent() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* You can map through your data and create rows */}
+                {/* Check */}
                 {students.map((student) => (
                   <TableRow key={student.id}>
                     <TableCell style={{ textAlign: "center" }}>
