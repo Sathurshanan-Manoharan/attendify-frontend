@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid,Box, Card, CardContent, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Grid,Box,Typography ,Card,CardContent} from '@mui/material';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { Search } from '@mui/icons-material';
@@ -14,6 +14,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {FormControl,Select,InputLabel} from '@mui/material';
 import {Autocomplete,IconButton} from '@mui/material';
+
+
+
+
 const options = [
   'Update Lecture',
   'Cancel Lecture', 
@@ -31,7 +35,7 @@ function Timetable() {
     { label: '19/11/23 Tuesday SDGP Session 3 - 12:30', value: 3 }
   ];
    const [selectedOption, setSelectedOption] = React.useState(options[0]);
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday'];
     const timeSlots = ['8.30', '10.30', '13.30', '15.30'];
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -207,120 +211,37 @@ function Timetable() {
                     <Button type="submit">Submit</Button>
                   </DialogActions>
                 </Dialog></React.Fragment>                         
-              </Box>                    
-              <Box>
-            <Card
+              </Box> 
+              <Card
               variant="elevation"
               sx={{            
               boxShadow: 2,
               borderRadius: "12px",
               border: "none",
             }}
-            >          
-          <CardContent>             
-            <Divider sx={{ marginBottom: "20px", marginTop: "12px" }}></Divider>
-            <TableContainer> 
-            <Table sx={{width:'1200px'}}>
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width:'157px',
-                      backgroundColor:'#CEE3F8',
-                    }}
-                  >
-                    Sunday
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width:'157px',                     
-                    }}
-                  >
-                    Monday
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width:'157px',
-                    }}
-                  >
-                    Tuesday
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width:'157px',
-                    }}
-                  >
-                    Wednesday
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width:'157px',
-                    }}
-                  >
-                    Thursday
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width:'157px',
-                    }}
-                  >
-                    Friday
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width:'157px',
-                      backgroundColor:'#CEE3F8',
-                    }}
-                  >
-                    Saturday
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>              
-            {timeSlots.map((time) => (
-              <TableRow key={time} style={{ height: '200px'}}>
-                {daysOfWeek.map((day, dayIndex) => (
-                  <TableCell key={`${day}-${time}`} style={{ backgroundColor: day === 'Sunday' || day === 'Saturday' ? '#CEE3F8' : 'inherit', borderRight: dayIndex === daysOfWeek.length - 1 ? 'none' : '1px solid #ddd',position:"relative", height: '15px', padding: 0, left:0}}>
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
-                      {/* {dayIndex === 0 && <div style={{ backgroundColor: '#fff', marginLeft: '5px' }}>{day === 'Sunday' ? time : ''}</div>} */}
-                      {dayIndex !== daysOfWeek.length && (
-                        <React.Fragment>
-                          <div style={{ marginLeft:'-110px' }}>{time}</div>
-                          <div style={{ position: 'absolute', top: '0%', bottom: '0%', left: '25%', width: '1px', backgroundColor: '#ddd' , marginLeft:'10px' }}></div>                        
-                        </React.Fragment>
-                      )}
-                    </div>
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}                  
-          </TableBody>              
-          </Table>
-          </TableContainer>           
-          </CardContent>
-        </Card>     
-        </Box>
+              >
+                <CardContent sx={{display:'flex',
+              flexDirection:'column',
+              justifyContent: 'space-evenly'}}> 
+              <Box sx={{display:'flex',
+              justifyContent: 'space-evenly'}}>
+              {daysOfWeek.map((day, index) => (
+                <Button key={index} variant={day,"contained"}  sx={{display: 'flex',
+                justifyContent: 'space-between',
+                fontWeight:"bold",color:"white",
+                fontSize:"15px",backgroundColor:"#004AAD"}} onClick={()=>{
+                  
+                }} >{day}</Button>
+              ))}
+              </Box>
+
+              </CardContent>
+
+
+              </Card>
+               
+                                         
+               
         </Box>        
     );
 }
