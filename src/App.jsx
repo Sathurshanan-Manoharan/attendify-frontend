@@ -14,7 +14,7 @@ import AddStudent from "./pages/AddStudent";
 import Timetable from "./pages/Timetable";
 import Login from "./pages/LogIn";
 import Sessions from "./pages/Sessions";
-import UploadTimetable from "./pages/UploadTimetable";
+import CreateTimetable from "./pages/CreateTimetable";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +30,7 @@ const router = createBrowserRouter(
         <Route path="/updateUser" element={<UpdateUser />} />
         <Route path="/addlecturer" element={<AddLecturer />} />
         <Route path="/addstudent" element={<AddStudent />} />
-        <Route path="/uploadtimetable" element={<UploadTimetable />} />
+        <Route path="/createtimetable" element={<CreateTimetable />} />
         {/* <Route path="/login" element={<Login />} /> */}
       </Route>
     </>

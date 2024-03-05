@@ -148,7 +148,7 @@ function AddLecturer() {
                 borderRadius: "12px",
                 border: "none",
                 marginTop: "20px",
-              }} // Apply borderRadius to the Button
+              }} 
             >
               Create Lecturer
             </Button>
