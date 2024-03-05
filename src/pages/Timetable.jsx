@@ -328,7 +328,7 @@ const handleChange2 = ( event,newValue) => {
                 {dummyTableDate
                 .filter(item => item.day === day)
                 .map((item, idx) => (
-                  <Card key={idx}>
+                  <Card key={idx} sx={{marginBottom:"50px"}}>
                     <CardContent>
                       <Box sx={{ display: "flex", alignItems: "center" , justifyContent:"space-between"}}>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
