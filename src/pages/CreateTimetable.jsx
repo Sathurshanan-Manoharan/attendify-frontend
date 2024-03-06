@@ -9,8 +9,11 @@ import {
   InputLabel,
   Grid,
   Button,
-  CardContent,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,Chip
+  CardContent,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,Chip,Box,
 } from "@mui/material";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 
 function CreateTimetable() {
@@ -36,11 +39,6 @@ function CreateTimetable() {
     setSelectedLevel(event.target.value); // Update selected level
   };
 
-  const handleCellChange = (value, rowIndex, columnIndex) => {
-    const updatedTimetable = [...timetableData];
-    updatedTimetable[rowIndex][columnIndex] = value;
-    setTimetableData(updatedTimetable);
-  };
 
   const handleCreateTimetable = () => {
     // Prepare data for JSON object
@@ -55,6 +53,36 @@ function CreateTimetable() {
     console.log("Sending timetable data to the database:", timetableJSON);
   };
   
+  const navigate = useNavigate();
+    const handleClick = () => {
+        navigate("/attendance")
+    }
+
+    //Handles adding of the file
+    function fileChangeHandler(event) {
+      setSelectedFile(event.target.files[0]); 
+    }
+
+    //Handles upload of the file to the backend
+    async function uploadHandler() {
+      try {
+        const csvForm = new FormData();
+        csvForm.append('csvFile', selectedFile);
+
+        
+        const response = await axios.post('http://127.0.0.1:3000//api/v1/timetable/upload', csvForm, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+  
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+
+
   return (
     <Card sx={{ maxWidth: 1200, marginTop: 0 }}>
       <CardHeader
@@ -281,37 +309,44 @@ function CreateTimetable() {
               </Select>
             </FormControl>
           </Grid>
-          <TableContainer component={Paper}>
-  <Table>
-    <TableHead>
-      <TableRow>
-        <TableCell></TableCell>
-        <TableCell> <Typography variant="h7" fontWeight="bold">Monday</Typography></TableCell>
-        <TableCell> <Typography variant="h7" fontWeight="bold">Tuesday</Typography></TableCell>
-        <TableCell> <Typography variant="h7" fontWeight="bold">Wednesday</Typography></TableCell>
-        <TableCell> <Typography variant="h7" fontWeight="bold">Thursday</Typography></TableCell>
-        <TableCell> <Typography variant="h7" fontWeight="bold">Friday  </Typography></TableCell>
-        <TableCell> <Typography variant="h7" fontWeight="bold">Saturday</Typography></TableCell>
-        <TableCell> <Typography variant="h7" fontWeight="bold">Sunday</Typography></TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {["8.30AM - 10.30AM", "10.30AM - 12.30PM", "1.30PM - 3.30PM", "3.30PM - 5.30PM"].map((session, sessionIndex) => (
-        <TableRow key={sessionIndex}>
-          <TableCell>
-            <Typography variant="h7" fontWeight="bold">{session}</Typography>
-          </TableCell>
-          {[...Array(7)].map((_, dayIndex) => (
-            <TableCell key={dayIndex} contentEditable={true} onBlur={(event) => handleCellChange(event.target.innerText, sessionIndex, dayIndex)}></TableCell>
-          ))}
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</TableContainer>
+         
 
           
-          <Grid item xs={12}>
+         
+        </Grid>
+        <Grid item xs={12}>
+        <Box sx={{marginBottom: "30px"}}>
+        <Typography variant="h7" color="black" fontWeight="bold">Upload CSV File</Typography>
+       
+      {selectedFile && (
+        <Typography variant="body1" color="textSecondary">
+          {selectedFile.name}
+        </Typography>
+      )}
+
+        <Box>
+        <Button
+        component="label"
+        variant="contained"
+        sx={{marginRight: "10px" }}
+        
+      >
+        Select File
+        <input type="file" accept=".csv" onChange={fileChangeHandler} style={{ display: 'none'}} />
+      </Button>
+        <Button
+          variant="contained"
+          onClick={uploadHandler}
+          disabled={!selectedFile}
+          
+          
+        >
+          Upload
+        </Button>
+        </Box>
+      </Box>
+      </Grid>
+      <Grid item xs={12}>
             <Button
               variant="contained"
               onClick={handleCreateTimetable}
@@ -321,8 +356,6 @@ function CreateTimetable() {
               Create Timetable
             </Button>
           </Grid>
-          
-        </Grid>
       </CardContent>
     </Card>
   );
