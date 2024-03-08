@@ -9,35 +9,82 @@ import {
   InputLabel,
   Grid,
   Button,
-  CardContent
+  CardContent,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,Chip,Box,
 } from "@mui/material";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
-function UploadTimetable() {
+
+
+function CreateTimetable() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedCourseType, setSelectedCourseType] = useState("");
+  const [selectedTutorialGroups, setSelectedTutorialGroups] = useState([]);
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [timetableData, setTimetableData] = useState([]);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile(event.target.files[0]); // Update selected file
   };
 
-  const handleUpload  = async (event) => {
-    const file = event.target.files[0]; // Get the first selected file
-    const formData = new FormData();
-    formData.append('file', file); // Append the file to the FormData object
-  
-    try {
-      const response = await fetch('/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await response.json();
-      console.log(data); // Log the response from the backend
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
+  const handleTutorialGroupChange = (event) => {
+    setSelectedTutorialGroups(event.target.value); // Update selected tutorial groups
   };
+
+  const handleCourseTypeChange = (event) => {
+    setSelectedCourseType(event.target.value); // Update selected course type
+  };
+
+  const handleLevelChange = (event) => {
+    setSelectedLevel(event.target.value); // Update selected level
+  };
+
+
+  const handleCreateTimetable = () => {
+    // Prepare data for JSON object
+    const timetableJSON = {
+      courseType: selectedCourseType,
+      tutorialGroups: selectedTutorialGroups,
+      level: selectedLevel,
+      timetable: timetableData
+    };
+
+    // Send JSON object to the database (simulate sending)
+    console.log("Sending timetable data to the database:", timetableJSON);
+  };
+  
+  const navigate = useNavigate();
+    const handleClick = () => {
+        navigate("/attendance")
+    }
+
+    //Handles adding of the file
+    function fileChangeHandler(event) {
+      setSelectedFile(event.target.files[0]); 
+    }
+
+    //Handles upload of the file to the backend
+    async function uploadHandler() {
+      try {
+        const csvForm = new FormData();
+        csvForm.append('csvFile', selectedFile);
+
+        
+        const response = await axios.post('http://127.0.0.1:3000//api/v1/timetable/upload', csvForm, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+  
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+
 
   return (
-    <Card sx={{ maxWidth: 600, marginTop: 0 }}>
+    <Card sx={{ maxWidth: 1200, marginTop: 0 }}>
       <CardHeader
         title="Upload Timetable"
         sx={{ backgroundColor: "#white", color: "#004AAD" }}
@@ -57,6 +104,8 @@ function UploadTimetable() {
                 labelId="CourseType"
                 id="CourseType"
                 label="Course Type"
+                value={selectedCourseType}
+                onChange={handleCourseTypeChange}
               >
                 <MenuItem value="Foundation Certificate in Higher Education – Business">
                   Foundation Certificate in Higher Education – Business
@@ -183,24 +232,35 @@ function UploadTimetable() {
               Tutorial Group
             </Typography>
             <FormControl fullWidth variant="outlined" required sx={{ marginBottom: '10px' }}>
-              <InputLabel id="TutorialGroup">Select an option</InputLabel>
-              <Select
-                labelId="TutorialGroup"
-                id="TutorialGroup"
-                label="Tutorial Group"
-              >
-                {[...Array(26)].map((_, index) => (
-                  <MenuItem
-                    key={index}
-                    value={String.fromCharCode(65 + index)}
-                  >
-                    <Typography >
-                      {String.fromCharCode(65 + index)}
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <InputLabel id="TutorialGroup">Select tutorial groups</InputLabel>
+            <Select
+              labelId="TutorialGroup"
+              id="TutorialGroup"
+              label="Tutorial Group"
+              multiple  // Enable multiple selection
+              value={selectedTutorialGroups}  // State to hold selected tutorial groups
+              onChange={handleTutorialGroupChange}  // Handler for when selection changes
+              renderValue={(selected) => (
+                <div>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} /> // Display selected tutorial groups as chips
+                  ))}
+                </div>
+              )}
+            >
+              {[...Array(26)].map((_, index) => (
+                <MenuItem
+                  key={index}
+                  value={String.fromCharCode(65 + index)}
+                >
+                  <Typography>
+                    {String.fromCharCode(65 + index)}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           </Grid>
           <Grid item xs={12}>
             <Typography
@@ -215,6 +275,8 @@ function UploadTimetable() {
                 labelId="Level"
                 id="Level"
                 label="Level"
+                value={selectedLevel} 
+                onChange={handleLevelChange} 
               >
                 <MenuItem value="Level 1">Level 1</MenuItem>
                 <MenuItem value="Level 2">
@@ -247,54 +309,56 @@ function UploadTimetable() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
-            <input
-              type="file"
-              accept=".csv"
-              style={{ display: "none" }}
-              id="fileInput"
-              onChange={handleFileChange}
-            />
-            <label htmlFor="fileInput">
-              <Button
-                variant="contained"
-                component="span"
-                sx={{
-                  marginLeft: "150px",
-                  marginBottom: "10px",
-                  marginRight: "10px",
-                  padding: "20px",
-                  width: "0.5em",
-                  height: "auto",
-                  backgroundColor: "white",
-                  color: "black",
-                  borderRadius: "50%"
-                }}
-              >
-                +
-              </Button>
-            </label>
-            <Typography
-              variant="h7"
-              sx={{ marginLeft: "50px", color: "#black", marginBottom: "10px" }}
-            >
-              Add CSV
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
+         
+
+          
+         
+        </Grid>
+        <Grid item xs={12}>
+        <Box sx={{marginBottom: "30px"}}>
+        <Typography variant="h7" color="black" fontWeight="bold">Upload CSV File</Typography>
+       
+      {selectedFile && (
+        <Typography variant="body1" color="textSecondary">
+          {selectedFile.name}
+        </Typography>
+      )}
+
+        <Box>
+        <Button
+        component="label"
+        variant="contained"
+        sx={{marginRight: "10px" }}
+        
+      >
+        Select File
+        <input type="file" accept=".csv" onChange={fileChangeHandler} style={{ display: 'none'}} />
+      </Button>
+        <Button
+          variant="contained"
+          onClick={uploadHandler}
+          disabled={!selectedFile}
+          
+          
+        >
+          Upload
+        </Button>
+        </Box>
+      </Box>
+      </Grid>
+      <Grid item xs={12}>
             <Button
               variant="contained"
-              onClick={handleUpload}
+              onClick={handleCreateTimetable}
               sx={{ width: "auto", backgroundColor: "#004AAD", color: "white" }}
               fullWidth
             >
-              Upload Timetable
+              Create Timetable
             </Button>
           </Grid>
-        </Grid>
       </CardContent>
     </Card>
   );
 }
 
-export default UploadTimetable;
+export default CreateTimetable;
