@@ -37,14 +37,14 @@ function CreateTimetable() {
     setSelectedLevel(event.target.value);
   };
 
-  const navigate = useNavigate(); // Moved useNavigate inside the component body
+  const navigate = useNavigate(); 
 
-  //Handles adding of the file
+ 
   function fileChangeHandler(event) {
     setSelectedFile(event.target.files[0]); 
   }
 
-  //Handles upload of the file to the backend
+
   async function uploadHandler() {
     try {
       const csvForm = new FormData();
@@ -220,24 +220,33 @@ function CreateTimetable() {
               labelId="TutorialGroup"
               id="TutorialGroup"
               label="Tutorial Group"
-              multiple  // Enable multiple selection
-              value={selectedTutorialGroups}  // State to hold selected tutorial groups
-              onChange={handleTutorialGroupChange}  // Handler for when selection changes
+              
+              onChange={handleTutorialGroupChange}  
               renderValue={(selected) => (
                 <div>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} /> // Display selected tutorial groups as chips
+                    <Chip key={value} label={value} /> 
                   ))}
                 </div>
               )}
             >
               {[...Array(26)].map((_, index) => (
                 <MenuItem
-                  key={index}
-                  value={String.fromCharCode(65 + index)}
                 >
                   <Typography>
-                    {String.fromCharCode(65 + index)}
+                    A
+                  </Typography>
+                  <Typography>
+                    B
+                  </Typography>
+                  <Typography>
+                    C
+                  </Typography>
+                  <Typography>
+                    D
+                  </Typography>
+                  <Typography>
+                    E
                   </Typography>
                 </MenuItem>
               ))}

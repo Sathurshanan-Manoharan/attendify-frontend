@@ -14,7 +14,6 @@ import TimelineOppositeContent, {
 } from "@mui/lab/TimelineOppositeContent";
 
 function Dashboard() {
-  // get the current day of the week
   const [date, setDate] = useState(new Date(Date.now()));
 
   useEffect(() => {
@@ -303,16 +302,16 @@ function Dashboard() {
                       "Thursday",
                       "Friday",
                     ],
-                    tickRotation: -90, // Rotate the x-axis labels by -90 degrees
+                    tickRotation: -90, 
                   },
                 ]}
                 series={[
-                  { data: [85, 90, 92, 88, 95] }, // Example attendance percentages for each day
+                  { data: [85, 90, 92, 88, 95] }, 
                 ]}
                 width={500}
                 height={300}
                 yAxis={[{ scaleType: "linear", domain: [0, 100] }]}
-                colors={["#64748B"]} // Set the bar color to #64748
+                colors={["#64748B"]} 
               />
             </CardContent>
           </Card>
