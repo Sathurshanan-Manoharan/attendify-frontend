@@ -220,36 +220,16 @@ function CreateTimetable() {
               labelId="TutorialGroup"
               id="TutorialGroup"
               label="Tutorial Group"
-              
+              value={selectedTutorialGroups}  
               onChange={handleTutorialGroupChange}  
-              renderValue={(selected) => (
-                <div>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} /> 
-                  ))}
-                </div>
-              )}
+              
             >
-              {[...Array(26)].map((_, index) => (
-                <MenuItem
-                >
-                  <Typography>
-                    A
-                  </Typography>
-                  <Typography>
-                    B
-                  </Typography>
-                  <Typography>
-                    C
-                  </Typography>
-                  <Typography>
-                    D
-                  </Typography>
-                  <Typography>
-                    E
-                  </Typography>
-                </MenuItem>
-              ))}
+              {['A', 'B', 'C', 'D', 'E'].map((letter) => (
+              <MenuItem key={letter} value={letter}>
+                <Typography>{letter}</Typography>
+              </MenuItem>
+            ))}
+
             </Select>
           </FormControl>
 
