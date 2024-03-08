@@ -15,74 +15,57 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 
-
 function CreateTimetable() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedCourseType, setSelectedCourseType] = useState("");
   const [selectedTutorialGroups, setSelectedTutorialGroups] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState("");
-  const [timetableData, setTimetableData] = useState([]);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]); // Update selected file
+    setSelectedFile(event.target.files[0]);
   };
 
   const handleTutorialGroupChange = (event) => {
-    setSelectedTutorialGroups(event.target.value); // Update selected tutorial groups
+    setSelectedTutorialGroups(event.target.value);
   };
 
   const handleCourseTypeChange = (event) => {
-    setSelectedCourseType(event.target.value); // Update selected course type
+    setSelectedCourseType(event.target.value);
   };
 
   const handleLevelChange = (event) => {
-    setSelectedLevel(event.target.value); // Update selected level
+    setSelectedLevel(event.target.value);
   };
 
+  const navigate = useNavigate(); // Moved useNavigate inside the component body
 
-  const handleCreateTimetable = () => {
-    // Prepare data for JSON object
-    const timetableJSON = {
-      courseType: selectedCourseType,
-      tutorialGroups: selectedTutorialGroups,
-      level: selectedLevel,
-      timetable: timetableData
-    };
+  //Handles adding of the file
+  function fileChangeHandler(event) {
+    setSelectedFile(event.target.files[0]); 
+  }
 
-    // Send JSON object to the database (simulate sending)
-    console.log("Sending timetable data to the database:", timetableJSON);
-  };
-  
-  const navigate = useNavigate();
-    const handleClick = () => {
-        navigate("/attendance")
+  //Handles upload of the file to the backend
+  async function uploadHandler() {
+    try {
+      const csvForm = new FormData();
+      csvForm.append('courseType', selectedCourseType);
+      csvForm.append('tutorialGroups', selectedTutorialGroups);
+      csvForm.append('level', selectedLevel);
+      csvForm.append('csvFile', selectedFile);
+
+      const response = await axios.post('http://127.0.0.1:3000/api/v1/timetable/uploadtimetable', csvForm, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
+  }
 
-    //Handles adding of the file
-    function fileChangeHandler(event) {
-      setSelectedFile(event.target.files[0]); 
-    }
-
-    //Handles upload of the file to the backend
-    async function uploadHandler() {
-      try {
-        const csvForm = new FormData();
-        csvForm.append('csvFile', selectedFile);
-
-        
-        const response = await axios.post('http://127.0.0.1:3000//api/v1/timetable/upload', csvForm, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-  
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error uploading file:', error);
-      }
-    }
-
-
+    
   return (
     <Card sx={{ maxWidth: 1200, marginTop: 0 }}>
       <CardHeader
@@ -334,22 +317,15 @@ function CreateTimetable() {
         Select File
         <input type="file" accept=".csv" onChange={fileChangeHandler} style={{ display: 'none'}} />
       </Button>
-        <Button
-          variant="contained"
-          onClick={uploadHandler}
-          disabled={!selectedFile}
-          
-          
-        >
-          Upload
-        </Button>
+        
         </Box>
       </Box>
       </Grid>
       <Grid item xs={12}>
             <Button
               variant="contained"
-              onClick={handleCreateTimetable}
+              onClick={uploadHandler}
+              disabled={!selectedFile}
               sx={{ width: "auto", backgroundColor: "#004AAD", color: "white" }}
               fullWidth
             >
@@ -358,7 +334,7 @@ function CreateTimetable() {
           </Grid>
       </CardContent>
     </Card>
-  );
-}
+  );}
+
 
 export default CreateTimetable;
