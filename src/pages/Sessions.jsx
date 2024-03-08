@@ -31,7 +31,6 @@ function Sessions() {
           variant="elevation"
           sx={{
             boxShadow: "0px 0px 20px 10px rgba(0, 0, 0, 0.035)",
-            // boxShadow: ,
             borderRadius: "12px",
             border: "none",
           }}
@@ -118,7 +117,7 @@ function Sessions() {
           cursor: "pointer",
           transition: "background-color 0.3s ease",
           "&:hover": {
-            backgroundColor: "#f0f0f0", // Change to the desired hover background color
+            backgroundColor: "#f0f0f0", 
           },
         }}
       >
