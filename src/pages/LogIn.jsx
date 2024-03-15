@@ -1,6 +1,9 @@
 import { Grid, Typography, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 import { SignIn } from "@clerk/clerk-react";
+import backgroundImage from "../assets/Group 17.png";
+import leftColumnPaperImage from "../assets/logo.png";
+import leftColumnPaperImageTwo from "../assets/picture.png";
 
 const LeftColumnPaper = styled(Paper)(() => ({
   backgroundColor: "#004AAD",
@@ -12,7 +15,7 @@ const LeftColumnPaper = styled(Paper)(() => ({
 }));
 
 const RightColumnPaper = styled(Paper)(() => ({
-  backgroundImage: `url('../../public/assets/Group 17.jpg')`, // url(../../assets/login-background.jpg
+  backgroundImage: `url(${backgroundImage})`, // Replace with your actual image path
   backgroundSize: "cover",
   height: "100vh",
   display: "flex",
@@ -38,12 +41,12 @@ const Login = () => {
         >
           <LeftColumnPaper>
             <img
-              src="../../public/assets//logo.png"
+              src={leftColumnPaperImage}
               alt="Left Column Image"
               style={{ maxWidth: "70%", maxHeight: "70%", marginTop: "-70px" }}
             />
             <img
-              src="../../public/assets//picture.png"
+              src={leftColumnPaperImageTwo}
               alt="Left Column Image"
               style={{ maxWidth: "60%", maxHeight: "60%", marginTop: "-15%" }}
             />

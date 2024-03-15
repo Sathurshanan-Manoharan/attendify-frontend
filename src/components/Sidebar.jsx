@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Logo from "../../public/assets/AttendifyLogo.png";
+import Logo from "../assets/AttendifyLogo.png";
 // import sidebarItems from "../data/SidebarItems";
 import { Link } from "react-router-dom";
 import Collapse from "@mui/material/Collapse";
