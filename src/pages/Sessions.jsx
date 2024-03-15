@@ -40,7 +40,6 @@ function Sessions() {
           variant="elevation"
           sx={{
             boxShadow: "0px 0px 20px 10px rgba(0, 0, 0, 0.035)",
-            // boxShadow: ,
             borderRadius: "12px",
             border: "none",
           }}

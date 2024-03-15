@@ -49,7 +49,7 @@ export default function AccountMenu() {
         PaperProps={{
           elevation: 0,
           sx: {
-            overflowY: "auto", // Enable vertical scrolling
+            overflowY: "auto", 
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
             "& .MuiAvatar-root": {

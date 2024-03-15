@@ -17,9 +17,9 @@ function Layout() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center", // Center horizontally
-          alignItems: "center", // Center vertically
-          height: "100vh", // Set the height to 100% of the viewport height
+          justifyContent: "center", 
+          alignItems: "center", 
+          height: "100vh", 
         }}
       >
         <CircularProgress />
