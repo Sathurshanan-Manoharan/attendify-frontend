@@ -25,8 +25,9 @@ const router = createBrowserRouter(
       <Route element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/timetable" element={<Timetable />} />
-        <Route path="/attendance" element={<SessionAttendance />} />
+        <Route path="/sessions/attendance" element={<SessionAttendance />} />
         <Route path="/sessions" element={<Sessions />} />
+        
         <Route path="/updateUser" element={<UpdateUser />} />
         <Route path="/addlecturer" element={<AddLecturer />} />
         <Route path="/addstudent" element={<AddStudent />} />
