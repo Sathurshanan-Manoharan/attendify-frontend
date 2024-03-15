@@ -10,13 +10,22 @@ import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Sessions() {
-    const navigate = useNavigate();
-    const handleClick = () => {
-        navigate("/attendance")
-    }
+  const [sessions, setSessions] = useState([]);
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/attendance");
+  };
 
+  //use effect for data fetching
+  useEffect(() => {
+    axios.get("http://127.0.0.1:3000/api/v1/attendance/").then((res) => {
+      setSessions(res.data.data.attendance);
+    });
+  }, []);
 
   return (
     <>
@@ -113,39 +122,43 @@ function Sessions() {
           </CardContent>
         </Card>
       </Box>
-      <Card onClick={handleClick}
-        sx={{
-          cursor: "pointer",
-          transition: "background-color 0.3s ease",
-          "&:hover": {
-            backgroundColor: "#f0f0f0", // Change to the desired hover background color
-          },
-        }}
-      >
-        <CardContent>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                8.30 AM
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                Software Development Group Project
-              </Typography>
-              <Typography variant="h6">SE-O</Typography>
+      {sessions.map((session) => (
+        <Card
+          key={session.id} // Don't forget to add a unique key for each mapped element
+          onClick={handleClick}
+          sx={{
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#f0f0f0", // Change to the desired hover background color
+            },
+          }}
+        >
+          <CardContent>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="body" sx={{ marginRight: 2 }}>
+                  {session.start_time}
+                </Typography>
+                <Typography variant="h5" sx={{ marginRight: 2 }}>
+                  {session.lecture_title}
+                </Typography>
+                <Typography variant="h6">SE-O</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="body">March 1st, 2023</Typography>
+                <Typography variant="body">{session.venue}</Typography>
+              </Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="body">March 1st, 2023</Typography>
-              <Typography variant="body">SP-5LA</Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ))}
     </>
   );
 }
