@@ -17,7 +17,7 @@ function Sessions() {
   const [sessions, setSessions] = useState([]);
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/attendance");
+    navigate("/sessions/attendance");
   };
 
   //use effect for data fetching
@@ -26,6 +26,23 @@ function Sessions() {
       setSessions(res.data.data.attendance);
     });
   }, []);
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { month: "long", day: "numeric", year: "numeric" };
+    const formattedDate = date.toLocaleDateString("en-US", options);
+    return formattedDate.replace(
+      /(\d+)(?:st|nd|rd|th)/,
+      (all, number) => number + (["st", "nd", "rd"][number % 10 - 1] || "th")
+    );
+  };
 
   return (
     <>
@@ -123,13 +140,16 @@ function Sessions() {
       </Box>
       {sessions.map((session) => (
         <Card
-          key={session.id} // Don't forget to add a unique key for each mapped element
+          key={session.id} 
           onClick={handleClick}
+          
           sx={{
+            boxShadow: 3,
+            marginBottom: "15px",
             cursor: "pointer",
             transition: "background-color 0.3s ease",
             "&:hover": {
-              backgroundColor: "#f0f0f0", // Change to the desired hover background color
+              backgroundColor: "#f0f0f0",
             },
           }}
         >
@@ -137,7 +157,7 @@ function Sessions() {
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
+                {formatTime(session.start_time)}
                 </Typography>
                 <Typography variant="h5" sx={{ marginRight: 2 }}>
                   {session.lecture_title}
@@ -151,7 +171,7 @@ function Sessions() {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="body">March 1st, 2023</Typography>
+                <Typography variant="body">{formatDate(session.start_time)}</Typography>
                 <Typography variant="body">{session.venue}</Typography>
               </Box>
             </Box>
