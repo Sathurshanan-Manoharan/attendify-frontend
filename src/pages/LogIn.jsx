@@ -12,7 +12,7 @@ const LeftColumnPaper = styled(Paper)(() => ({
 }));
 
 const RightColumnPaper = styled(Paper)(() => ({
-  backgroundImage: `url('../src/assets/Group 17.png')`, // Replace with your actual image path
+  backgroundImage: `url('../../public/assets/Group 17.jpg')`, // url(../../assets/login-background.jpg
   backgroundSize: "cover",
   height: "100vh",
   display: "flex",
@@ -38,12 +38,12 @@ const Login = () => {
         >
           <LeftColumnPaper>
             <img
-              src="../src/assets/logo.png"
+              src="../../public/assets//logo.png"
               alt="Left Column Image"
               style={{ maxWidth: "70%", maxHeight: "70%", marginTop: "-70px" }}
             />
             <img
-              src="../src/assets/picture.png"
+              src="../../public/assets//picture.png"
               alt="Left Column Image"
               style={{ maxWidth: "60%", maxHeight: "60%", marginTop: "-15%" }}
             />
