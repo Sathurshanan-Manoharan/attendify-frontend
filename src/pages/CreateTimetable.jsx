@@ -48,22 +48,24 @@ function CreateTimetable() {
   async function uploadHandler() {
     try {
       const csvForm = new FormData();
-      csvForm.append('courseType', selectedCourseType);
-      csvForm.append('tutorialGroups', selectedTutorialGroups);
-      csvForm.append('level', selectedLevel);
       csvForm.append('csvFile', selectedFile);
-
+      csvForm.append('courseType', selectedCourseType);
+      csvForm.append('selectedTutorialGroups', selectedTutorialGroups); 
+      csvForm.append('level', selectedLevel);
+  
       const response = await axios.post('http://127.0.0.1:3000/api/v1/timetable/uploadtimetable', csvForm, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-
+  
       console.log(response.data);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   }
+  
+  
 
     
   return (
@@ -222,7 +224,7 @@ function CreateTimetable() {
               label="Tutorial Group"
               value={selectedTutorialGroups}  
               onChange={handleTutorialGroupChange}  
-              
+              //commit
             >
               {['A', 'B', 'C', 'D', 'E'].map((letter) => (
               <MenuItem key={letter} value={letter}>

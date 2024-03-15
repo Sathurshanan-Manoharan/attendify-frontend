@@ -72,7 +72,7 @@ function Sidebar() {
           <ListItemText primary={"Dashboard"} />
         </ListItemButton>
 
-        <ListItemButton to={"/attendance"} component={Link}>
+        <ListItemButton to={"/sessions"} component={Link}>
           <ListItemIcon sx={{ color: "white" }}>
             <AssignmentIcon />
           </ListItemIcon>
