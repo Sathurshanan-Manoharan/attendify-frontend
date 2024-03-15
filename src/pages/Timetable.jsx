@@ -18,6 +18,13 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PlaceIcon from "@mui/icons-material/Place";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 const dummyTableDate = [
   {
     day: "Monday",
@@ -25,7 +32,7 @@ const dummyTableDate = [
     module: "Software Development Group Project",
     tutorialGrp: "SE-O",
     date: "March 1st, 2023",
-    Location: "SP-5LA",
+    Location: "SP - 5LA",
   },
   {
     day: "Tuesday",
@@ -33,7 +40,7 @@ const dummyTableDate = [
     module: "Advanced Data Structures",
     tutorialGrp: "SE-A",
     date: "March 2nd, 2023",
-    Location: "SP-5LB",
+    Location: "SP - 5LB",
   },
   {
     day: "Wednesday",
@@ -41,7 +48,7 @@ const dummyTableDate = [
     module: "Machine Learning Algorithms",
     tutorialGrp: "CS-A",
     date: "March 3rd, 2023",
-    Location: "SP-5LC",
+    Location: "SP - 5LC",
   },
   {
     day: "Thursday",
@@ -49,7 +56,7 @@ const dummyTableDate = [
     module: "Database Management Systems",
     tutorialGrp: "DBMS-A",
     date: "March 4th, 2023",
-    location: "SP-5LG",
+    location: "SP - 5LG",
   },
   {
     day: "Thursday",
@@ -57,7 +64,7 @@ const dummyTableDate = [
     module: "Software Engineering Principles",
     tutorialGrp: "SEP-D",
     date: "March 4th, 2023",
-    location: "SP-5LH",
+    location: "SP - 5LH",
   },
   {
     day: "Friday",
@@ -65,7 +72,7 @@ const dummyTableDate = [
     module: "Software Testing and Quality Assurance",
     tutorialGrp: "QA-B",
     date: "March 5th, 2023",
-    location: "SP-5LI",
+    location: "SP - 5LI",
   },
   {
     day: "Friday",
@@ -73,7 +80,7 @@ const dummyTableDate = [
     module: "Human-Computer Interaction",
     tutorialGrp: "HCI-E",
     date: "March 5th, 2023",
-    location: "SP-5LJ",
+    location: "SP - 5LJ",
   },
   {
     day: "Saturday",
@@ -81,7 +88,7 @@ const dummyTableDate = [
     module: "Web Development",
     tutorialGrp: "WD-C",
     date: "March 6th, 2023",
-    location: "SP-5LK",
+    location: "SP - 5LK",
   },
   {
     day: "Saturday",
@@ -89,7 +96,7 @@ const dummyTableDate = [
     module: "Computer Networks",
     tutorialGrp: "CN-F",
     date: "March 6th, 2023",
-    location: "SP-5LL",
+    location: "SP - 5LL",
   },
   {
     day: "Sunday",
@@ -97,7 +104,7 @@ const dummyTableDate = [
     module: "Network Security",
     tutorialGrp: "NS-D",
     date: "March 7th, 2023",
-    location: "SP-5LM",
+    location: "SP - 5LM",
   },
   {
     day: "Sunday",
@@ -105,7 +112,7 @@ const dummyTableDate = [
     module: "Operating Systems",
     tutorialGrp: "OS-G",
     date: "March 7th, 2023",
-    location: "SP-5LN",
+    location: "SP - 5LN",
   },
 ];
 
@@ -147,6 +154,7 @@ function Timetable() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const [open2, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -430,41 +438,96 @@ function Timetable() {
                 {dummyTableDate
                   .filter((item) => item.day === day)
                   .map((item, idx) => (
-                    <Card key={idx} sx={{ marginBottom: "50px" }}>
-                      <CardContent>
+                    <Card
+                      key={idx}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: 1,
+                        padding: 0,
+                        borderRadius: 4,
+                      }}
+                    >
+                      <CardContent
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          flexGrow: 1,
+                        }}
+                      >
                         <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography
+                            variant="h5"
+                            sx={{ fontWeight: "bold", marginRight: 1 }}
+                          >
+                            {item.module}
+                          </Typography>
+                          <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                            ({item.tutorialGrp})
+                          </Typography>
+                        </Box>
+
+                        <List
                           sx={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
                           }}
                         >
-                          <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <Typography variant="body" sx={{ marginRight: 2 }}>
-                              {item.time}
-                            </Typography>
-                            <Typography variant="h5" sx={{ marginRight: 2 }}>
-                              {item.module}
-                            </Typography>
-                            <Typography variant="h6">
-                              {item.tutorialGrp}
-                            </Typography>
-                          </Box>
-                          <Box
+                          <ListItem
                             sx={{
                               display: "flex",
-                              flexDirection: "column",
                               alignItems: "center",
+                              width: "50%",
                             }}
                           >
-                            <Typography variant="body" SX={{ marginRight: 0 }}>
-                              {item.date}
-                            </Typography>
-                            <Typography variant="body" SX={{ marginRight: 0 }}>
-                              {item.location}
-                            </Typography>
-                          </Box>
-                        </Box>
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <AccessTimeIcon color="primary" />
+                            </ListItemIcon>
+                            <ListItemText>
+                              <Typography variant="h6">{item.time}</Typography>
+                            </ListItemText>
+                          </ListItem>
+                          <ListItem
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              width: "50%",
+                            }}
+                          >
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <PlaceIcon color="primary" />
+                            </ListItemIcon>
+
+                            <ListItemText>
+                              <Typography variant="h6">
+                                {item.location}
+                              </Typography>
+                            </ListItemText>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <ListItemIcon
+                                sx={{ minWidth: 32, alignItems: "center" }}
+                              >
+                                <CalendarTodayIcon color="primary" />
+                              </ListItemIcon>
+                              <ListItemText>
+                                <Typography variant="h6">
+                                  {item.date}
+                                </Typography>
+                              </ListItemText>
+                            </Box>
+                          </ListItem>
+                        </List>
                       </CardContent>
                     </Card>
                   ))}
@@ -472,29 +535,6 @@ function Timetable() {
             ))}
           </TabContext>
         </Box>
-        {/* <Card
-              variant="elevation"
-              sx={{            
-              boxShadow: 2,
-              borderRadius: "12px",
-              border: "none",
-            }}
-              >
-              <CardContent sx={{display:'flex',
-              flexDirection:'column',
-              justifyContent: 'space-evenly'}}> 
-              <Box sx={{display:'flex',
-              justifyContent: 'space-evenly'}}>
-              {daysOfWeek.map((day, index) => (
-                <Button key={index} variant={day} variant ="contained" sx={{display: 'flex',
-                justifyContent: 'space-between',
-                fontWeight:"bold",color:"white",
-                fontSize:"15px",backgroundColor:"#004AAD"}} onClick={()=>{                  
-                }} >{day}</Button>
-              ))}
-              </Box>              
-          </CardContent>
-            </Card> */}
       </Box>
     </Box>
   );
