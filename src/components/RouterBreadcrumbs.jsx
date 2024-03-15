@@ -30,6 +30,7 @@ const breadcrumbNameMap = {
   "/attendance": "Attendance",
   "/addlecturer": "Settings / Add Lecturer",
   "/addstudent": "Settings / Add Student",
+  "/Reports": "Reports"
 };
 
 function ListItemLink(props) {
