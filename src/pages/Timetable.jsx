@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { Grid,Box,Typography ,Card,CardContent} from '@mui/material';
 import Fab from '@mui/material/Fab';
@@ -417,10 +418,11 @@ function Timetable() {
   ////////////////////////////////////////////////////////////////
 
 
-  const [time, setTime] = React.useState('');
+  const [time, setTime] = React.useState("");
 
   const handleChange = (event) => {
     setTime(event.target.value);
+
 
    };
 
@@ -433,6 +435,7 @@ function Timetable() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -448,6 +451,7 @@ function Timetable() {
   const handleClose2 = () => {
     setOpen(false);
   };
+
 
 
   return(
@@ -495,6 +499,7 @@ function Timetable() {
             fullWidth
             maxWidth="sm"
             PaperProps={{
+
               component: 'form',
               onSubmit: (event) => {
                 event.preventDefault();
@@ -505,6 +510,7 @@ function Timetable() {
                 handleClose2();
               },
               style: {
+
                 maxWidth: '800px', 
                 minWidth: '400px',
                 maxHeight: '600px',
@@ -768,6 +774,5 @@ function Timetable() {
            </Box>      
           </Box>
     );
-}
-
+  }
 export default Timetable;
