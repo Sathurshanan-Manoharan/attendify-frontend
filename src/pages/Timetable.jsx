@@ -36,6 +36,8 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useEffect } from "react";
+import {  useUser } from "@clerk/clerk-react";
+
 
 const options = ["Update Lecture", "Cancel Lecture"];
 
@@ -68,7 +70,102 @@ const tables = {
   ],
 };
 
+const userTables = {
+  data:[{name: "Adib Mubarak",
+  email: "adib.20221609@iit.ac.lk",
+  uowId: "W1956200",
+  iitId: "20221609",
+  tutorialGroup: "B",
+  degreeType: "SE",
+  year: "L4",
+  uid: "043DEAA8672681",}]
+}
+
 function Timetable() {
+
+  const { user } = useUser();
+  const userEmailAddress = user.emailAddresses[0].emailAddress;
+
+  const [recievedUsertables, setReceivedUserTables] = React.useState(userTables.data);
+  
+  const [currentlySelectedUser, setCurrentlySelectedUser] = React.useState(userTables.data);
+
+  const getUserFromBackend = async () => {
+    try {
+      const response = await Backend.get("/user");
+      setReceivedUserTables(response.data.data.users);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (recievedUsertables.length > 0) {
+      const activeUser = recievedUsertables.find((table) => table.email === userEmailAddress);
+      if (activeUser) {
+        setCurrentlySelectedUser(activeUser);
+        console.log('Active user selected:', activeUser);
+      }
+    }
+  }, [recievedUsertables, userEmailAddress]);
+  
+
+    useEffect(() => {
+      getUserFromBackend();
+    }, []);
+    
+    
+
+    console.log(recievedUsertables);
+    
+    // useEffect(() => {
+    //   getActiveUsersTable();
+    // }, [recievedtables]);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   // current active tab index
   const [value, setValue] = React.useState("1");
 
@@ -102,14 +199,14 @@ function Timetable() {
   const [activesessions, setActiveSessions] = React.useState(
     tables.data[0].tutorial_groups[0].days[0].sessions
   );
-  const [activeUser, setActiveUser] = React.useState({
+  let [activeUser, setActiveUser] = React.useState({
     name: "Adib Mubarak",
     email: "adib.20221609@iit.ac.lk",
     uowId: "W1956200",
     iitId: "20221609",
     tutorialGroup: "B",
     degreeType: "SE",
-    year: "L3",
+    year: "L4",
     uid: "043DEAA8672681",
   });
 
@@ -139,16 +236,28 @@ function Timetable() {
       console.log(err.message);
     }
   };
-  const setUser = (user) => {
-    setActiveUser(user);
+  const setUser = (currentlySelectedUser) => {
+    setActiveUser(currentlySelectedUser);
   };
+
+  const studentsTutorialGroup = currentlySelectedUser.tutorialGroup;
+  const studentsYear= currentlySelectedUser.year;
+  console.log(studentsTutorialGroup);
+  console.log(studentsYear);
+  console.log(recievedtables);
+
+  activeUser = currentlySelectedUser;
+  console.log(activeUser);
+
   const getActiveUsersTable = () => {
     recievedtables.forEach((table) => {
       table.tutorial_groups.forEach((tutorialGroup) => {
-        if (tutorialGroup.group_name === activeUser.tutorialGroup&& table.level_name === activeUser.year) {
+        if (tutorialGroup.group_name === studentsTutorialGroup && table.level_name === studentsYear) {
+          console.log("same")
           setCurrentlySelectedTable(table);
           console.log("changed", table);
         }
+        else {console.log("mata ba")}
       });
     });
   };
@@ -765,7 +874,7 @@ function Timetable() {
                             sx={{
                               display: "flex",
                               alignItems: "center",
-                              width: "50%",
+                              width: "70%",
                             }}
                           >
                             <ListItemIcon sx={{ minWidth: 32}}>
