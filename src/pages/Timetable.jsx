@@ -768,7 +768,7 @@ function Timetable() {
                               width: "50%",
                             }}
                           >
-                            <ListItemIcon sx={{ minWidth: 32 }}>
+                            <ListItemIcon sx={{ minWidth: 32}}>
                               <Place color="primary" />
                             </ListItemIcon>
 
