@@ -158,7 +158,7 @@ function Timetable() {
     let changedDay = daysOfWeek[dayIndex];
     setCurrentDay(changedDay);
     currentlySelectedTable.tutorial_groups.forEach((tutorialGroup) => {
-      if (tutorialGroup.group_name === activeUser.tutorialGroup) {
+      if (tutorialGroup.group_name === activeUser.tutorialGroup&& table.level_name === activeUser.year) {
         tutorialGroup.days.forEach((day) => {
           if (day.day === changedDay) {
             setActiveSessions(day.sessions);
