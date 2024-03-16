@@ -1,9 +1,8 @@
-
 import * as React from 'react';
-import { Grid,Box,Typography ,Card,CardContent} from '@mui/material';
+import { Grid,Box,Typography ,Card,CardContent, List, ListItem,ListItemIcon, ListItemText} from '@mui/material';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import { Search } from '@mui/icons-material';
+import { AccessTime, CalendarToday, People, Place, Search } from '@mui/icons-material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
@@ -21,6 +20,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { useEffect } from 'react';
+
 
 
 const options = [
@@ -154,24 +154,26 @@ function Timetable() {
       { label: 'Tuesday SDGP Session 3 - 12:30', value: 3 }
     ])
 
-    
+    // backend functionality for retreive all time tables
     useEffect(()=>{
-      getTimeTablesFromBackend()      
+
+      getTimeTablesFromBackend()
+      
     },[activeUser.iitId])
 
 
-  
+  // track the changes of the active user
   useEffect(()=>{
       getActiveUsersTable()
   },[recievedtables])
   
+
 
   const getTimeTablesFromBackend = async()=>{
 
     try{
       
       const response = await Backend.get('/timetable')
-      //console.log(response.data.data.timetable)
       setReceivedTables(response.data.data.timetable)
     
     }catch(err){
@@ -182,17 +184,17 @@ function Timetable() {
     
   }
 
-
+  //set the logged user
   const setUser = (user)=> {
 
       setActiveUser(user)
 
   }
 
-  
+  // get the active users group and retreives from the backend
   const getActiveUsersTable = ()=>{
 
-    
+    // iterate tables received
     recievedtables.forEach((table)=>{
 
       table.tutorial_groups.forEach(tutorialGroup=>{
@@ -206,22 +208,23 @@ function Timetable() {
     })
   }
 
-  
+  //changes the active sessions for the day when the day gets changed
   const changeSessionsByDayChange = (dayIndex) =>{
     
     let changedDay =  daysOfWeek[dayIndex]
     setCurrentDay(changedDay)
-    //console.log(changedDay)
     currentlySelectedTable.tutorial_groups.forEach(tutorialGroup=>{
+      if(tutorialGroup.group_name === activeUser.tutorialGroup){
+
       tutorialGroup.days.forEach(day=>{
 
-        if(tutorialGroup.group_name === activeUser.tutorialGroup){
+       
             if(day.day === changedDay){
 
               setActiveSessions(day.sessions)
-              //console.log(activesessions)
+
+              // cancel details for the
               let temSessionArr = []
-    
               day.sessions.forEach((session,index)=>{
                 temSessionArr.push({ label: ` ${changedDay} ${session.module} ${session.start_time}-${session.end_time}`, value: index })
               })
@@ -229,18 +232,20 @@ function Timetable() {
               setLectures(temSessionArr);
     
             }
-        }
+       
       
         
       })
+    }
+
     })
   }
 
 
-   
+   // tracking the index of the changed value on the autocompletion text box
    const handleSelectionChange = (event, newValue) => {
 
-    
+    // Find the index of the selected option
     const selectedIndex = lectures.findIndex(lecture => lecture === newValue);
     if(selectedIndex>=0){
 
@@ -255,23 +260,25 @@ function Timetable() {
     
   };
 
-    
+    // update the timeslot
     useEffect(()=>{
 
       selectSession()
-      //console.log("invoked")
+      console.log("invoked")
 
     },[currentlySelectedItem.start_time,currentlySelectedItem.end_time])
 
 
     
-  
+    // updates the timeslot with the provided data
     const updateTimeSlot = (timeslot)=>{
 
       
         if(currentlySelectedItem.module !==""){
 
           try{
+
+            // updating the currently selected table data
             currentlySelectedTable.tutorial_groups.forEach(tutorialGroup=>{
               tutorialGroup.days.forEach(day=>{
         
@@ -297,7 +304,7 @@ function Timetable() {
               })
             })
 
-           
+            //sending the updated table to the backend
             const response = Backend.put(`/timetable/${currentlySelectedTable._id}`,currentlySelectedTable)
             console.log(response.data)
 
@@ -311,16 +318,15 @@ function Timetable() {
     }
 
 
-    
+    //changes the timeslot when the start time and endtime are changed
     const selectSession = ()=>{
-
 
       for(let i=0;i<activesessions.length;i++){
 
         let session = activesessions[i]
         console.log(session)
 
-        
+        //set the current object if as the to be updated object if the searched time is found else 
         if(session.start_time===currentlySelectedItem.start_time && session.end_time === currentlySelectedItem.end_time){
          
           setCurrentlySelectedItem(session)
@@ -418,11 +424,10 @@ function Timetable() {
   ////////////////////////////////////////////////////////////////
 
 
-  const [time, setTime] = React.useState("");
+  const [time, setTime] = React.useState('');
 
   const handleChange = (event) => {
     setTime(event.target.value);
-
 
    };
 
@@ -435,7 +440,6 @@ function Timetable() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -451,7 +455,6 @@ function Timetable() {
   const handleClose2 = () => {
     setOpen(false);
   };
-
 
 
   return(
@@ -499,7 +502,6 @@ function Timetable() {
             fullWidth
             maxWidth="sm"
             PaperProps={{
-
               component: 'form',
               onSubmit: (event) => {
                 event.preventDefault();
@@ -510,7 +512,6 @@ function Timetable() {
                 handleClose2();
               },
               style: {
-
                 maxWidth: '800px', 
                 minWidth: '400px',
                 maxHeight: '600px',
@@ -687,6 +688,7 @@ function Timetable() {
                 <TabContext value={value} >              
                 <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider' }}>
                    
+                   
                     <TabList onChange={handleChange2}  aria-label="lab API tabs example" sx={{height:'60px' }}>
                     {daysOfWeek.map((day, index) => (
                        
@@ -706,34 +708,98 @@ function Timetable() {
                   //if then iterate timeslots for that particular day
                   .map((item, idx) => (
      
-                    <Card key={idx} sx={{marginBottom:"50px", backgroundColor:item?.lecturer?'white':'#AAAAAA'}}>
-                      <CardContent>
-                        <Box sx={{ display: "flex", alignItems: "center" , justifyContent:"space-between"}}>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                    {/* {add the properties of the currentSelected item such as level,lecturer} */}
-                    <Typography variant="body" sx={{ marginRight: 2 }}>
-                      {item.start_time} - {item.end_time}
-                    </Typography>
-                    <Typography variant="h5" sx={{ marginRight: 2 }}>
-                      {item.module}
-                    </Typography>
-                    <Typography variant="h6">{item.tutorialGroup}</Typography>
-                    {item?.instructor?(<Typography variant='h5'>{item.lecturer}</Typography>):(
-                            <Typography variant='h5' sx={{color:'white',marginTop:'10px',marginBottom:'10px'}}>Lecture cancelled</Typography>
-                          )}
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography variant="body" sx={{marginRight:0}}>{item.date}</Typography>
-                    <Typography variant="body"  sx={{marginRight:0}}>{item.location}</Typography>
-                  </Box>
-                  </Box>
-                       
+                    <Card
+                      key={idx}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: 1,
+                        padding: 0,
+                        borderRadius: 4,
+                        backgroundColor:item?.instructor!==null?"white":"grey"
+                      }}
+                    >
+                      <CardContent
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          flexGrow: 1,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography
+                            variant="h5"
+                            sx={{ fontWeight: "bold", marginRight: 1 }}
+                          >
+                            {item.module}
+                          </Typography>
+                          <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                            ({item.tutorialGrp})
+                          </Typography>
+                        </Box>
+
+                        <List
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <ListItem
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              width: "50%",
+                            }}
+                          >
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <AccessTime color="primary" />
+                            </ListItemIcon>
+                            <ListItemText>
+                              <Typography variant="h6">{item.start_time}-{item.end_time}</Typography>
+                            </ListItemText>
+                          </ListItem>
+                          
+                          <ListItem
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              width: "50%",
+                            }}
+                          >
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <Place color="primary" />
+                            </ListItemIcon>
+
+                            <ListItemText>
+                              <Typography variant="h6">
+                                {item.venue}
+                              </Typography>
+                            </ListItemText>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <ListItemIcon
+                                sx={{ minWidth: 32, alignItems: "center" }}
+                              >
+                                <People color="primary" />
+                              </ListItemIcon>
+                              <ListItemText>
+                                <Typography variant="h6" sx={{color:item.instructor!==null?"grey":"white"}}>
+                                  {item.instructor===null?"lecture cancelled":item.instructor}
+                                </Typography>
+                              </ListItemText>
+                            </Box>
+                          </ListItem>
+                        </List>
                       </CardContent>
                     </Card>
                   ))}
@@ -774,5 +840,6 @@ function Timetable() {
            </Box>      
           </Box>
     );
-  }
+}
+
 export default Timetable;
