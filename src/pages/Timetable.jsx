@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { Grid,Box,Typography ,Card,CardContent, List, ListItem,ListItemIcon, ListItemText} from '@mui/material';
 import Fab from '@mui/material/Fab';
@@ -24,13 +23,100 @@ import { useEffect } from 'react';
 
 
 
+const options = [
+  'Update Lecture',
+  'Cancel Lecture', 
+];
 
+const tables = {
+  data:[
+    {
+      level_name: "4",
+      timetable_id:"123",
+      tutorial_groups: [
+        {
+          group_name: "Group A",
+          days: [
+            {
+              day: "Monday",
+              sessions: [
+                {
+                  start_time: "08:30",
+                  end_time: "10:30",
+                  module: "Programming 101",
+                  instructor: "Prof. Smith",
+                  course: "Computer Science",
+                  venue: "Lecture Hall 1",
+                  lecture_title: "Introduction to Programming"
+                },
+                {
+                  start_time: "10:30",
+                  end_time: "12:30",
+                  module: "Mathematics",
+                  instructor: "Dr. Jones",
+                  course: "Software Engineering",
+                  venue: "Lecture Hall 2",
+                  lecture_title: "Limits and Derivatives"
+                }
+              ]
+            },
+            {
+              day: "Wednesday",
+              sessions: [
+                {
+                  start_time: "13:30",
+                  end_time: "15:30",
+                  module: "Data Structures",
+                  instructor: "Mr. Lee",
+                  course: "Computer Science",
+                  venue: "Lab 3",
+                  lecture_title: "Arrays and Linked Lists"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          group_name: "Group B",
+          days: [
+            {
+              day: "Tuesday",
+              sessions: [
+                {
+                  start_time: "10:30",
+                  end_time: "12:30",
+                  module: "Object oriented programming",
+                  instructor: "Dr. Brown",
+                  course: "Software Engineering",
+                  venue: "Lecture Hall 3",
+                  lecture_title: "Classes and objects"
+                }
+              ]
+            },
+            {
+              day: "Thursday",
+              sessions: [
+                {
+                  start_time: "15:30",
+                  end_time: "17:30",
+                  module: "Web Development",
+                  instructor: "Ms. Garcia",
+                  course: "Computer Science",
+                  venue: "Lab 1",
+                  lecture_title: "Introduction to HTML and CSS"
+                }
+              ]
+            }
+          ]
+        }
+      ]
 
-const options = ["Update Lecture", "Cancel Lecture"];
+    }
+  ]
+}
+
 
 function Timetable() {
-  
-
 
   const [value, setValue] = React.useState('1');
   const [currentlySelectedTable,setCurrentlySelectedTable] = React.useState(tables.data[0])
@@ -346,17 +432,8 @@ function Timetable() {
    };
 
 
-
   const [selectedOption, setSelectedOption] = React.useState(options[0]);
-  const daysOfWeek = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday'];
   //const timeSlots = ['8.30', '10.30', '13.30', '15.30'];
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -379,59 +456,53 @@ function Timetable() {
     setOpen(false);
   };
 
-  return(
 
+  return(
     <Box>
-      <Box sx={{ marginBottom: "20px", marginTop: "0px" }}>
-        <Grid container>
-          <Grid item xs={11}>
-            <Typography variant="h4" color="#004AAD" fontWeight="bold">
-              Schedule Viewport
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Button>
-              <Fab color="primary" aria-label="add" onClick={handleClick}>
-                <AddIcon />
-              </Fab>
-            </Button>
-          </Grid>
+    <Box sx={{ marginBottom: "20px", marginTop: "0px"}}>
+      <Grid container>
+        <Grid item xs={11}>
+        <Typography variant="h4" color="#004AAD" fontWeight="bold">
+            Schedule Viewport
+        </Typography>
         </Grid>
-        <Menu
-          id="long-menu"
-          MenuListProps={{
-            "aria-labelledby": "long-button",
-          }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              width: "20ch",
-            },
-          }}
-        >
-          {options.map((option) => (
-            <MenuItem
-              key={option}
-              selected={option === "Pyxis"}
-              onClick={handleClickOpen}
-              variant="outlined"
-            >
-              {option}
-            </MenuItem>
-          ))}
-        </Menu>
-        <React.Fragment>
-          <Dialog
+        <Grid item xs={1} > 
+       <Button> 
+        <Fab color="primary" aria-label="add" onClick={handleClick}>
+                <AddIcon />
+        </Fab>
+      </Button>
+      </Grid>
+      </Grid>                
+          <Menu
+            id="long-menu"
+            MenuListProps={{
+              'aria-labelledby': 'long-button',
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                
+                width: '20ch',
+              },
+            }}
+          >
+            {options.map((option) => (
+              <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClickOpen} variant="outlined" >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu> 
+          <React.Fragment>                   
+          <Dialog                  
             open={open2}
             onClose={handleClose2}
             fullWidth
             maxWidth="sm"
             PaperProps={{
-
               component: 'form',
-
               onSubmit: (event) => {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
@@ -441,7 +512,6 @@ function Timetable() {
                 handleClose2();
               },
               style: {
-
                 maxWidth: '800px', 
                 minWidth: '400px',
                 maxHeight: '600px',
@@ -449,196 +519,170 @@ function Timetable() {
   
               },                      
             }}                    
-
           >
-            <DialogTitle>
-              {selectedOption === "Update Lecture" && (
-                <Typography
-                  style={{
-                    fontSize: 18,
-                    marginLeft: "10px",
-                    marginTop: "5px",
-                    color: "gray",
-                  }}
-                >
-                  Schedule additional lecture
-                </Typography>
-              )}
-              {selectedOption === "Cancel Lecture" && (
-                <Typography
-                  style={{
-                    fontSize: 18,
-                    marginLeft: "10px",
-                    marginTop: "5px",
-                    color: "gray",
-                  }}
-                >
-                  Cancel scheduled lecture
-                </Typography>
-              )}
-            </DialogTitle>
-            <DialogContent>
-              {selectedOption === "Update Lecture" && (
-                <DialogContentText width="600px">
-                  <div>
-                    <div>
-                      <FormControl
-                        sx={{ m: 1, minWidth: 230, marginTop: "30px" }}
-                      >
-                        <InputLabel id="demo-simple-select-helper-label">
-                          Select Available Timeslot
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-helper-label"
-                          id="demo-simple-select-helper"
-                          value={time}
-                          label="Select Available Timeslot"
-                          onChange={handleChange}
-                        >
-                          <MenuItem value={1}>8:30</MenuItem>
-                          <MenuItem value={2}>10:30</MenuItem>
-                          <MenuItem value={3}>13:30</MenuItem>
-                          <MenuItem value={4}>15:30</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </div>
-                    <Typography
-                      style={{
-                        fontSize: 15,
-                        marginLeft: "280px",
-                        marginTop: "-50px",
-                        fontWeight: 550,
-                      }}
-                    >
-                      Course
-                    </Typography>
-                    <TextField
-                      variant="outlined"
-                      label="E.G. Software Engineering"
-                      // InputLabelProps={{ shrink: inputValue.length > 0 ? true : false }}
-                      // onChange={handleInputChange}
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        marginTop: "-35px",
-                        marginLeft: "60%",
-                        width: "45%",
-                      }}
-                    />
-                    <Typography
-                      style={{
-                        fontSize: 15,
-                        marginLeft: "280px",
-                        marginTop: "15px",
-                        fontWeight: 550,
-                      }}
-                    >
-                      Title
-                    </Typography>
-                    <TextField
-                      variant="outlined"
-                      label="E.G. Additional LEC 1"
-                      size="small"
-                      sx={{
-                        height: "0.1px",
-                        backgroundColor: "white",
-                        marginTop: "-30px",
-                        marginLeft: "60%",
-                        width: "45%",
-                      }}
-                    />
-                    <Typography
-                      style={{
-                        fontSize: 15,
-                        marginLeft: "280px",
-                        marginTop: "12px",
-                        fontWeight: 550,
-                      }}
-                    >
-                      Module
-                    </Typography>
-                    <TextField
-                      variant="outlined"
-                      label="E.G. SEPP"
-                      size="small"
-                      sx={{
-                        height: "0.1px",
-                        backgroundColor: "white",
-                        marginTop: "-25px",
-                        marginLeft: "60%",
-                        width: "45%",
-                      }}
-                    />
-                    <Typography
-                      style={{
-                        fontSize: 15,
-                        marginLeft: "280px",
-                        marginTop: "10px",
-                        fontWeight: 550,
-                      }}
-                    >
-                      Tutorial
-                      <br />
-                      group
-                    </Typography>
-                    <TextField
-                      variant="outlined"
-                      label="G1. G2"
-                      size="small"
-                      sx={{
-                        height: "0.1px",
-                        backgroundColor: "white",
-                        marginTop: "-40px",
-                        marginLeft: "60%",
-                        width: "45%",
-                      }}
-                    />
-                  </div>
-                </DialogContentText>
-              )}
-              {selectedOption === "Cancel Lecture" && (
-                <DialogContentText width="600px">
-                  <div>
-                    <Autocomplete
-                      disablePortal
-                      id="combo-box-demo"
-                      options={lectures}
-                      getOptionLabel={(option) => option.label}
-                      renderInput={(params) => (
-                        <TextField
-                          label="Search for a lecture by Course, Title..."
-                          variant="outlined"
-                          sx={{
-                            backgroundColor: "white",
-                            marginTop: "30px",
-                            marginRight: "5%",
-                            width: "90%",
-                          }}
-                          InputProps={{
-                            endAdornment: (
-                              <IconButton>
-                                <Search />
-                              </IconButton>
-                            ),
-                            disableUnderline: true,
+
+          <DialogTitle>
+            {selectedOption === 'Update Lecture' && ( 
+                <Typography  style={{ fontSize: 18, marginLeft: '10px', marginTop: '5px',color:'gray' }}>Schedule additional lecture</Typography>)}
+            {selectedOption === 'Cancel Lecture' && ( 
+                <Typography  style={{ fontSize: 18, marginLeft: '10px', marginTop: '5px',color:'gray' }}>Cancel scheduled lecture</Typography>)}
+           </DialogTitle>                   
+          <DialogContent > 
+          {selectedOption === 'Update Lecture' && (
+          <DialogContentText width="600px">
+          <div> 
+          <Stack sx={{width:230}}>
+            <FormControl sx={{ m: 1, minWidth: 230,marginTop:'30px'}}>
+            <InputLabel id="demo-simple-select-helper-label">Start Time</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={currentlySelectedItem.start_time}
+              name='start_time'
+              label="start time"
+              onChange={handleInputChange}
+            >
+                        <MenuItem value={"08:30"}>08:30</MenuItem>
+                        <MenuItem value={"10:30"}>10:30</MenuItem>
+                        <MenuItem value={"12:30"}>12:30</MenuItem>
+                        <MenuItem value={"13:30"}>13:30</MenuItem>
+                        <MenuItem value={"15:30"}>15:30</MenuItem>
+            </Select>
+            
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 230,marginTop:'30px'}}>
+            <InputLabel id="demo-simple-select-helper-label">End Time</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={currentlySelectedItem.end_time}
+              label="end time"
+              name='end_time'
+              onChange={handleInputChange}
+            >
+                        <MenuItem value={"08:30"}>8:30</MenuItem>
+                        <MenuItem value={"10:30"}>10:30</MenuItem>
+                        <MenuItem value={"12:30"}>12:30</MenuItem>
+                        <MenuItem value={"13:30"}>13:30</MenuItem>
+                        <MenuItem value={"15:30"}>15:30</MenuItem>
+            </Select>
+            </FormControl>
+            {isTimeSlotAllocated?(<Typography variant='body1' sx={{color:'green'}}>Time slot is allocated only a update will be affected</Typography>):(<></>)}
+          </Stack>
+       
+        <Typography style={{ fontSize: 15, marginLeft: '280px', marginTop: '-150px', fontWeight:550 }}>Course</Typography>
+        <TextField
+          variant="outlined"
+          name='course'
+          // InputLabelProps={{ shrink: inputValue.length > 0 ? true : false }}
+          onChange={handleInputChange}
+          value={currentlySelectedItem.course}
+          size="small"
+          sx={{ backgroundColor: 'white', marginTop:'-35px', marginLeft: '60%',width:'45%' }}
+        />
+        <Typography style={{ fontSize: 15, marginLeft: '280px', marginTop: '15px',fontWeight:550 }}>venue</Typography>
+        <TextField
+          variant="outlined"
+          name='venue'
+          // InputLabelProps={{ shrink: inputValue.length > 0 ? true : false }}
+          onChange={handleInputChange}
+          value={currentlySelectedItem.venue}
+          size="small"
+          sx={{ backgroundColor: 'white', marginTop:'-35px', marginLeft: '60%',width:'45%' }}
+        />
+        <Typography style={{ fontSize: 15, marginLeft: '280px', marginTop: '15px',fontWeight:550 }}>level</Typography>
+        <TextField
+          variant="outlined"
+          name='level_name'
+          // InputLabelProps={{ shrink: inputValue.length > 0 ? true : false }}
+          onChange={handleInputChange}
+          value={currentlySelectedTable.level_name}
+          size="small"
+          disabled
+          sx={{ backgroundColor: 'white', marginTop:'-35px', marginLeft: '60%',width:'45%' }}
+        />
+        <Typography style={{ fontSize: 15, marginLeft: '280px', marginTop: '15px',fontWeight:550 }}>Title</Typography>
+        <TextField
+          variant="outlined" 
+          name="lecture_title"
+          value={currentlySelectedItem.lecture_title}
+          onChange={handleInputChange}
+          size="small"                    
+          sx={{ height: '0.1px', backgroundColor: 'white', marginTop: '-30px', marginLeft: '60%',width:'45%' }}
+        />
+        <Typography style={{ fontSize: 15, marginLeft: '280px', marginTop: '12px' ,fontWeight:550}}>Module</Typography>
+        <TextField
+          variant="outlined"
+          name="module"
+          value={currentlySelectedItem.module}
+          onChange={handleInputChange}
+          size="small"                   
+          sx={{ height: '0.1px', backgroundColor: 'white', marginTop: '-25px', marginLeft: '60%',width:'45%' }}
+        />
+        <Typography style={{ fontSize: 15, marginLeft: '280px', marginTop: '10px' ,fontWeight:550}}>Tutorial<br />group</Typography>
+        <TextField
+          variant="outlined"
+          name="tutorialGroup"     
+          value={activeUser.tutorialGroup}            
+          size="small"   
+          disabled                 
+          sx={{ height: '0.1px', backgroundColor: 'white',  marginTop: '-40px',marginLeft: '60%',width:'45%' }}
+        /> 
+        </div>
+        </DialogContentText>
+        )} 
+
+       {selectedOption === 'Cancel Lecture' && ( 
+        <DialogContentText width="600px"> 
+        <div>               
+              <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={lectures}
+                        getOptionLabel={(option) => option.label}
+                        onChange={handleSelectionChange}
+                        renderInput={(params) =>(
+                        <TextField 
+                        label="Search for a lecture by Course, Title..."
+                        variant="outlined"
+                        sx={{backgroundColor: 'white', marginTop: '30px', marginRight: '5%',width:'90%' }}
+                        InputProps={{
+                          endAdornment: (
+                            <IconButton>
+                              <Search />
+                            </IconButton>
+                          ),
+                          disableUnderline: true,
                           }}
                           {...params}
-                        />
+                          />
+                          )}
+                      /> 
+                      </div> 
+              </DialogContentText>)} 
+            </DialogContent>                   
+          <DialogActions>
+          {selectedOption==='Update Lecture'?(
+                        <>
+                        <Button variant="outlined" onClick={handleClose2}>Cancel</Button>
+                        <Button variant="outlined" onClick={()=>{
+                          console.log(currentlySelectedItem)
+                          updateTimeSlot(currentlySelectedItem)
+                        }}type="submit">Submit</Button>
+                        </>
+                      ):(
+                        <>
+                        <Button variant="outlined" onClick={handleClose2}>Cancel</Button>
+                        <Button variant="outlined" onClick={()=>{
+                          console.log(selectedCancelItem)
+                          cancelALecture(selectedCancelItem)
+                        }}type="submit">Submit</Button>
+                        </>
                       )}
-                    />
-                  </div>
-                </DialogContentText>
-              )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose2}>Cancel</Button>
-              <Button type="submit">Submit</Button>
-            </DialogActions>
-          </Dialog>
-        </React.Fragment>
-      </Box>
+          </DialogActions>
+        </Dialog></React.Fragment>                         
+      </Box>                    
       <Box>
-
   
            <Box sx={{  typography: 'body1', justifyContent:'space-evenly'}}>
                 <TabContext value={value} >              
@@ -672,9 +716,7 @@ function Timetable() {
                         marginBottom: 1,
                         padding: 0,
                         borderRadius: 4,
-
                         backgroundColor:item?.instructor!==null?"white":"grey"
-
                       }}
                     >
                       <CardContent
@@ -716,14 +758,13 @@ function Timetable() {
                             }}
                           >
                             <ListItemIcon sx={{ minWidth: 32 }}>
-                          <AccessTime color="primary" />
+                              <AccessTime color="primary" />
                             </ListItemIcon>
                             <ListItemText>
                               <Typography variant="h6">{item.start_time}-{item.end_time}</Typography>
                             </ListItemText>
                           </ListItem>
                           
-
                           <ListItem
                             sx={{
                               display: "flex",
@@ -732,16 +773,12 @@ function Timetable() {
                             }}
                           >
                             <ListItemIcon sx={{ minWidth: 32 }}>
-
                               <Place color="primary" />
-
                             </ListItemIcon>
 
                             <ListItemText>
                               <Typography variant="h6">
-
                                 {item.venue}
-
                               </Typography>
                             </ListItemText>
                             <Box
@@ -753,13 +790,11 @@ function Timetable() {
                               <ListItemIcon
                                 sx={{ minWidth: 32, alignItems: "center" }}
                               >
-
                                 <People color="primary" />
                               </ListItemIcon>
                               <ListItemText>
                                 <Typography variant="h6" sx={{color:item.instructor!==null?"grey":"white"}}>
                                   {item.instructor===null?"lecture cancelled":item.instructor}
-
                                 </Typography>
                               </ListItemText>
                             </Box>
@@ -768,7 +803,6 @@ function Timetable() {
                       </CardContent>
                     </Card>
                   ))}
-
                     </TabPanel>
                       ))}
                   
@@ -807,7 +841,5 @@ function Timetable() {
           </Box>
     );
 }
-
-
 
 export default Timetable;
