@@ -1,11 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
 import Link from "@mui/material/Link";
 
 import ListItemButton from "@mui/material/ListItemButton";
-import Collapse from "@mui/material/Collapse";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -18,19 +16,13 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import Dashboard from "../pages/Dashboard";
-import Timetable from "../pages/Timetable";
-import Attendance from "../pages/SessionAttendance";
-import AddLecturer from "../pages/AddLecturer";
-import AddStudent from "../pages/AddStudent";
-
 const breadcrumbNameMap = {
   "/dashboard": "Dashboard",
   "/timetable": "Timetable",
-  "/attendance": "Attendance",
+  "/sessions": "Attendance",
   "/addlecturer": "Settings / Add Lecturer",
   "/addstudent": "Settings / Add Student",
-  "/Reports": "Reports"
+  "/reports": "Reports"
 };
 
 function ListItemLink(props) {
@@ -51,11 +43,6 @@ function ListItemLink(props) {
     </li>
   );
 }
-
-ListItemLink.propTypes = {
-  open: PropTypes.bool,
-  to: PropTypes.string.isRequired,
-};
 
 function LinkRouter(props) {
   return <Link {...props} component={RouterLink} />;
@@ -90,10 +77,6 @@ function Page() {
 
 export default function RouterBreadcrumbs() {
   const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", width: 360 }}>
