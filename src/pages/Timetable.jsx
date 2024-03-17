@@ -82,24 +82,37 @@ const userTables = {
 function Timetable() {
 
   const { user } = useUser();
+  console.log(user);
   const userEmailAddress = user.emailAddresses[0].emailAddress;
+  const isAdmin = user.publicMetadata?.role === "admin";
 
   const [recievedUsertables, setReceivedUserTables] = React.useState(userTables.data);
   
   const [currentlySelectedUser, setCurrentlySelectedUser] = React.useState(userTables.data);
 
-  const getUserFromBackend = async () => {
-    try {
-      const response = await Backend.get("/user");
-      setReceivedUserTables(response.data.data.users);
-    } catch (err) {
-    //  console.log(err.message);
-    }
-  };
+  let tLocation;
+let tLocationTwo;
+if (isAdmin) {
+  tLocation = "/lecturer";
+  tLocationTwo = "lecturers";
+} else {
+  tLocation = "/student";
+  tLocationTwo = "students";
+}
+
+const getUserFromBackend = async () => {
+  try {
+    const response = await Backend.get(tLocation);
+    setReceivedUserTables(response.data.data[tLocationTwo]);
+  } catch (err) {
+    // console.log(err.message);
+  }
+};
+  
 
   useEffect(() => {
     if (recievedUsertables.length > 0) {
-      const activeUser = recievedUsertables.find((table) => table.email === userEmailAddress);
+      const activeUser = recievedUsertables.find((table) => table.iitEmail === userEmailAddress);
       if (activeUser) {
         setCurrentlySelectedUser(activeUser);
       //  console.log('Active user selected:', activeUser);
@@ -190,13 +203,10 @@ function Timetable() {
 
   activeUser = currentlySelectedUser;
 
- 
-
-
   const getActiveUsersTable = () => {
     recievedtables.forEach((table) => {
       table.tutorial_groups.forEach((tutorialGroup) => {
-        if (tutorialGroup.group_name === currentlySelectedUser.tutorialGroup && table.level_name === currentlySelectedUser.year) {
+        if (tutorialGroup.group_name === currentlySelectedUser.tutorialGroup && table.level_name === currentlySelectedUser.level) {
           
           setCurrentlySelectedTable(table);
         //  console.log("changed", table);
@@ -401,11 +411,12 @@ function Timetable() {
             </Typography>
           </Grid>
           <Grid item xs={1}>
-            <Button>
-              <Fab color="primary" aria-label="add" onClick={handleClick}>
-                <AddIcon />
+        {isAdmin && ( // Render the button only if isAdmin is true
+        <Button>
+          <Fab color="primary" aria-label="add" onClick={handleClick}>
+            <AddIcon />
               </Fab>
-            </Button>
+            </Button>)}
           </Grid>
         </Grid>
 
