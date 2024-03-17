@@ -51,9 +51,11 @@ function CreateTimetable() {
     setSelectedFile(event.target.files[0]); 
   }
 
+  
 
   async function uploadHandler() {
     try {
+      
       const csvForm = new FormData();
       csvForm.append('csvFile', selectedFile);
       csvForm.append('courseType', selectedCourseType);

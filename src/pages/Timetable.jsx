@@ -38,18 +38,16 @@ import TabPanel from "@mui/lab/TabPanel";
 import { useEffect } from "react";
 import {  useUser } from "@clerk/clerk-react";
 
-
 const options = ["Update Lecture", "Cancel Lecture"];
-
 // defines the class structure to ease attributes suggestion
 const tables = {
   data: [
     {
-      level_name: "4",
-      timetable_id: "123",
+      level_name: "Not set",
+      timetable_id: "Not set",
       tutorial_groups: [
         {
-          group_name: "Group A",
+          group_name: "Group Not set",
           days: [
             {
               day: "Monday",
@@ -57,9 +55,9 @@ const tables = {
                 {
                   start_time: "08:30",
                   end_time: "10:30",
-                  instructor: "Prof. Smith",
-                  venue: "Lecture Hall 1",
-                  lecture_title: "Introduction to Programming",
+                  instructor: "Not scheduled",
+                  venue: "Not set",
+                  lecture_title: "Not scheduled",
                 },
               ],
             },
@@ -95,7 +93,7 @@ function Timetable() {
       const response = await Backend.get("/user");
       setReceivedUserTables(response.data.data.users);
     } catch (err) {
-      console.log(err.message);
+    //  console.log(err.message);
     }
   };
 
@@ -104,7 +102,7 @@ function Timetable() {
       const activeUser = recievedUsertables.find((table) => table.email === userEmailAddress);
       if (activeUser) {
         setCurrentlySelectedUser(activeUser);
-        console.log('Active user selected:', activeUser);
+      //  console.log('Active user selected:', activeUser);
       }
     }
   }, [recievedUsertables, userEmailAddress]);
@@ -115,57 +113,6 @@ function Timetable() {
     }, []);
     
     
-
-    console.log(recievedUsertables);
-    
-    // useEffect(() => {
-    //   getActiveUsersTable();
-    // }, [recievedtables]);
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   // current active tab index
   const [value, setValue] = React.useState("1");
 
@@ -233,31 +180,28 @@ function Timetable() {
       const response = await Backend.get("/timetable");
       setReceivedTables(response.data.data.timetable);
     } catch (err) {
-      console.log(err.message);
+    //  console.log(err.message);
     }
   };
   const setUser = (currentlySelectedUser) => {
     setActiveUser(currentlySelectedUser);
   };
 
-  const studentsTutorialGroup = currentlySelectedUser.tutorialGroup;
-  const studentsYear= currentlySelectedUser.year;
-  console.log(studentsTutorialGroup);
-  console.log(studentsYear);
-  console.log(recievedtables);
 
   activeUser = currentlySelectedUser;
-  console.log(activeUser);
+
+ 
+
 
   const getActiveUsersTable = () => {
     recievedtables.forEach((table) => {
       table.tutorial_groups.forEach((tutorialGroup) => {
-        if (tutorialGroup.group_name === studentsTutorialGroup && table.level_name === studentsYear) {
-          console.log("same")
+        if (tutorialGroup.group_name === currentlySelectedUser.tutorialGroup && table.level_name === currentlySelectedUser.year) {
+          
           setCurrentlySelectedTable(table);
-          console.log("changed", table);
+        //  console.log("changed", table);
         }
-        else {console.log("mata ba")}
+        
       });
     });
   };
@@ -298,7 +242,7 @@ function Timetable() {
   };
   useEffect(() => {
     selectSession();
-    console.log("invoked");
+   // console.log("invoked");
   }, [currentlySelectedItem.start_time, currentlySelectedItem.end_time]);
 
   // updates the timeslot with the provided data
@@ -330,9 +274,9 @@ function Timetable() {
           `/timetable/${currentlySelectedTable._id}`,
           currentlySelectedTable
         );
-        console.log(response.data);
+     //   console.log(response.data);
       } catch (err) {
-        console.log(err);
+     //   console.log(err);
       }
     }
   };
@@ -341,7 +285,7 @@ function Timetable() {
   const selectSession = () => {
     for (let i = 0; i < activesessions.length; i++) {
       let session = activesessions[i];
-      console.log(session);
+   //   console.log(session);
       //set the current object if as the to be updated object if the searched time is found else
       if (
         session.start_time === currentlySelectedItem.start_time &&
@@ -390,9 +334,9 @@ function Timetable() {
           `/timetable/${currentlySelectedTable._id}`,
           currentlySelectedTable
         );
-        console.log(response.data);
+       // console.log(response.data);
       } catch (err) {
-        console.log(err);
+      //  console.log(err);
       }
     }
   };
@@ -753,7 +697,7 @@ function Timetable() {
                   <Button
                     variant="outlined"
                     onClick={() => {
-                      console.log(currentlySelectedItem);
+                     // console.log(currentlySelectedItem);
                       updateTimeSlot(currentlySelectedItem);
                     }}
                     type="submit"
