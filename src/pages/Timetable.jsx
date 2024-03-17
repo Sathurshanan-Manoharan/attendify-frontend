@@ -36,18 +36,18 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useEffect } from "react";
+import {  useUser } from "@clerk/clerk-react";
 
 const options = ["Update Lecture", "Cancel Lecture"];
-
 // defines the class structure to ease attributes suggestion
 const tables = {
   data: [
     {
-      level_name: "4",
-      timetable_id: "123",
+      level_name: "Not set",
+      timetable_id: "Not set",
       tutorial_groups: [
         {
-          group_name: "Group A",
+          group_name: "Group Not set",
           days: [
             {
               day: "Monday",
@@ -55,9 +55,9 @@ const tables = {
                 {
                   start_time: "08:30",
                   end_time: "10:30",
-                  instructor: "Prof. Smith",
-                  venue: "Lecture Hall 1",
-                  lecture_title: "Introduction to Programming",
+                  instructor: "Not scheduled",
+                  venue: "Not set",
+                  lecture_title: "Not scheduled",
                 },
               ],
             },
@@ -68,7 +68,51 @@ const tables = {
   ],
 };
 
+const userTables = {
+  data:[{name: "Adib Mubarak",
+  email: "adib.20221609@iit.ac.lk",
+  uowId: "W1956200",
+  iitId: "20221609",
+  tutorialGroup: "B",
+  degreeType: "SE",
+  year: "L4",
+  uid: "043DEAA8672681",}]
+}
+
 function Timetable() {
+
+  const { user } = useUser();
+  const userEmailAddress = user.emailAddresses[0].emailAddress;
+
+  const [recievedUsertables, setReceivedUserTables] = React.useState(userTables.data);
+  
+  const [currentlySelectedUser, setCurrentlySelectedUser] = React.useState(userTables.data);
+
+  const getUserFromBackend = async () => {
+    try {
+      const response = await Backend.get("/user");
+      setReceivedUserTables(response.data.data.users);
+    } catch (err) {
+    //  console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (recievedUsertables.length > 0) {
+      const activeUser = recievedUsertables.find((table) => table.email === userEmailAddress);
+      if (activeUser) {
+        setCurrentlySelectedUser(activeUser);
+      //  console.log('Active user selected:', activeUser);
+      }
+    }
+  }, [recievedUsertables, userEmailAddress]);
+  
+
+    useEffect(() => {
+      getUserFromBackend();
+    }, []);
+    
+    
   // current active tab index
   const [value, setValue] = React.useState("1");
 
@@ -102,14 +146,14 @@ function Timetable() {
   const [activesessions, setActiveSessions] = React.useState(
     tables.data[0].tutorial_groups[0].days[0].sessions
   );
-  const [activeUser, setActiveUser] = React.useState({
+  let [activeUser, setActiveUser] = React.useState({
     name: "Adib Mubarak",
     email: "adib.20221609@iit.ac.lk",
     uowId: "W1956200",
     iitId: "20221609",
     tutorialGroup: "B",
     degreeType: "SE",
-    year: "L3",
+    year: "L4",
     uid: "043DEAA8672681",
   });
 
@@ -136,19 +180,28 @@ function Timetable() {
       const response = await Backend.get("/timetable");
       setReceivedTables(response.data.data.timetable);
     } catch (err) {
-      console.log(err.message);
+    //  console.log(err.message);
     }
   };
-  const setUser = (user) => {
-    setActiveUser(user);
+  const setUser = (currentlySelectedUser) => {
+    setActiveUser(currentlySelectedUser);
   };
+
+
+  activeUser = currentlySelectedUser;
+
+ 
+
+
   const getActiveUsersTable = () => {
     recievedtables.forEach((table) => {
       table.tutorial_groups.forEach((tutorialGroup) => {
-        if (tutorialGroup.group_name === activeUser.tutorialGroup&& table.level_name === activeUser.year) {
+        if (tutorialGroup.group_name === currentlySelectedUser.tutorialGroup && table.level_name === currentlySelectedUser.year) {
+          
           setCurrentlySelectedTable(table);
-          console.log("changed", table);
+        //  console.log("changed", table);
         }
+        
       });
     });
   };
@@ -189,7 +242,7 @@ function Timetable() {
   };
   useEffect(() => {
     selectSession();
-    console.log("invoked");
+   // console.log("invoked");
   }, [currentlySelectedItem.start_time, currentlySelectedItem.end_time]);
 
   // updates the timeslot with the provided data
@@ -221,9 +274,9 @@ function Timetable() {
           `/timetable/${currentlySelectedTable._id}`,
           currentlySelectedTable
         );
-        console.log(response.data);
+     //   console.log(response.data);
       } catch (err) {
-        console.log(err);
+     //   console.log(err);
       }
     }
   };
@@ -232,7 +285,7 @@ function Timetable() {
   const selectSession = () => {
     for (let i = 0; i < activesessions.length; i++) {
       let session = activesessions[i];
-      console.log(session);
+   //   console.log(session);
       //set the current object if as the to be updated object if the searched time is found else
       if (
         session.start_time === currentlySelectedItem.start_time &&
@@ -281,9 +334,9 @@ function Timetable() {
           `/timetable/${currentlySelectedTable._id}`,
           currentlySelectedTable
         );
-        console.log(response.data);
+       // console.log(response.data);
       } catch (err) {
-        console.log(err);
+      //  console.log(err);
       }
     }
   };
@@ -644,7 +697,7 @@ function Timetable() {
                   <Button
                     variant="outlined"
                     onClick={() => {
-                      console.log(currentlySelectedItem);
+                     // console.log(currentlySelectedItem);
                       updateTimeSlot(currentlySelectedItem);
                     }}
                     type="submit"
@@ -765,7 +818,7 @@ function Timetable() {
                             sx={{
                               display: "flex",
                               alignItems: "center",
-                              width: "50%",
+                              width: "70%",
                             }}
                           >
                             <ListItemIcon sx={{ minWidth: 32}}>
