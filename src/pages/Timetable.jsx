@@ -109,7 +109,7 @@ function Timetable() {
     iitId: "20221609",
     tutorialGroup: "B",
     degreeType: "SE",
-    year: "L5",
+    year: "L3",
     uid: "043DEAA8672681",
   });
 
@@ -749,7 +749,6 @@ function Timetable() {
                               display: "flex",
                               alignItems: "center",
                               width: "50%",
-                              
                             }}
                           >
                             <ListItemIcon sx={{ minWidth: 32 }}>
@@ -766,7 +765,7 @@ function Timetable() {
                             sx={{
                               display: "flex",
                               alignItems: "center",
-                              width: "70%",
+                              width: "50%",
                             }}
                           >
                             <ListItemIcon sx={{ minWidth: 32}}>
