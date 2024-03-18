@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   TextField,
@@ -20,56 +20,56 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import MuiAlert from "@mui/material/Alert";
-import { data } from "autoprefixer";
+// import { data } from "autoprefixer";
 
 // Dummy data for demonstration
-const students = [
-  {
-    id: 1,
-    name: "John Doe",
-    studentID: "12345",
-    iitEmail: "john@example.com",
-    course: "Computer Science",
-    level: "5",
-    tutorialGroup: "O",
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    studentID: "67890",
-    iitEmail: "jane@example.com",
-    course: "Engineering",
-    level: "5",
-    tutorialGroup: "O",
-  },
-  {
-    id: 3,
-    name: "Mark Doe",
-    studentID: "34523",
-    iitEmail: "Mark@example.com",
-    course: "Computer Science",
-    level: "5",
-    tutorialGroup: "O",
-  },
-  {
-    id: 4,
-    name: "Smith Doe",
-    studentID: "45323",
-    iitEmail: "Smith@example.com",
-    course: "Engineering",
-    level: "5",
-    tutorialGroup: "O",
-  },
-  {
-    id: 5,
-    name: "Andrew Doe",
-    studentID: "63452",
-    iitEmail: "Andrew@example.com",
-    course: "Engineering",
-    level: "5",
-    tutorialGroup: "O",
-  },
-];
+// const students = [
+//   {
+//     id: 1,
+//     name: "John Doe",
+//     studentID: "12345",
+//     iitEmail: "john@example.com",
+//     course: "Computer Science",
+//     level: "5",
+//     tutorialGroup: "O",
+//   },
+//   {
+//     id: 2,
+//     name: "Jane Doe",
+//     studentID: "67890",
+//     iitEmail: "jane@example.com",
+//     course: "Engineering",
+//     level: "5",
+//     tutorialGroup: "O",
+//   },
+//   {
+//     id: 3,
+//     name: "Mark Doe",
+//     studentID: "34523",
+//     iitEmail: "Mark@example.com",
+//     course: "Computer Science",
+//     level: "5",
+//     tutorialGroup: "O",
+//   },
+//   {
+//     id: 4,
+//     name: "Smith Doe",
+//     studentID: "45323",
+//     iitEmail: "Smith@example.com",
+//     course: "Engineering",
+//     level: "5",
+//     tutorialGroup: "O",
+//   },
+//   {
+//     id: 5,
+//     name: "Andrew Doe",
+//     studentID: "63452",
+//     iitEmail: "Andrew@example.com",
+//     course: "Engineering",
+//     level: "5",
+//     tutorialGroup: "O",
+//   },
+// ];
 
 function AddStudent() {
   const [formData, setFormData] = useState({
@@ -83,6 +83,7 @@ function AddStudent() {
     tutorialGroup: "",
   });
 
+  const [students, setStudents] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -99,6 +100,9 @@ function AddStudent() {
         formData
       );
       console.log(response); 
+
+      fetchStudents();
+
       setFormData({
         firstName: "",
         lastName: "",
@@ -128,6 +132,27 @@ function AddStudent() {
     }
 
     setOpenSnackbar(false);
+  };
+
+  useEffect(() => {
+    fetchStudents(); 
+  }, []); // 
+  
+  const fetchStudents = async () => { // Add formData as a parameter
+    try {
+      const response = await axios.get(
+        "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/student",
+      );
+      console.log(response.data); // Log the response data
+      const { data } = response.data; // Extracting the 'data' object from the response
+      if (data && data.students && Array.isArray(data.students)) {
+      setStudents(data.students);
+      } else {
+        console.error("Response data is not an array:", response.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch students:", error);
+    }
   };
 
   return (
@@ -268,16 +293,7 @@ function AddStudent() {
                   value={formData.tutorialGroup}
                   onChange={handleChange}
                 >
-                  {/* {[...Array(2)].map((_, index) => (
-                    <MenuItem
-                      key={index}
-                      value={String.fromCharCode(65 + index)}
-                    >
-                      <Typography fontWeight="bold">
-                        {String.fromCharCode(65 + index)}
-                      </Typography>
-                    </MenuItem>
-                  ))} */}
+              
                   <MenuItem value="A">
                     <Typography fontWeight="bold">A</Typography>
                   </MenuItem>
@@ -339,7 +355,7 @@ function AddStudent() {
         </MuiAlert>
       </Snackbar>
 
-      {/* Adding another card below */}
+     {/* Adding another card below */}
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", color: "#004AAD", marginTop: "24px" }}
@@ -347,11 +363,9 @@ function AddStudent() {
         Existing Students
       </Typography>
 
-      <Card
-      //style={{ ...RectangularCardStyle }}
-      >
+      <Card sx={{marginTop: "30px"}}>
         <CardContent>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} >
             <Grid item xs={9}>
               <Typography
                 variant="h5"
@@ -448,30 +462,15 @@ function AddStudent() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Check */}
                 {students.map((student) => (
-                  <TableRow key={student.id}>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {student.studentID}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {student.name}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {student.level}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {student.course}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {student.iitEmail}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {student.tutorialGroup}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {student.uID}
-                    </TableCell>
+                  <TableRow key={student._id}>
+                    <TableCell  align="center">{student.studentID}</TableCell>
+                    <TableCell  align="center">{`${student.firstName} ${student.lastName}`}</TableCell>
+                    <TableCell  align="center">{student.level}</TableCell>
+                    <TableCell  align="center">{student.course}</TableCell>
+                    <TableCell  align="center">{student.iitEmail}</TableCell>
+                    <TableCell  align="center">{student.tutorialGroup}</TableCell>
+                    <TableCell  align="center">{student.uid}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
