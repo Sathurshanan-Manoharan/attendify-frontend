@@ -20,56 +20,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import MuiAlert from "@mui/material/Alert";
-// import { data } from "autoprefixer";
-
-// Dummy data for demonstration
-// const students = [
-//   {
-//     id: 1,
-//     name: "John Doe",
-//     studentID: "12345",
-//     iitEmail: "john@example.com",
-//     course: "Computer Science",
-//     level: "5",
-//     tutorialGroup: "O",
-//   },
-//   {
-//     id: 2,
-//     name: "Jane Doe",
-//     studentID: "67890",
-//     iitEmail: "jane@example.com",
-//     course: "Engineering",
-//     level: "5",
-//     tutorialGroup: "O",
-//   },
-//   {
-//     id: 3,
-//     name: "Mark Doe",
-//     studentID: "34523",
-//     iitEmail: "Mark@example.com",
-//     course: "Computer Science",
-//     level: "5",
-//     tutorialGroup: "O",
-//   },
-//   {
-//     id: 4,
-//     name: "Smith Doe",
-//     studentID: "45323",
-//     iitEmail: "Smith@example.com",
-//     course: "Engineering",
-//     level: "5",
-//     tutorialGroup: "O",
-//   },
-//   {
-//     id: 5,
-//     name: "Andrew Doe",
-//     studentID: "63452",
-//     iitEmail: "Andrew@example.com",
-//     course: "Engineering",
-//     level: "5",
-//     tutorialGroup: "O",
-//   },
-// ];
 
 function AddStudent() {
   const [formData, setFormData] = useState({
