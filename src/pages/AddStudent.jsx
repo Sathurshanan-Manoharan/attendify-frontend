@@ -20,6 +20,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import MuiAlert from "@mui/material/Alert";
+import { data } from "autoprefixer";
 
 // Dummy data for demonstration
 const students = [
@@ -74,12 +75,12 @@ function AddStudent() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    uid: "",
     studentID: "",
     iitEmail: "",
     course: "",
     level: "",
     tutorialGroup: "",
-    UID: "",
   });
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -93,26 +94,31 @@ function AddStudent() {
     e.preventDefault();
 
     try {
-      // const response = await axios.post("/api/users", formData);
-      // console.log(response.data); // Log the saved user data
-      // You can handle success/failure cases here
-      console.log(formData);
+      const response = await axios.post(
+        "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/student",
+        formData
+      );
+      console.log(response); 
       setFormData({
         firstName: "",
         lastName: "",
+        uid: "",
         studentID: "",
         iitEmail: "",
         course: "",
         level: "",
         tutorialGroup: "",
-        UID: "",
       });
 
       setSnackbarMessage("Student created successfully");
-      // Show success Snackbar
       setOpenSnackbar(true);
+      // Show success Snackbar
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      console.log("Failed");
+      console.log(formData);
+      setSnackbarMessage("Failed to create student");
+      setOpenSnackbar(true);
     }
   };
 
@@ -237,10 +243,10 @@ function AddStudent() {
                   value={formData.level}
                   onChange={handleChange}
                 >
-                  <MenuItem value="SE">
+                  <MenuItem value="L4">
                     <Typography fontWeight="bold">L4</Typography>
                   </MenuItem>
-                  <MenuItem value="CS">
+                  <MenuItem value="L5">
                     <Typography fontWeight="bold">L5</Typography>
                   </MenuItem>
                 </Select>
@@ -262,7 +268,7 @@ function AddStudent() {
                   value={formData.tutorialGroup}
                   onChange={handleChange}
                 >
-                  {[...Array(2)].map((_, index) => (
+                  {/* {[...Array(2)].map((_, index) => (
                     <MenuItem
                       key={index}
                       value={String.fromCharCode(65 + index)}
@@ -271,7 +277,13 @@ function AddStudent() {
                         {String.fromCharCode(65 + index)}
                       </Typography>
                     </MenuItem>
-                  ))}
+                  ))} */}
+                  <MenuItem value="A">
+                    <Typography fontWeight="bold">A</Typography>
+                  </MenuItem>
+                  <MenuItem value="B">
+                    <Typography fontWeight="bold">B</Typography>
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -281,11 +293,11 @@ function AddStudent() {
                 margin="normal"
                 required
                 fullWidth
-                id="UID"
-                label="UID"
-                name="UID"
+                id="uid"
+                label="uid"
+                name="uid"
                 autoComplete="off"
-                value={formData.UID}
+                value={formData.uid}
                 onChange={handleChange}
               />
             </Grid>
