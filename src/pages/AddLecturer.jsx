@@ -137,11 +137,11 @@ function AddLecturer() {
                 margin="normal"
                 required
                 fullWidth
-                id="Email"
-                label="Email"
-                name="email"
+                id="iitEmail"
+                label="IIT Email"
+                name="iitEmail"
                 autoComplete="off"
-                value={formData.email}
+                value={formData.iitEmail}
                 onChange={handleChange}
               />
             </Grid>
