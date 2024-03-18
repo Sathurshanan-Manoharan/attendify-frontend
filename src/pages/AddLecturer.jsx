@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   CardHeader,
   Typography,
@@ -8,19 +9,71 @@ import {
   InputLabel,
   Grid,
   Button,
+  Snackbar,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-
-/*
-const squareCardStyle = {
-  height: "700px", // Set a fixed height to create a square card
-  width: "1000px", // Allow the width to adjust based on content or container
-  overflow: "hidden", // Hide overflow content if any
-  borderRadius: "10px", // Rounded corners
-};*/
+import axios from "axios";
+import MuiAlert from "@mui/material/Alert";
 
 function AddLecturer() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    uid: "",
+    LecturerID: "",
+    email: "",
+    contractType: "",
+    specialRole: "",
+  });
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/lecturer",
+        formData
+      );
+      console.log(response); 
+      setFormData({
+        firstName: "",
+        lastName: "",
+        uid: "",
+        LecturerID: "",
+        email: "",
+        contractType: "",
+        specialRole: "",
+      });
+
+      setSnackbarMessage("Lecturer created successfully");
+      setOpenSnackbar(true);
+      // Show success Snackbar
+    } catch (error) {
+      // console.error(error);
+        console.log("Failed");
+        console.log(formData);
+        setSnackbarMessage("Failed to create lecturer");
+        setOpenSnackbar(true);
+    }
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
+
+
   return (
     <>
       <Typography
@@ -29,7 +82,11 @@ function AddLecturer() {
       >
         Add Lecturer
       </Typography>
-      <Card sx={{ boxShadow: 2, borderRadius: "12px", border: "none" }}>
+      <Card
+        sx={{ boxShadow: 2, borderRadius: "12px", border: "none" }}
+        component="form"
+        onSubmit={handleSubmit}
+      >
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={6}>
@@ -42,6 +99,8 @@ function AddLecturer() {
                 label="First Name"
                 name="firstName"
                 autoComplete="off"
+                value={formData.firstName}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
@@ -54,6 +113,8 @@ function AddLecturer() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="off"
+                value={formData.lastName}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
@@ -64,8 +125,10 @@ function AddLecturer() {
                 fullWidth
                 id="lecturerID"
                 label="Lecturer ID"
-                name="lecturerID"
+                name="LecturerID"
                 autoComplete="off"
+                value={formData.LecturerID}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
@@ -74,10 +137,12 @@ function AddLecturer() {
                 margin="normal"
                 required
                 fullWidth
-                id="Email"
-                label="Email"
-                name="Email"
+                id="iitEmail"
+                label="IIT Email"
+                name="iitEmail"
                 autoComplete="off"
+                value={formData.iitEmail}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
@@ -92,14 +157,17 @@ function AddLecturer() {
                   labelId="ContractTypeLabel"
                   id="ContractType"
                   label="Contract Type"
+                  name="contractType"
+                  value={formData.contractType}
+                  onChange={handleChange}
                 >
                   <MenuItem value="Full-time Lecturer">
                     <Typography fontWeight="bold">
                       Full-time Lecturer
                     </Typography>
                   </MenuItem>
-                  <MenuItem value="Visiting Lecturer">
-                    <Typography fontWeight="bold">Visiting Lecturer</Typography>
+                  <MenuItem value="Part-time Lecturer">
+                    <Typography fontWeight="bold">Part-time Lecturer</Typography>
                   </MenuItem>
                 </Select>
               </FormControl>
@@ -117,17 +185,20 @@ function AddLecturer() {
                   labelId="SpecialRoleLabel"
                   id="SpecialRole"
                   label="Special Role"
+                  name="specialRole"
+                  value={formData.specialRole}
+                  onChange={handleChange}
                 >
-                  <MenuItem value="Option 1">
+                  <MenuItem value="None">
                     <Typography fontWeight="bold">None</Typography>
                   </MenuItem>
-                  <MenuItem value="Option 2">
+                  <MenuItem value="Level Coordinator">
                     <Typography fontWeight="bold">Level Coordinator</Typography>
                   </MenuItem>
-                  <MenuItem value="Option 3">
+                  <MenuItem value="Course Leader">
                     <Typography fontWeight="bold">Course Leader</Typography>
                   </MenuItem>
-                  <MenuItem value="Option 4">
+                  <MenuItem value="Head of Department">
                     <Typography fontWeight="bold">
                       Head of Department
                     </Typography>
@@ -135,9 +206,24 @@ function AddLecturer() {
                 </Select>
               </FormControl>
             </Grid>
+            <Grid item xs={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="uid"
+                label="uid"
+                name="uid"
+                autoComplete="off"
+                value={formData.uid}
+                onChange={handleChange}
+              />
+            </Grid>
           </Grid>
           <Grid container justifyContent="center" marginTop={2}>
             <Button
+              type="submit"
               variant="contained"
               sx={{
                 backgroundColor: "#004AAD",
@@ -155,6 +241,22 @@ function AddLecturer() {
           </Grid>
         </CardContent>
       </Card>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseSnackbar}
+          severity="success"
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </>
   );
 }
