@@ -143,29 +143,40 @@ function AddStudent() {
                 autoComplete="off"
               />
             </Grid>
+
             <Grid item xs={6}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="course"
-                label="Course"
-                name="course"
-                autoComplete="off"
-              />
-            </Grid>
+                  <FormControl fullWidth variant="outlined" margin="normal" required>
+                    <InputLabel id="courseLabel">Course</InputLabel>
+                    <Select
+                      labelId="courseLabel"
+                      id="course"
+                      label="Course"
+                    >
+                      <MenuItem value="SE">
+                        <Typography fontWeight="bold">SE</Typography>
+                      </MenuItem>
+                      <MenuItem value="CS">
+                        <Typography fontWeight="bold">CS</Typography>
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
             <Grid item xs={6}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="level"
-                label="Level"
-                name="level"
-                autoComplete="off"
-              />
+              <FormControl fullWidth variant="outlined" margin="normal" required>
+                    <InputLabel id="courseLabel">Level</InputLabel>
+                    <Select
+                      labelId="courseLabel"
+                      id="course"
+                      label="Course"
+                    >
+                      <MenuItem value="SE">
+                        <Typography fontWeight="bold">L4</Typography>
+                      </MenuItem>
+                      <MenuItem value="CS">
+                        <Typography fontWeight="bold">L5</Typography>
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
             </Grid>
             <Grid item xs={6}>
               <FormControl
@@ -180,7 +191,7 @@ function AddStudent() {
                   id="tutorialGroup"
                   label="Tutorial Group"
                 >
-                  {[...Array(26)].map((_, index) => (
+                  {[...Array(2)].map((_, index) => (
                     <MenuItem
                       key={index}
                       value={String.fromCharCode(65 + index)}
@@ -192,6 +203,18 @@ function AddStudent() {
                   ))}
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="UID"
+                label="UID"
+                name="UID"
+                autoComplete="off"
+              />
             </Grid>
           </Grid>
           <Grid container justifyContent="center" marginTop={2}>
@@ -311,6 +334,15 @@ function AddStudent() {
                   >
                     TUTORIAL GROUP
                   </TableCell>
+                  <TableCell
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                      UID
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -334,6 +366,9 @@ function AddStudent() {
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
                       {student.tutorialGroup}
+                    </TableCell>
+                    <TableCell style={{ textAlign: "center" }}>
+                      {student.uID}
                     </TableCell>
                   </TableRow>
                 ))}

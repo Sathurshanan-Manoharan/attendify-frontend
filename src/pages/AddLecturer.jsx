@@ -135,6 +135,18 @@ function AddLecturer() {
                 </Select>
               </FormControl>
             </Grid>
+            <Grid item xs={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="UID"
+                label="UID"
+                name="UID"
+                autoComplete="off"
+              />
+            </Grid>
           </Grid>
           <Grid container justifyContent="center" marginTop={2}>
             <Button
