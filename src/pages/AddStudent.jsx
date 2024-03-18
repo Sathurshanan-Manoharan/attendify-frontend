@@ -1,5 +1,5 @@
+import { useState } from "react";
 import {
-  CardHeader,
   Typography,
   TextField,
   Select,
@@ -14,25 +14,13 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Snackbar,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-
-/*
-const squareCardStyle = {
-  height: "700px", // Set a fixed height to create a square card
-  width: "1000px", // Allow the width to adjust based on content or container
-  overflow: "hidden", // Hide overflow content if any
-  borderRadius: "10px", // Rounded corners
-  zIndex: "-9999", 
-};
-
-const RectangularCardStyle = {
-  height: "1000px", // Set a fixed height to create a square card
-  width: "1000px", // Allow the width to adjust based on content or container
-  overflow: "hidden", // Hide overflow content if any
-  borderRadius: "10px", // Rounded corners
-};*/
+import axios from "axios";
+import MuiAlert from "@mui/material/Alert";
+import { data } from "autoprefixer";
 
 // Dummy data for demonstration
 const students = [
@@ -84,6 +72,64 @@ const students = [
 ];
 
 function AddStudent() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    uid: "",
+    studentID: "",
+    iitEmail: "",
+    course: "",
+    level: "",
+    tutorialGroup: "",
+  });
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/student",
+        formData
+      );
+      console.log(response); 
+      setFormData({
+        firstName: "",
+        lastName: "",
+        uid: "",
+        studentID: "",
+        iitEmail: "",
+        course: "",
+        level: "",
+        tutorialGroup: "",
+      });
+
+      setSnackbarMessage("Student created successfully");
+      setOpenSnackbar(true);
+      // Show success Snackbar
+    } catch (error) {
+      // console.error(error);
+      console.log("Failed");
+      console.log(formData);
+      setSnackbarMessage("Failed to create student");
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
+
   return (
     <>
       <Typography
@@ -92,7 +138,11 @@ function AddStudent() {
       >
         Add Student
       </Typography>
-      <Card sx={{ boxShadow: 2, borderRadius: "12px", border: "none" }}>
+      <Card
+        sx={{ boxShadow: 2, borderRadius: "12px", border: "none" }}
+        component="form"
+        onSubmit={handleSubmit}
+      >
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={6}>
@@ -105,6 +155,8 @@ function AddStudent() {
                 label="First Name"
                 name="firstName"
                 autoComplete="off"
+                value={formData.firstName}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
@@ -117,6 +169,8 @@ function AddStudent() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="off"
+                value={formData.lastName}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
@@ -129,6 +183,8 @@ function AddStudent() {
                 label="Student ID"
                 name="studentID"
                 autoComplete="off"
+                value={formData.studentID}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
@@ -141,42 +197,60 @@ function AddStudent() {
                 label="IIT Email"
                 name="iitEmail"
                 autoComplete="off"
+                value={formData.iitEmail}
+                onChange={handleChange}
               />
             </Grid>
 
             <Grid item xs={6}>
-                  <FormControl fullWidth variant="outlined" margin="normal" required>
-                    <InputLabel id="courseLabel">Course</InputLabel>
-                    <Select
-                      labelId="courseLabel"
-                      id="course"
-                      label="Course"
-                    >
-                      <MenuItem value="SE">
-                        <Typography fontWeight="bold">SE</Typography>
-                      </MenuItem>
-                      <MenuItem value="CS">
-                        <Typography fontWeight="bold">CS</Typography>
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
+              <FormControl
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                required
+              >
+                <InputLabel id="courseLabel">Course</InputLabel>
+                <Select
+                  labelId="courseLabel"
+                  id="course"
+                  label="Course"
+                  name="course"
+                  value={formData.course}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="SE">
+                    <Typography fontWeight="bold">SE</Typography>
+                  </MenuItem>
+                  <MenuItem value="CS">
+                    <Typography fontWeight="bold">CS</Typography>
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
             <Grid item xs={6}>
-              <FormControl fullWidth variant="outlined" margin="normal" required>
-                    <InputLabel id="courseLabel">Level</InputLabel>
-                    <Select
-                      labelId="courseLabel"
-                      id="course"
-                      label="Course"
-                    >
-                      <MenuItem value="SE">
-                        <Typography fontWeight="bold">L4</Typography>
-                      </MenuItem>
-                      <MenuItem value="CS">
-                        <Typography fontWeight="bold">L5</Typography>
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
+              <FormControl
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                required
+              >
+                <InputLabel id="levelLabel">Level</InputLabel>
+                <Select
+                  labelId="levelLabel"
+                  id="level"
+                  label="level"
+                  name="level"
+                  value={formData.level}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="L4">
+                    <Typography fontWeight="bold">L4</Typography>
+                  </MenuItem>
+                  <MenuItem value="L5">
+                    <Typography fontWeight="bold">L5</Typography>
+                  </MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={6}>
               <FormControl
@@ -190,8 +264,11 @@ function AddStudent() {
                   labelId="tutorialGroupLabel"
                   id="tutorialGroup"
                   label="Tutorial Group"
+                  name="tutorialGroup"
+                  value={formData.tutorialGroup}
+                  onChange={handleChange}
                 >
-                  {[...Array(2)].map((_, index) => (
+                  {/* {[...Array(2)].map((_, index) => (
                     <MenuItem
                       key={index}
                       value={String.fromCharCode(65 + index)}
@@ -200,7 +277,13 @@ function AddStudent() {
                         {String.fromCharCode(65 + index)}
                       </Typography>
                     </MenuItem>
-                  ))}
+                  ))} */}
+                  <MenuItem value="A">
+                    <Typography fontWeight="bold">A</Typography>
+                  </MenuItem>
+                  <MenuItem value="B">
+                    <Typography fontWeight="bold">B</Typography>
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -210,15 +293,18 @@ function AddStudent() {
                 margin="normal"
                 required
                 fullWidth
-                id="UID"
-                label="UID"
-                name="UID"
+                id="uid"
+                label="uid"
+                name="uid"
                 autoComplete="off"
+                value={formData.uid}
+                onChange={handleChange}
               />
             </Grid>
           </Grid>
           <Grid container justifyContent="center" marginTop={2}>
             <Button
+              type="submit"
               variant="contained"
               sx={{
                 backgroundColor: "#004AAD",
@@ -236,6 +322,22 @@ function AddStudent() {
           </Grid>
         </CardContent>
       </Card>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseSnackbar}
+          severity="success"
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
 
       {/* Adding another card below */}
       <Typography
@@ -341,7 +443,7 @@ function AddStudent() {
                       textAlign: "center",
                     }}
                   >
-                      UID
+                    UID
                   </TableCell>
                 </TableRow>
               </TableHead>
