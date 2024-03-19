@@ -13,6 +13,10 @@ import {
 } from "@mui/material";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { Alert, AlertTitle } from '@mui/material';
+
+
+
 
 
 function CreateTimetable() {
@@ -20,6 +24,9 @@ function CreateTimetable() {
   const [selectedCourseType, setSelectedCourseType] = useState("");
   const [selectedTutorialGroups, setSelectedTutorialGroups] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -44,27 +51,37 @@ function CreateTimetable() {
     setSelectedFile(event.target.files[0]); 
   }
 
+  
 
   async function uploadHandler() {
     try {
+      
       const csvForm = new FormData();
       csvForm.append('csvFile', selectedFile);
       csvForm.append('courseType', selectedCourseType);
       csvForm.append('selectedTutorialGroups', selectedTutorialGroups); 
       csvForm.append('level', selectedLevel);
   
-      const response = await axios.post('http://127.0.0.1:3000/api/v1/timetable/uploadtimetable', csvForm, {
+      const response = await axios.post('https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/timetable/uploadtimetable', csvForm, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
+        
       });
   
       console.log(response.data);
+      setSuccessMessage("Timetable uploaded and created successfully");
+      setErrorMessage("");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.error('Error uploading file:', error);
+      setErrorMessage("Error uploading timetable");
+      setSuccessMessage("");
     }
   }
-  
   
 
     
@@ -75,6 +92,7 @@ function CreateTimetable() {
         sx={{ backgroundColor: "#white", color: "#004AAD" }}
       />
       <CardContent>
+      
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography
@@ -187,7 +205,7 @@ function CreateTimetable() {
         </Box>
       </Box>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={11}>
             <Button
               variant="contained"
               onClick={uploadHandler}
@@ -197,6 +215,19 @@ function CreateTimetable() {
             >
               Create Timetable
             </Button>
+
+            {successMessage && (
+          <Alert severity="success" sx={{ marginBottom: '1rem' }}>
+            <AlertTitle>Success</AlertTitle>
+            {successMessage}
+          </Alert>
+        )}
+        {errorMessage && (
+          <Alert severity="error" sx={{ marginBottom: '1rem' }}>
+            <AlertTitle>Error</AlertTitle>
+            {errorMessage}
+          </Alert>
+        )}
           </Grid>
       </CardContent>
     </Card>
