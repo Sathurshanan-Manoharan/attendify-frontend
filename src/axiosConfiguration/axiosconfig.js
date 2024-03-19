@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const Backend = axios.create({
-    baseURL:'http://localhost:3000/api/v1',
+    baseURL:'https://attendify-backend-i3rpgzeqlq-uc.a.run.app',
     headers: {
         'Content-Type': 'application/json', // Set the request content type to JSON
       }

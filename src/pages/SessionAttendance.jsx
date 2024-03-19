@@ -2,13 +2,42 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { DataGrid } from "@mui/x-data-grid";
-import userData from "../data/UserData";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "../axiosConfiguration/axiosconfig";
 
 function SessionAttendance() {
-  //List of all the columns stored as objects
+  const { id } = useParams();
+  const [rows, setRows] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/attendance/${id}`);
+        if (response.data.status === "success") {
+          const { studentsPresent } = response.data.data;
+          console.log(studentsPresent);
+          const newRows = studentsPresent.map((student) => ({
+            id: student.studentInfo.studentID,
+            name: `${student.studentInfo.firstName} ${student.studentInfo.lastName}`,
+            date: student.date,
+            "check-in": student.check_in_time,
+            status: "Present",
+          }));
+          setRows(newRows);
+        } 
+        
+      } catch (error) {
+        console.error(error); // Handle errors appropriately
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const columns = [
     {
       field: "id",
@@ -34,13 +63,6 @@ function SessionAttendance() {
     {
       field: "check-in",
       headerName: "CHECK IN",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "check-out",
-      headerName: "CHECK OUT",
       flex: 1,
       headerAlign: "center",
       align: "center",
@@ -81,10 +103,8 @@ function SessionAttendance() {
   ];
 
   //List of all the data entries stored as objects
-  const rows = userData;
+  // const rows = userData;
 
-
- 
   return (
     //<ThemeProvider theme={textFont}>
     <Box>
