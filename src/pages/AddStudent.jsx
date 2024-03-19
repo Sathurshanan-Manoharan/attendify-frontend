@@ -36,6 +36,7 @@ function AddStudent() {
   const [students, setStudents] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -104,6 +105,23 @@ function AddStudent() {
       console.error("Failed to fetch students:", error);
     }
   };
+
+  const handleSearch = (e) => {
+    console.log("Search query:", e.target.value);
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredStudents = students.filter((student) =>
+    student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.studentID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.level.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    // student.tutorialGroup.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.iitEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.course.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.uid.toLowerCase().includes(searchQuery.toLowerCase())
+);
+
+  console.log("Filtered students:", filteredStudents);
 
   return (
     <>
@@ -337,6 +355,8 @@ function AddStudent() {
                 label="Search Student"
                 name="search"
                 autoComplete="off"
+                value={searchQuery}
+                onChange={handleSearch}
               />
             </Grid>
           </Grid>
@@ -412,17 +432,31 @@ function AddStudent() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {students.map((student) => (
+              {searchQuery ? (
+                filteredStudents.map((student) => (
                   <TableRow key={student._id}>
-                    <TableCell  align="center">{student.studentID}</TableCell>
-                    <TableCell  align="center">{`${student.firstName} ${student.lastName}`}</TableCell>
-                    <TableCell  align="center">{student.level}</TableCell>
-                    <TableCell  align="center">{student.course}</TableCell>
-                    <TableCell  align="center">{student.iitEmail}</TableCell>
-                    <TableCell  align="center">{student.tutorialGroup}</TableCell>
-                    <TableCell  align="center">{student.uid}</TableCell>
+                    <TableCell align="center">{student.studentID}</TableCell>
+                    <TableCell align="center">{`${student.firstName} ${student.lastName}`}</TableCell>
+                    <TableCell align="center">{student.level}</TableCell>
+                    <TableCell align="center">{student.course}</TableCell>
+                    <TableCell align="center">{student.iitEmail}</TableCell>
+                    <TableCell align="center">{student.tutorialGroup}</TableCell>
+                    <TableCell align="center">{student.uid}</TableCell>
                   </TableRow>
-                ))}
+                ))
+              ) : (
+                students.map((student) => (
+                  <TableRow key={student._id}>
+                    <TableCell align="center">{student.studentID}</TableCell>
+                    <TableCell align="center">{`${student.firstName} ${student.lastName}`}</TableCell>
+                    <TableCell align="center">{student.level}</TableCell>
+                    <TableCell align="center">{student.course}</TableCell>
+                    <TableCell align="center">{student.iitEmail}</TableCell>
+                    <TableCell align="center">{student.tutorialGroup}</TableCell>
+                    <TableCell align="center">{student.uid}</TableCell>
+                  </TableRow>
+    ))
+  )}
               </TableBody>
             </Table>
           </TableContainer>
