@@ -45,6 +45,24 @@ function AddStudent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const isDuplicate = students.some(
+      (student) =>
+        student.uid === formData.uid ||
+        student.studentID === formData.studentID ||
+        student.iitEmail === formData.iitEmail
+    );
+  
+    if (isDuplicate) {
+      setSnackbarMessage({
+        severity: "error",
+        message: "Student already existed!"
+      });
+      setOpenSnackbar(true);
+      return; // Prevent form submission
+    }
+    
+
+
     try {
       const response = await axios.post(
         "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/student",
@@ -65,14 +83,20 @@ function AddStudent() {
         tutorialGroup: "",
       });
 
-      setSnackbarMessage("Student created successfully");
+      setSnackbarMessage({
+        severity: "success",
+        message: "Student created successfully!"
+      });
       setOpenSnackbar(true);
       // Show success Snackbar
     } catch (error) {
       // console.error(error);
       console.log("Failed");
       console.log(formData);
-      setSnackbarMessage("Failed to create student");
+      setSnackbarMessage({
+        severity: "error",
+        message: "Failed to create student!"
+      });
       setOpenSnackbar(true);
     }
   };
@@ -317,9 +341,8 @@ function AddStudent() {
           elevation={6}
           variant="filled"
           onClose={handleCloseSnackbar}
-          severity="success"
-        >
-          {snackbarMessage}
+          severity={snackbarMessage.severity} >
+          {snackbarMessage.message}
         </MuiAlert>
       </Snackbar>
 
