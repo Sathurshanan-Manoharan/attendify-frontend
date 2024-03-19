@@ -48,10 +48,18 @@ function CreateTimetableLecturer() {
 
   async function uploadHandler() {
     try {
-      const csvForm = new FormData();
-      csvForm.append("lecturerEmail", LecturerEmailEntered);
+      if (!selectedFile || !LecturerEmailEntered) {
+        setErrorMessage("Please select a file and enter a valid email address");
+        return;
+      }
   
+      const csvForm = new FormData();
+      csvForm.append('csvFile', selectedFile);
+      csvForm.append("lecturerEmail", LecturerEmailEntered);
 
+      console.log(selectedFile);
+      console.log(LecturerEmailEntered)
+  
       const response = await axios.post(
         "http://127.0.0.1:3000/api/v1/uploadtimetablelecturer",
         csvForm,
@@ -61,20 +69,21 @@ function CreateTimetableLecturer() {
           },
         }
       );
-
+  
       console.log(response.data);
       setSuccessMessage("Timetable uploaded and created successfully");
       setErrorMessage("");
-
-      setTimeout(() => {
-        navigate("/");
+       setTimeout(() => {
+         navigate("/");
       }, 2000);
     } catch (error) {
-      console.error("Error uploading file:", error);
+     console.error("Error uploading file:", error);
+     console.error(error.stack);
       setErrorMessage("Error uploading timetable");
       setSuccessMessage("");
     }
   }
+  
 
   return (
     <Card sx={{ maxWidth: 1200, marginTop: 0 }}>
