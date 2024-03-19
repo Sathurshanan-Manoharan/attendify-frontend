@@ -13,7 +13,7 @@ const LandingBanner = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "60vh",
-        background: "linear-gradient(to bottom, #004AAD, #0a3c7f)", // Updated gradient for a premium look
+        background: "linear-gradient(to bottom, #004AAD, #073470)", // Updated gradient for a premium look
         color: "white",
         padding: 4,
         borderRadius: 12,
@@ -34,8 +34,8 @@ const LandingBanner = () => {
       </Typography>
       <Paper
         sx={{
-          width: 600, // Adjusted width for better fitting
-          height: 600, // Height set to auto to maintain aspect ratio
+          width: 1000, // Adjusted width for better fitting
+          height: 300, // Height set to auto to maintain aspect ratio
           background: `url(${attendanceImage})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
@@ -47,17 +47,21 @@ const LandingBanner = () => {
       <Typography
         variant="h5"
         gutterBottom
+        width={1000}
         style={{
           textAlign: "center",
           marginBottom: "2rem",
+          marginTop: "2rem",
         }}
       >
         Track attendance data efficiently with{" "}
-        <span style={{ color: "#64b5f6" }}>Attendify</span>. Easily manage
-        attendance records, analyze attendance trends, and streamline your
-        attendance management process.
+        <span style={{ color: "#64b5f6" }}>
+          <strong> Attendify</strong>
+        </span>
+        . Easily manage attendance records, analyze attendance trends, and
+        streamline your attendance management process.
       </Typography>
-      <Button
+      {/* <Button
         variant="contained"
         onClick={"#"}
         sx={{
@@ -71,7 +75,7 @@ const LandingBanner = () => {
         }}
       >
         Get Started
-      </Button>
+      </Button> */}
     </Box>
   );
 };

@@ -12,8 +12,13 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from "@mui/lab/TimelineOppositeContent";
+import { useClerk } from "@clerk/clerk-react";
+import LandingBanner from "./LandingBanner.jsx";
+// import SlidingImages from "../components/SlidingImages.jsx";
 
 function Dashboard() {
+  const { user } = useClerk();
+
   const [date, setDate] = useState(new Date(Date.now()));
 
   useEffect(() => {
@@ -46,14 +51,19 @@ function Dashboard() {
     }
   }
 
-  const formattedDate = `${day}${suffix} ${date.toLocaleDateString(
-    "en-US",
-    options
-  )}, ${date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  })} `;
+  const formattedDate = (
+    <span>
+      {day}
+      {suffix} {date.toLocaleDateString("en-US", options)},{" "}
+      <span style={{ color: "#004AAD" }}>
+        {date.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        })}
+      </span>
+    </span>
+  );
 
   return (
     <>
@@ -62,12 +72,15 @@ function Dashboard() {
           variant="h5"
           sx={{ fontWeight: "bold", marginBottom: "12px" }}
         >
-          Good Morning, <span style={{ color: "#004AAD" }}>Adib!</span>
+          Good Morning,
+          <span style={{ color: "#004AAD" }}> {user.firstName}!</span>
         </Typography>
         <Box display={"flex"}>
-          <Typography variant="h6">{formattedDate}</Typography>
+          <Typography variant="h5">{formattedDate}</Typography>
         </Box>
       </Box>
+      <LandingBanner />
+      {/* <SlidingImages /> */}
 
       <Grid container spacing={2}>
         <Grid item xs={3}>
@@ -87,13 +100,14 @@ function Dashboard() {
                 justifyContent: "center",
               }}
             >
-              <Typography variant="h3" padding="10px">
+              <Typography variant="h3">
                 <strong>442</strong>
               </Typography>
-              <Typography variant="h5">
+              <Typography variant="h5" style={{ color: "#004AAD" }}>
                 <strong>Expected Students</strong>
               </Typography>
-              <Typography variant="h5" padding="10px"></Typography>
+              <Typography variant="h5"></Typography>
+              <Typography variant="h6">+4% Increase</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -117,7 +131,7 @@ function Dashboard() {
               <Typography variant="h3">
                 <strong>401</strong>
               </Typography>
-              <Typography variant="h5">
+              <Typography variant="h5" style={{ color: "#004AAD" }}>
                 <strong>On Time</strong>
               </Typography>
               <Typography variant="h6">+4% Increase</Typography>
@@ -145,7 +159,7 @@ function Dashboard() {
               <Typography variant="h3">
                 <strong>18</strong>
               </Typography>
-              <Typography variant="h5">
+              <Typography variant="h5" style={{ color: "#004AAD" }}>
                 <strong>Late Arrivals</strong>
               </Typography>
               <Typography variant="h6">+2% Decrease</Typography>
@@ -173,7 +187,7 @@ function Dashboard() {
               <Typography variant="h3">
                 <strong>23</strong>
               </Typography>
-              <Typography variant="h5">
+              <Typography variant="h5" style={{ color: "#004AAD" }}>
                 <strong>Absent</strong>
               </Typography>
               <Typography variant="h6">+6% Increase </Typography>
@@ -302,16 +316,14 @@ function Dashboard() {
                       "Thursday",
                       "Friday",
                     ],
-                    tickRotation: -90, 
+                    tickRotation: -90,
                   },
                 ]}
-                series={[
-                  { data: [85, 90, 92, 88, 95] }, 
-                ]}
+                series={[{ data: [85, 90, 92, 88, 95] }]}
                 width={500}
                 height={300}
                 yAxis={[{ scaleType: "linear", domain: [0, 100] }]}
-                colors={["#64748B"]} 
+                colors={["#64748B"]}
               />
             </CardContent>
           </Card>
