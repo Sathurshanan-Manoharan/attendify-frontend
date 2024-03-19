@@ -27,6 +27,7 @@ function AddLecturer() {
     specialRole: "",
   });
 
+  const [lecturers, setLecturers] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -37,12 +38,33 @@ function AddLecturer() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const isDuplicate = lecturers.some(
+      (lecturer) =>
+        lecturer.uid === formData.uid ||
+        lecturer.LecturerID === formData.LecturerID ||
+        lecturer.iitEmail === formData.iitEmail
+    );
+  
+    if (isDuplicate) {
+      setSnackbarMessage({
+        severity: "error",
+        message: "Lecturer already existed!"
+      });
+      setOpenSnackbar(true);
+      return; // Prevent form submission
+    }
+    
+
+
     try {
       const response = await axios.post(
         "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/lecturer",
         formData
       );
       console.log(response); 
+
+      setLecturers([...lecturers, formData]);
+
       setFormData({
         firstName: "",
         lastName: "",
@@ -53,14 +75,20 @@ function AddLecturer() {
         specialRole: "",
       });
 
-      setSnackbarMessage("Lecturer created successfully");
+      setSnackbarMessage({
+        severity: "success",
+        message: "Lecturer created successfully!"
+      });      
       setOpenSnackbar(true);
       // Show success Snackbar
     } catch (error) {
       // console.error(error);
         console.log("Failed");
         console.log(formData);
-        setSnackbarMessage("Failed to create lecturer");
+        setSnackbarMessage({
+          severity: "error",
+          message: "Failed to create lecturer!"
+        });
         setOpenSnackbar(true);
     }
   };
@@ -252,9 +280,8 @@ function AddLecturer() {
           elevation={6}
           variant="filled"
           onClose={handleCloseSnackbar}
-          severity="success"
-        >
-          {snackbarMessage}
+          severity={snackbarMessage.severity} >
+          {snackbarMessage.message}
         </MuiAlert>
       </Snackbar>
     </>
