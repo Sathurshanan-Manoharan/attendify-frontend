@@ -11,20 +11,27 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from '../axiosConfiguration/axiosconfig';
 
 function Sessions() {
   const [sessions, setSessions] = useState([]);
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/sessions/attendance");
+  const handleClick = (id) => {
+    navigate(`/sessions/attendance/${id}`);
   };
 
   //use effect for data fetching
   useEffect(() => {
-    axios.get("http://127.0.0.1:3000/api/v1/attendance/").then((res) => {
-      setSessions(res.data.data.attendance);
-    });
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/v1/attendance/");
+        setSessions(response.data.data.attendance);
+      } catch (error) {
+        console.error(error); // Handle errors appropriately
+      }
+    };
+  
+    fetchData();
   }, []);
 
   const formatTime = (dateString) => {
@@ -140,8 +147,8 @@ function Sessions() {
       </Box>
       {sessions.map((session) => (
         <Card
-          key={session.id} 
-          onClick={handleClick}
+          key={session._id} 
+          onClick={() => handleClick(session._id)}
           
           sx={{
             boxShadow: 3,
