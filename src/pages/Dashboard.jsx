@@ -14,10 +14,37 @@ import TimelineOppositeContent, {
 } from "@mui/lab/TimelineOppositeContent";
 import { useClerk } from "@clerk/clerk-react";
 import LandingBanner from "./LandingBanner.jsx";
-// import SlidingImages from "../components/SlidingImages.jsx";
+import axios from "axios";
 
 function Dashboard() {
+  const [sessionData, setSessionData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Make an API request to fetch session data for the lecturer
+        const response = await axios.get(
+          "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/dashboard/lecturer/L506/sessionDetails"
+        );
+        setSessionData(response.data.data); // Update state with the fetched data
+      } catch (error) {
+        console.error("Error fetching session data:", error);
+      }
+    };
+
+    fetchData(); // Initial call to fetch data
+
+    // Set interval to fetch data every (30,000 milliseconds)
+    const interval = setInterval(() => {
+      fetchData();
+    }, 30000);
+
+    // Clean up function to clear the interval when component unmounts
+    return () => clearInterval(interval);
+  }, []); // Run this effect only once, on component mount
+
   const { user } = useClerk();
+  const isAdmin = user.publicMetadata?.role === "admin";
 
   const [date, setDate] = useState(new Date(Date.now()));
 
@@ -65,6 +92,18 @@ function Dashboard() {
     </span>
   );
 
+  //Function to display a greeting based on the time of the day
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour >= 0 && hour < 12) {
+      return "Good Morning, ";
+    } else if (hour >= 12 && hour < 16) {
+      return "Good Afternoon, ";
+    } else {
+      return "Good Evening, ";
+    }
+  }
+
   return (
     <>
       <Box display={"flex"} justifyContent={"space-between"}>
@@ -72,128 +111,137 @@ function Dashboard() {
           variant="h5"
           sx={{ fontWeight: "bold", marginBottom: "12px" }}
         >
-          Good Morning,
+          {getGreeting()}
           <span style={{ color: "#004AAD" }}> {user.firstName}!</span>
         </Typography>
         <Box display={"flex"}>
           <Typography variant="h5">{formattedDate}</Typography>
         </Box>
       </Box>
-      <LandingBanner />
+      {!isAdmin && <LandingBanner />}
       {/* <SlidingImages /> */}
 
       <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <Card
-            variant="outlined"
-            sx={{
-              boxShadow: 2,
-              borderRadius: "12px",
-              border: "none",
-            }}
-          >
-            <CardContent
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h3">
-                <strong>442</strong>
-              </Typography>
-              <Typography variant="h5" style={{ color: "#004AAD" }}>
-                <strong>Expected Students</strong>
-              </Typography>
-              <Typography variant="h5"></Typography>
-              <Typography variant="h6">+4% Increase</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={3}>
-          <Card
-            variant="outlined"
-            sx={{
-              boxShadow: 2,
-              borderRadius: "12px",
-              border: "none",
-            }}
-          >
-            <CardContent
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h3">
-                <strong>401</strong>
-              </Typography>
-              <Typography variant="h5" style={{ color: "#004AAD" }}>
-                <strong>On Time</strong>
-              </Typography>
-              <Typography variant="h6">+4% Increase</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        {isAdmin && (
+          <>
+            <Grid item xs={3}>
+              <Card
+                variant="outlined"
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "12px",
+                  border: "none",
+                }}
+              >
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography variant="h3">
+                    <strong>
+                      {sessionData ? sessionData.expectedStudents : 0}
+                    </strong>
+                  </Typography>
+                  <Typography variant="h5" style={{ color: "#004AAD" }}>
+                    <strong>Expected Students</strong>
+                  </Typography>
+                  <Typography variant="h5"></Typography>
+                  <Typography variant="h6">+4% Increase</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
 
-        <Grid item xs={3}>
-          <Card
-            variant="outlined"
-            sx={{
-              boxShadow: 2,
-              borderRadius: "12px",
-              border: "none",
-            }}
-          >
-            <CardContent
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h3">
-                <strong>18</strong>
-              </Typography>
-              <Typography variant="h5" style={{ color: "#004AAD" }}>
-                <strong>Late Arrivals</strong>
-              </Typography>
-              <Typography variant="h6">+2% Decrease</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+            <Grid item xs={3}>
+              <Card
+                variant="outlined"
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "12px",
+                  border: "none",
+                }}
+              >
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography variant="h3">
+                    <strong>{sessionData ? sessionData.onTime : 0}</strong>
+                  </Typography>
+                  <Typography variant="h5" style={{ color: "#004AAD" }}>
+                    <strong>On Time</strong>
+                  </Typography>
+                  <Typography variant="h6">+4% Increase</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
 
-        <Grid item xs={3}>
-          <Card
-            variant="outlined"
-            sx={{
-              boxShadow: 2,
-              borderRadius: "12px",
-              border: "none",
-            }}
-          >
-            <CardContent
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h3">
-                <strong>23</strong>
-              </Typography>
-              <Typography variant="h5" style={{ color: "#004AAD" }}>
-                <strong>Absent</strong>
-              </Typography>
-              <Typography variant="h6">+6% Increase </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+            <Grid item xs={3}>
+              <Card
+                variant="outlined"
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "12px",
+                  border: "none",
+                }}
+              >
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography variant="h3">
+                    <strong>
+                      {sessionData ? sessionData.lateArrivals : 0}
+                    </strong>
+                  </Typography>
+                  <Typography variant="h5" style={{ color: "#004AAD" }}>
+                    <strong>Late Arrivals</strong>
+                  </Typography>
+                  <Typography variant="h6">+2% Decrease</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Card
+                variant="outlined"
+                sx={{
+                  boxShadow: 2,
+                  borderRadius: "12px",
+                  border: "none",
+                }}
+              >
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography variant="h3">
+                    <strong>{sessionData ? sessionData.absent : 0}</strong>
+                  </Typography>
+                  <Typography variant="h5" style={{ color: "#004AAD" }}>
+                    <strong>Absent</strong>
+                  </Typography>
+                  <Typography variant="h6">+6% Increase </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </>
+        )}
         <Grid item xs={6}>
           <Card
             variant="outlined"
