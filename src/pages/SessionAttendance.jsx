@@ -36,7 +36,7 @@ function SessionAttendance() {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   const columns = [
     {
@@ -118,7 +118,7 @@ function SessionAttendance() {
             border: "none",
           }}
         >
-          <CardContent>
+          <CardContent sx={{display: 'grid'}}>
             <Typography variant="h6" color="#004AAD" fontWeight="bold">
               Attendance Overview
             </Typography>
