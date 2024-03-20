@@ -6,8 +6,9 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import axios from "../axiosConfiguration/axiosconfig";
 import { Card, CardContent, Typography } from "@mui/material";
+import {  useUser } from "@clerk/clerk-react";
 
-export default function LabTabs() {
+export default function Timetable() {
   const [value, setValue] = useState("1");
   const [mondaySessions, setMondaySessions] = useState([]);
   const [tuesdaySessions, setTuesdaySessions] = useState([]);
@@ -21,11 +22,20 @@ export default function LabTabs() {
     setValue(newValue);
   };
 
+  const { user } = useUser();
+  const userEmailAddress = user.emailAddresses[0].emailAddress
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        const userResponse = await axios.get(`/api/v1/student/student/${userEmailAddress}`);
+        const tutorialid = userResponse.data.data.student.level+userResponse.data.data.student.tutorialGroup+userResponse.data.data.student.course
+        
+        
+        console.log(userResponse.data.data.student);
         const response = await axios.get(
-          `/api/v1/timetable/tutorialgroup/${"L4CSE"}`
+          `/api/v1/timetable/tutorialgroup/${tutorialid}`
         );
         const { tutorial_groups } = response.data.data.timetable;
 
@@ -95,14 +105,17 @@ export default function LabTabs() {
           >
             <CardContent>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
-                  </Typography>
-                  <Typography variant="h5" sx={{ marginRight: 2 }}>
-                    {session.lecture_title}
-                  </Typography>
-                </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                {session.start_time + "-" + session.end_time}
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                {session.lecture_title}
+              </Typography>
+              <Typography variant="h8" sx={{ marginRight: 2 }}>
+                {session.instructor}
+              </Typography>
+            </Box>
                 <Box
                   sx={{
                     display: "flex",
@@ -110,8 +123,7 @@ export default function LabTabs() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body">March 1st</Typography>
-                  <Typography variant="body">{session.venue}</Typography>
+                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -127,16 +139,19 @@ export default function LabTabs() {
               marginBottom: "15px",
             }}
           >
-            <CardContent>
+             <CardContent>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
-                  </Typography>
-                  <Typography variant="h5" sx={{ marginRight: 2 }}>
-                    {session.lecture_title}
-                  </Typography>
-                </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                {session.start_time + "-" + session.end_time}
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                {session.lecture_title}
+              </Typography>
+              <Typography variant="h8" sx={{ marginRight: 2 }}>
+                {session.instructor}
+              </Typography>
+            </Box>
                 <Box
                   sx={{
                     display: "flex",
@@ -144,8 +159,7 @@ export default function LabTabs() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body">March 1st</Typography>
-                  <Typography variant="body">{session.venue}</Typography>
+                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -161,16 +175,19 @@ export default function LabTabs() {
               marginBottom: "15px",
             }}
           >
-            <CardContent>
+             <CardContent>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
-                  </Typography>
-                  <Typography variant="h5" sx={{ marginRight: 2 }}>
-                    {session.lecture_title}
-                  </Typography>
-                </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                {session.start_time + "-" + session.end_time}
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                {session.lecture_title}
+              </Typography>
+              <Typography variant="h8" sx={{ marginRight: 2 }}>
+                {session.instructor}
+              </Typography>
+            </Box>
                 <Box
                   sx={{
                     display: "flex",
@@ -178,8 +195,7 @@ export default function LabTabs() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body">March 1st</Typography>
-                  <Typography variant="body">{session.venue}</Typography>
+                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -197,14 +213,17 @@ export default function LabTabs() {
           >
             <CardContent>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
-                  </Typography>
-                  <Typography variant="h5" sx={{ marginRight: 2 }}>
-                    {session.lecture_title}
-                  </Typography>
-                </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                {session.start_time + "-" + session.end_time}
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                {session.lecture_title}
+              </Typography>
+              <Typography variant="h8" sx={{ marginRight: 2 }}>
+                {session.instructor}
+              </Typography>
+            </Box>
                 <Box
                   sx={{
                     display: "flex",
@@ -212,8 +231,7 @@ export default function LabTabs() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body">March 1st</Typography>
-                  <Typography variant="body">{session.venue}</Typography>
+                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -231,14 +249,17 @@ export default function LabTabs() {
           >
             <CardContent>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
-                  </Typography>
-                  <Typography variant="h5" sx={{ marginRight: 2 }}>
-                    {session.lecture_title}
-                  </Typography>
-                </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                {session.start_time + "-" + session.end_time}
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                {session.lecture_title}
+              </Typography>
+              <Typography variant="h8" sx={{ marginRight: 2 }}>
+                {session.instructor}
+              </Typography>
+            </Box>
                 <Box
                   sx={{
                     display: "flex",
@@ -246,8 +267,7 @@ export default function LabTabs() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body">March 1st</Typography>
-                  <Typography variant="body">{session.venue}</Typography>
+                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -263,16 +283,19 @@ export default function LabTabs() {
               marginBottom: "15px",
             }}
           >
-            <CardContent>
+           <CardContent>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
-                  </Typography>
-                  <Typography variant="h5" sx={{ marginRight: 2 }}>
-                    {session.lecture_title}
-                  </Typography>
-                </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                {session.start_time + "-" + session.end_time}
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                {session.lecture_title}
+              </Typography>
+              <Typography variant="h8" sx={{ marginRight: 2 }}>
+                {session.instructor}
+              </Typography>
+            </Box>
                 <Box
                   sx={{
                     display: "flex",
@@ -280,8 +303,7 @@ export default function LabTabs() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body">March 1st</Typography>
-                  <Typography variant="body">{session.venue}</Typography>
+                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -299,14 +321,17 @@ export default function LabTabs() {
           >
             <CardContent>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body" sx={{ marginRight: 2 }}>
-                  {session.start_time}
-                  </Typography>
-                  <Typography variant="h5" sx={{ marginRight: 2 }}>
-                    {session.lecture_title}
-                  </Typography>
-                </Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
+              <Typography variant="body" sx={{ marginRight: 2 }}>
+                {session.start_time + "-" + session.end_time}
+              </Typography>
+              <Typography variant="h5" sx={{ marginRight: 2 }}>
+                {session.lecture_title}
+              </Typography>
+              <Typography variant="h8" sx={{ marginRight: 2 }}>
+                {session.instructor}
+              </Typography>
+            </Box>
                 <Box
                   sx={{
                     display: "flex",
@@ -314,8 +339,7 @@ export default function LabTabs() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body">March 1st</Typography>
-                  <Typography variant="body">{session.venue}</Typography>
+                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
                 </Box>
               </Box>
             </CardContent>
