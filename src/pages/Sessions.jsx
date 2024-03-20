@@ -169,7 +169,7 @@ function Sessions() {
                 <Typography variant="h5" sx={{ marginRight: 2 }}>
                   {session.lecture_title}
                 </Typography>
-                <Typography variant="h6">SE-O</Typography>
+                <Typography variant="h6">{`${session.tutorial_group}`}</Typography>
               </Box>
               <Box
                 sx={{
