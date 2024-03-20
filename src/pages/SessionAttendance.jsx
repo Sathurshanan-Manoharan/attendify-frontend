@@ -12,24 +12,21 @@ function SessionAttendance() {
   const { id } = useParams();
   const [rows, setRows] = useState([]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/v1/attendance/${id}`);
-        if (response.data.status === "success") {
-          const { studentsPresent } = response.data.data;
-          console.log(studentsPresent);
-          const newRows = studentsPresent.map((student) => ({
-            id: student.studentInfo.studentID,
-            name: `${student.studentInfo.firstName} ${student.studentInfo.lastName}`,
-            date: student.date,
-            "check-in": student.check_in_time,
-            status: "Present",
-          }));
-          setRows(newRows);
-        } 
-        
+
+        const { studentsPresent } = response.data.data;
+        console.log(studentsPresent);
+        const newRows = studentsPresent.map((student) => ({
+          id: student.studentInfo.studentID,
+          name: `${student.studentInfo.firstName} ${student.studentInfo.lastName}`,
+          date: student.date,
+          "check-in": student.check_in_time,
+          status: "Present",
+        }));
+        setRows(newRows);
       } catch (error) {
         console.error(error); // Handle errors appropriately
       }
@@ -118,7 +115,7 @@ function SessionAttendance() {
             border: "none",
           }}
         >
-          <CardContent sx={{display: 'grid'}}>
+          <CardContent sx={{ display: "grid" }}>
             <Typography variant="h6" color="#004AAD" fontWeight="bold">
               Attendance Overview
             </Typography>
