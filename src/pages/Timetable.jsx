@@ -82,20 +82,21 @@ const userTables = {
 function Timetable() {
 
   const { user } = useUser();
-  console.log(user);
+
   const userEmailAddress = user.emailAddresses[0].emailAddress;
   const isAdmin = user.publicMetadata?.role === "admin";
 
   const [recievedUsertables, setReceivedUserTables] = React.useState(userTables.data);
   
+  
   const [currentlySelectedUser, setCurrentlySelectedUser] = React.useState(userTables.data);
 
   const getUserFromBackend = async () => {
     try {
-      const response = await Backend.get("/student");
+      const response = await Backend.get("/api/v1/student");
       setReceivedUserTables(response.data.data.students);
     } catch (err) {
-    //  console.log(err.message);
+    
     }
   };
 
@@ -105,7 +106,7 @@ function Timetable() {
       const activeUser = recievedUsertables.find((table) => table.iitEmail === userEmailAddress);
       if (activeUser) {
         setCurrentlySelectedUser(activeUser);
-      //  console.log('Active user selected:', activeUser);
+     
       }
     }
   }, [recievedUsertables, userEmailAddress]);
@@ -180,10 +181,10 @@ function Timetable() {
 
   const getTimeTablesFromBackend = async () => {
     try {
-      const response = await Backend.get("/timetable");
+      const response = await Backend.get("/api/v1/timetable");
       setReceivedTables(response.data.data.timetable);
     } catch (err) {
-    //  console.log(err.message);
+    
     }
   };
   const setUser = (currentlySelectedUser) => {
