@@ -15,10 +15,6 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertTitle } from '@mui/material';
 
-
-
-
-
 function CreateTimetable() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedCourseType, setSelectedCourseType] = useState("");
@@ -27,7 +23,6 @@ function CreateTimetable() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   
-
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
