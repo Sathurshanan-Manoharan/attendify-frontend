@@ -34,8 +34,8 @@ const LandingBanner = () => {
       </Typography>
       <Paper
         sx={{
-          width: 1000, // Adjusted width for better fitting
-          height: 300, // Height set to auto to maintain aspect ratio
+          width: 600, // Adjusted width for better fitting
+          height: 200, // Height set to auto to maintain aspect ratio
           background: `url(${attendanceImage})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
