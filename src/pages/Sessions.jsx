@@ -22,21 +22,24 @@ function Sessions() {
 
     const [selectedFile, setSelectedFile] = useState(null);
 
+    //Handles adding of the file
     function fileChangeHandler(event) {
-      setSelectedFile(event.target.files[0]);
+      setSelectedFile(event.target.files[0]); 
     }
 
+    //Handles upload of the file to the backend
     async function uploadHandler() {
       try {
         const csvForm = new FormData();
         csvForm.append('csvFile', selectedFile);
 
-        const response = await axios.post('http://127.0.0.1:3000/api/v1/attendance', csvForm, {
+        
+        const response = await axios.post('http://127.0.0.1:3000/api/v1/attendance/upload', csvForm, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
-
+  
         console.log(response.data);
       } catch (error) {
         console.error('Error uploading file:', error);
