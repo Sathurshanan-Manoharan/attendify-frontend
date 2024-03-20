@@ -79,7 +79,7 @@ const userTables = {
   uid: "043DEAA8672681",}]
 }
 
-function Timetable() {
+function TimetableLecturer() {
 
   const { user } = useUser();
   console.log(user);
@@ -92,8 +92,8 @@ function Timetable() {
 
   const getUserFromBackend = async () => {
     try {
-      const response = await Backend.get("/student");
-      setReceivedUserTables(response.data.data.students);
+      const response = await Backend.get("/lecturer");
+      setReceivedUserTables(response.data.data.lecturers);
     } catch (err) {
     //  console.log(err.message);
     }
@@ -150,14 +150,13 @@ function Timetable() {
     tables.data[0].tutorial_groups[0].days[0].sessions
   );
   let [activeUser, setActiveUser] = React.useState({
-    name: "Adib Mubarak",
-    email: "adib.20221609@iit.ac.lk",
-    uowId: "W1956200",
-    iitId: "20221609",
-    tutorialGroup: "B",
-    degreeType: "SE",
-    year: "L4",
-    uid: "043DEAA8672681",
+    firstName: "Adib",
+    lastNam: "Mubarak",
+    uid: "111",
+    LecturerID : "adibu",
+    iitemail: "adib.20221609@iit.ac.lk",
+    contractType: "Part-time Lecturer",
+    specialRole: "Level Coordinator"
   });
 
   const [selectedOption, setSelectedOption] = React.useState(options[0]);
@@ -173,15 +172,15 @@ function Timetable() {
   const [lectures, setLectures] = React.useState([]);
   useEffect(() => {
     getTimeTablesFromBackend();
-  }, [activeUser.iitId]);
+  }, [activeUser.iitemail]);
   useEffect(() => {
     getActiveUsersTable();
   }, [recievedtables]);
 
   const getTimeTablesFromBackend = async () => {
     try {
-      const response = await Backend.get("/timetable");
-      setReceivedTables(response.data.data.timetable);
+      const response = await Backend.get("/lecturertimetable");
+      setReceivedTables(response.data.data.lecturertimetable);
     } catch (err) {
     //  console.log(err.message);
     }
@@ -870,4 +869,4 @@ function Timetable() {
   );
 }
 
-export default Timetable;
+export default TimetableLecturer
