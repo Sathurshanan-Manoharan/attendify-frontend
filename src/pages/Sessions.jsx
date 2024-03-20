@@ -10,16 +10,49 @@ import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from '../axiosConfiguration/axiosconfig';
 import { useState } from "react";
 import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 function Sessions() {
-    const navigate = useNavigate();
-    const handleClick = () => {
-        navigate("/attendance")
-    }
+  const [sessions, setSessions] = useState([]);
+  const navigate = useNavigate();
+  const handleClick = (id) => {
+    navigate(`/sessions/attendance/${id}`);
+  };
 
+  //use effect for data fetching
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/v1/attendance/");
+        setSessions(response.data.data.attendance);
+      } catch (error) {
+        console.error(error); // Handle errors appropriately
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { month: "long", day: "numeric", year: "numeric" };
+    const formattedDate = date.toLocaleDateString("en-US", options);
+    return formattedDate.replace(
+      /(\d+)(?:st|nd|rd|th)/,
+      (all, number) => number + (["st", "nd", "rd"][number % 10 - 1] || "th")
+    );
+  };
     const [selectedFile, setSelectedFile] = useState(null);
 
     //Handles adding of the file
@@ -88,7 +121,6 @@ function Sessions() {
           variant="elevation"
           sx={{
             boxShadow: "0px 0px 20px 10px rgba(0, 0, 0, 0.035)",
-            // boxShadow: ,
             borderRadius: "12px",
             border: "none",
           }}
@@ -170,39 +202,46 @@ function Sessions() {
           </CardContent>
         </Card>
       </Box>
-      <Card onClick={handleClick}
-        sx={{
-          cursor: "pointer",
-          transition: "background-color 0.3s ease",
-          "&:hover": {
-            backgroundColor: "#f0f0f0", // Change to the desired hover background color
-          },
-        }}
-      >
-        <CardContent>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                8.30 AM
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                Software Development Group Project
-              </Typography>
-              <Typography variant="h6">SE-O</Typography>
+      {sessions.map((session) => (
+        <Card
+          key={session._id} 
+          onClick={() => handleClick(session._id)}
+          
+          sx={{
+            boxShadow: 3,
+            marginBottom: "15px",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#f0f0f0",
+            },
+          }}
+        >
+          <CardContent>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="body" sx={{ marginRight: 2 }}>
+                {formatTime(session.start_time)}
+                </Typography>
+                <Typography variant="h5" sx={{ marginRight: 2 }}>
+                  {session.lecture_title}
+                </Typography>
+                <Typography variant="h6">{`${session.tutorial_group}`}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="body">{formatDate(session.start_time)}</Typography>
+                <Typography variant="body">{session.venue}</Typography>
+              </Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="body">March 1st, 2023</Typography>
-              <Typography variant="body">SP-5LA</Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ))}
     </>
   );
 }

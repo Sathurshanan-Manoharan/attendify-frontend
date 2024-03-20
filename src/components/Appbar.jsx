@@ -1,16 +1,65 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Stack from "@mui/material/Stack";
 import { Divider } from "@mui/material";
 import Badge from "@mui/material/Badge";
-import MailIcon from "@mui/icons-material/Mail";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import { UserButton } from "@clerk/clerk-react";
 import RouterBreadcrumbs from "./RouterBreadcrumbs";
+import Notifications from "./Notifications";
 
 export default function MenuAppBar() {
   const drawerWidth = 240;
+
+  //Dummy data for notifications
+  const notifications = [
+    {
+      id: 1,
+      title: "Notification 1",
+      message:
+        "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",
+    },
+    {
+      id: 2,
+      title: "Notification 2",
+      message: "Notification 2",
+    },
+    {
+      id: 3,
+      title: "Notification 3",
+      message:
+        "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",
+    },
+    {
+      id: 4,
+      title: "Notification 4",
+      message: "Notification 4",
+    },
+    {
+      id: 5,
+      title: "Notification 5",
+      message:
+        "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",
+    },
+  ];
+  const notificationCount = notifications.length;
+  const newNotification = `You have ${notificationCount} new notifications`;
+  const noNewNotification = "You have no new notifications";
+  const notificationText =
+    notificationCount > 0 ? newNotification : noNewNotification;
+
+  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null); // corrected typo here
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(!open);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -32,13 +81,29 @@ export default function MenuAppBar() {
             alignItems: "center",
           }}
         >
-
-        <RouterBreadcrumbs />
+          <RouterBreadcrumbs />
 
           <Stack direction="row" spacing={2} alignItems={"center"}>
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
+            <Tooltip title={notificationText}>
+              <IconButton
+                onClick={notificationCount ? handleClick : null}
+                anchorEl={anchorEl}
+              >
+                <Badge
+                  badgeContent={notificationCount}
+                  color="secondary"
+                  max={99}
+                >
+                  <NotificationsIcon sx={{ color: "#64748B" }} />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+            <Notifications
+              anchorEl={anchorEl}
+              open={open}
+              handleClose={handleClose}
+              notifications={notifications}
+            />
             <UserButton afterSignOutUrl="/login" />
           </Stack>
         </Toolbar>

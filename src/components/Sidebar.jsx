@@ -1,9 +1,7 @@
-import * as React from "react";
-
+import React from "react";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -19,8 +17,11 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import {  useUser } from "@clerk/clerk-react";
 
 function Sidebar() {
+  const { user } = useUser();
+  const isAdmin = user.publicMetadata?.role === "admin";
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -71,7 +72,7 @@ function Sidebar() {
           <ListItemText primary={"Dashboard"} />
         </ListItemButton>
 
-        <ListItemButton to={"/attendance"} component={Link}>
+        <ListItemButton to={"/sessions"} component={Link}>
           <ListItemIcon sx={{ color: "white" }}>
             <AssignmentIcon />
           </ListItemIcon>
@@ -92,6 +93,7 @@ function Sidebar() {
           <ListItemText primary={"Reports"} />
         </ListItemButton>
 
+        {isAdmin && (
         <ListItemButton onClick={handleClick}>
           <ListItemIcon sx={{ color: "white" }}>
             <SettingsIcon />
@@ -99,6 +101,7 @@ function Sidebar() {
           <ListItemText primary={"Settings"} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
+      )}
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List disablePadding sx={{ color: "white" }}>

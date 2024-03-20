@@ -14,7 +14,11 @@ import AddStudent from "./pages/AddStudent";
 import Timetable from "./pages/Timetable";
 import Login from "./pages/LogIn";
 import Sessions from "./pages/Sessions";
-import UploadTimetable from "./pages/UploadTimetable";
+import CreateTimetable from "./pages/CreateTimetable";
+import Reports from "./pages/Reports";
+import CreateTimetableLecturer from "./pages/CreateTimetableLecturer";
+import TimetableLecturer from "./pages/TimetableLecturer";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,12 +29,18 @@ const router = createBrowserRouter(
       <Route element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/timetable" element={<Timetable />} />
-        <Route path="/attendance" element={<SessionAttendance />} />
+        <Route path="/sessions/attendance/:id" element={<SessionAttendance />} />
         <Route path="/sessions" element={<Sessions />} />
+        
         <Route path="/updateUser" element={<UpdateUser />} />
         <Route path="/addlecturer" element={<AddLecturer />} />
         <Route path="/addstudent" element={<AddStudent />} />
-        <Route path="/uploadtimetable" element={<UploadTimetable />} />
+        <Route path="/createtimetable" element={<CreateTimetable />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/createtimetablelecturer" element={<CreateTimetableLecturer />} />
+        <Route path="/timetablelecturer" element={<TimetableLecturer />} />
+
+
         {/* <Route path="/login" element={<Login />} /> */}
       </Route>
     </>
