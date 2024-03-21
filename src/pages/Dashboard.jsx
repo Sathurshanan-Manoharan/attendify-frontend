@@ -62,17 +62,17 @@ function Dashboard() {
       }
     };
 
-    // Initial call to fetch data
+    //Initial call to fetch data
     fetchData();
 
-    // Set interval to fetch data every 30 seconds (30000 milliseconds)
+    //Set interval to fetch data every 30 seconds (30000 milliseconds)
     const interval = setInterval(() => {
       fetchData();
     }, 30000);
 
-    // Clean up function to clear the interval when component unmounts
+    //Clean up function to clear the interval when component unmounts
     return () => clearInterval(interval);
-  }, [userEmail]); // Run this effect every time 'email' changes
+  }, [userEmail]); //Run this effect every time 'email' changes
 
   const { user } = useClerk();
   const isAdmin = user.publicMetadata?.role === "admin";
