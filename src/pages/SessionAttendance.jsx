@@ -14,12 +14,14 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function SessionAttendance() {
   const { id } = useParams();
   const [rows, setRows] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null); //File selection for handling
   const [fileUploaded, setFileUploaded] = useState(false); //For displaying success message
+  const [loading, setLoading] = useState(true); //For displaying loading 
 
   //Handles adding of the file
   function fileChangeHandler(event) {
@@ -62,12 +64,20 @@ function SessionAttendance() {
           status: "Present",
         }));
         setRows(newRows);
+        //setLoading(false);
       } catch (error) {
         console.error(error); // Handle errors appropriately
+        //setLoading(false);
       }
     };
 
+     const delay = setTimeout(() => {
+      setLoading(false);  
+     }, 2000)
+
     fetchData();
+
+    return () => clearTimeout(delay);
   }, [id]);
 
   const columns = [
@@ -137,69 +147,64 @@ function SessionAttendance() {
   //List of all the data entries stored as objects
   // const rows = userData;
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box display="flex" justifyContent="center" alignItems="center" height="200px">
+          <CircularProgress />
+        </Box>
+      );
+    } else if (rows.length === 0) {
+      return (
+        <Box display="flex" flexDirection="column" alignItems="center" marginBottom="30px">
+          <Typography variant="h4" color="#004AAD" fontWeight="bold">
+            Upload CSV File
+          </Typography>
+          <Button component="label" variant="outlined" sx={{ marginTop: "20px" }}>
+            Select File
+            <input type="file" accept=".csv" onChange={fileChangeHandler} style={{ display: "none" }} />
+          </Button>
+          {selectedFile && (
+            <Card sx={{ bgcolor: "#004AAD", margin: "5px" }}>
+              <Typography variant="body1" margin="5px" color="white">
+                <InsertDriveFileIcon sx={{ marginRight: "5px" }} /> {selectedFile.name}
+              </Typography>
+            </Card>
+          )}
+          <Box sx={{ marginTop: "20px" }}>
+            <Button
+              variant="contained"
+              onClick={uploadHandler}
+              disabled={!selectedFile}
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload
+            </Button>
+          </Box>
+        </Box>
+      );
+    } else {
+      return (
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5, 10, 20]}
+          sx={{ textAlign: "center" }}
+        />
+      );
+    }
+  };
+
   return (
-    //<ThemeProvider theme={textFont}>
     <Box>
-      <Card
-        variant="elevation"
-        sx={{
-          // boxShadow: "0px 0px 20px 10px rgba(0, 0, 0, 0.035)",
-          boxShadow: 2,
-          borderRadius: "12px",
-          border: "none",
-        }}
-      >
+      <Card variant="elevation" sx={{ boxShadow: 2, borderRadius: "12px", border: "none" }}>
         <CardContent sx={{ display: "grid" }}>
           <Typography variant="h6" color="#004AAD" fontWeight="bold">
             Attendance Overview
           </Typography>
           <Divider sx={{ marginBottom: "20px", marginTop: "12px" }}></Divider>
-
-          {/* Conditionally renders if rows recieves null */}
-          {rows.length === 0 && (
-            <Box display="flex" flexDirection="column" alignItems="center" sx={{ marginBottom: "30px" }}>
-              <Typography variant="h4" color="#004AAD" fontWeight="bold">Upload CSV File</Typography>
-              <Button sx={{ marginTop: "20px" }}
-                component="label"
-                variant="outlined"
-              >
-                Select File
-                <input type="file" accept=".csv" onChange={fileChangeHandler} style={{ display: 'none' }} />
-              </Button>
-              {selectedFile && (
-                <Card sx={{ bgcolor: "#004AAD", margin: "5px" }}>
-                  <Typography variant="body1" margin="5px" color="white">
-                    <InsertDriveFileIcon sx={{ marginRight: "5px" }} /> {selectedFile.name}
-                  </Typography>
-                </Card>
-
-              )}
-
-              <Box sx={{ marginTop: "20px" }}>
-                <Button
-                  variant="contained"
-                  onClick={uploadHandler}
-                  disabled={!selectedFile}
-                  startIcon={<CloudUploadIcon />}
-                >
-                  Upload
-                </Button>
-              </Box>
-            </Box>
-          )}
-
-          {/* Conditionally renders if rows recieves values  */}
-          {rows.length > 0 && (
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5, 10, 20]}
-              sx={{ textAlign: "center" }}
-            />
-          )}
-
-          {/* Popup Message */}
+          {renderContent()}
           <Dialog open={fileUploaded} onClose={handleOkButtonClick}>
             <DialogTitle>File successfully uploaded</DialogTitle>
             <DialogContent>
@@ -211,13 +216,10 @@ function SessionAttendance() {
               </Button>
             </DialogActions>
           </Dialog>
-
         </CardContent>
       </Card>
     </Box>
   );
-
-
 }
 
 
