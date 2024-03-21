@@ -66,17 +66,18 @@ function SessionAttendance() {
         setRows(newRows);
         //setLoading(false);
       } catch (error) {
-        console.error(error); // Handle errors appropriately
+        console.error(error); //Handle errors appropriately
         //setLoading(false);
       }
     };
-
+     //Creates a delay of 2 seconds during which loading animation is displayed
      const delay = setTimeout(() => {
       setLoading(false);  
      }, 2000)
 
     fetchData();
 
+    //Cleanup
     return () => clearTimeout(delay);
   }, [id]);
 
