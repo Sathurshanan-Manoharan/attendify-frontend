@@ -33,7 +33,17 @@ function SessionAttendance() {
     try {
       const csvForm = new FormData();
       csvForm.append('csvFile', selectedFile);
+
+      //Extract Id from the url
+      const url = window.location.href;
+      const objectId = url.split('/').pop(); //Extracts object from url
+
+      console.log(objectId);
+
       const response = await axios.post('http://127.0.0.1:3000/api/v1/attendance/upload', csvForm, {
+        params: {
+          objectId: objectId
+        },
         headers: {
           'Content-Type': 'multipart/form-data'
         }
