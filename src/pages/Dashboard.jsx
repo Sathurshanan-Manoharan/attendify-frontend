@@ -20,6 +20,7 @@ import axios from "axios";
 function Dashboard() {
   const [sessionData, setSessionData] = useState(null);
   const [userTimetable, setUserTimetable] = useState(null);
+  const [sessionDetails, setSessionDetails] = useState(null); //for student timetable
 
   const userEmail = useClerk().user.primaryEmailAddress.emailAddress;
 
@@ -31,7 +32,7 @@ function Dashboard() {
           `https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/dashboard/lecturer/sessions/${userEmail}`
         );
         setUserTimetable(response.data.data); // Update state with the fetched data
-        console.log(response.data.data.lecturerSessions.length);
+        // console.log(response.data.data.lecturerSessions.length);
       } catch (error) {
         console.error("Error fetching session data:", error);
       }
@@ -43,7 +44,33 @@ function Dashboard() {
     // Set interval to fetch data every 30 seconds (30000 milliseconds)
     const interval = setInterval(() => {
       fetchData();
-    }, 30000000);
+    }, 3000000);
+
+    // Clean up function to clear the interval when component unmounts
+    return () => clearInterval(interval);
+  }, [userEmail]); // Run this effect every time 'email' changes
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Make an API request to fetch session data for the student
+        const response = await axios.get(
+          `https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/dashboard/student/shathurshmanoahran@gmail.com/timetable`
+        );
+        setSessionDetails(response.data); // Update state with the fetched data
+        console.log(response.data.sessionsForToday);
+      } catch (error) {
+        console.error("Error fetching session data:", error);
+      }
+    };
+
+    // Initial call to fetch data
+    fetchData();
+
+    // Set interval to fetch data every 30 seconds (30000 milliseconds)
+    const interval = setInterval(() => {
+      fetchData();
+    }, 3000000);
 
     // Clean up function to clear the interval when component unmounts
     return () => clearInterval(interval);
@@ -149,7 +176,7 @@ function Dashboard() {
           <Typography variant="h5">{formattedDate}</Typography>
         </Box>
       </Box>
-      <LandingBanner />
+      {!isAdmin && <LandingBanner />}
       {/* <SlidingImages /> */}
 
       <Grid container spacing={2}>
@@ -312,154 +339,314 @@ function Dashboard() {
             </Grid>
           </>
         )}
-        <Grid item xs={6}>
-          <Card
-            variant="outlined"
-            sx={{
-              boxShadow: 2,
-              borderRadius: "12px",
-              border: "none",
-            }}
-          >
-            <CardContent>
-              <Grid sx={{ display: "flex", flexDirection: "row" }}>
-                <Typography
-                  variant="h4"
-                  color="#004AAD"
-                  marginLeft={1}
-                  padding={1}
-                >
-                  <strong>Your lecture schedule</strong>
-                </Typography>
-                <Typography
-                  variant="h5"
-                  color="#64748B"
-                  marginLeft={10}
-                  padding={2}
-                >
-                  Today
-                </Typography>
-              </Grid>
 
-              <Timeline
-                sx={{
-                  [`& .${timelineOppositeContentClasses.root}`]: {
-                    flex: 0.2,
-                  },
-                }}
-              >
-                <TimelineItem>
-                  <TimelineOppositeContent color="textSecondary">
-                    {userTimetable && userTimetable.lecturerSessions.length > 0
-                      ? userTimetable.lecturerSessions[0].start_time
-                      : "8:30 AM"}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent
-                    sx={{ display: "flex", justifyContent: "space-between" }}
+        {isAdmin ? (
+          <Grid item xs={6}>
+            <Card
+              variant="outlined"
+              sx={{
+                boxShadow: 2,
+                borderRadius: "12px",
+                border: "none",
+              }}
+            >
+              <CardContent>
+                <Grid sx={{ display: "flex", flexDirection: "row" }}>
+                  <Typography
+                    variant="h4"
+                    color="#004AAD"
+                    marginLeft={1}
+                    padding={1}
                   >
-                    <Typography variant="p">
+                    <strong>Your lecture schedule</strong>
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    color="#64748B"
+                    marginLeft={10}
+                    padding={2}
+                  >
+                    Today
+                  </Typography>
+                </Grid>
+
+                <Timeline
+                  sx={{
+                    [`& .${timelineOppositeContentClasses.root}`]: {
+                      flex: 0.2,
+                    },
+                  }}
+                >
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
                       {userTimetable &&
                       userTimetable.lecturerSessions.length > 0
-                        ? userTimetable.lecturerSessions[0].lecture_title
-                        : "No Session"}
-                    </Typography>
-                    <Typography variant="p">
-                      {" "}
-                      {userTimetable &&
-                      userTimetable.lecturerSessions.length > 0
-                        ? userTimetable.lecturerSessions[0].venue
-                        : ""}
-                    </Typography>
-                  </TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                  <TimelineOppositeContent color="textSecondary">
-                    {userTimetable && userTimetable.lecturerSessions.length > 1
-                      ? userTimetable.lecturerSessions[1].start_time
-                      : "10:30 AM"}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Typography variant="p">
-                      {userTimetable &&
-                      userTimetable.lecturerSessions.length > 1
-                        ? userTimetable.lecturerSessions[1].lecture_title
-                        : "No Session"}
-                    </Typography>
-                    <Typography variant="p">
+                        ? userTimetable.lecturerSessions[0].start_time
+                        : "8:30 AM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 0
+                          ? userTimetable.lecturerSessions[0].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {" "}
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 0
+                          ? userTimetable.lecturerSessions[0].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
                       {userTimetable &&
                       userTimetable.lecturerSessions.length > 1
-                        ? userTimetable.lecturerSessions[1].venue
-                        : ""}
-                    </Typography>
-                  </TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                  <TimelineOppositeContent color="textSecondary">
-                    {userTimetable && userTimetable.lecturerSessions.length > 2
-                      ? userTimetable.lecturerSessions[2].start_time
-                      : "1:30 PM"}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Typography variant="p">
+                        ? userTimetable.lecturerSessions[1].start_time
+                        : "10:30 AM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 1
+                          ? userTimetable.lecturerSessions[1].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 1
+                          ? userTimetable.lecturerSessions[1].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
                       {userTimetable &&
                       userTimetable.lecturerSessions.length > 2
-                        ? userTimetable.lecturerSessions[2].lecture_title
-                        : "No Session"}
-                    </Typography>
-                    <Typography variant="p">
+                        ? userTimetable.lecturerSessions[2].start_time
+                        : "1:30 PM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 2
+                          ? userTimetable.lecturerSessions[2].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 2
+                          ? userTimetable.lecturerSessions[2].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
                       {userTimetable &&
-                      userTimetable.lecturerSessions.length > 2
-                        ? userTimetable.lecturerSessions[2].venue
-                        : ""}
-                    </Typography>
-                  </TimelineContent>
-                </TimelineItem>
-                <TimelineItem>
-                  <TimelineOppositeContent color="textSecondary">
-                    {userTimetable && userTimetable.lecturerSessions.length > 3
-                      ? userTimetable.lecturerSessions[3].start_time
-                      : "3:30 PM"}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                  </TimelineSeparator>
-                  <TimelineContent
-                    sx={{ display: "flex", justifyContent: "space-between" }}
+                      userTimetable.lecturerSessions.length > 3
+                        ? userTimetable.lecturerSessions[3].start_time
+                        : "3:30 PM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 3
+                          ? userTimetable.lecturerSessions[3].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {userTimetable &&
+                        userTimetable.lecturerSessions.length > 3
+                          ? userTimetable.lecturerSessions[3].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                </Timeline>
+              </CardContent>
+            </Card>
+          </Grid>
+        ) : (
+          <Grid item xs={6}>
+            <Card
+              variant="outlined"
+              sx={{
+                boxShadow: 2,
+                borderRadius: "12px",
+                border: "none",
+              }}
+            >
+              <CardContent>
+                <Grid sx={{ display: "flex", flexDirection: "row" }}>
+                  <Typography
+                    variant="h4"
+                    color="#004AAD"
+                    marginLeft={1}
+                    padding={1}
                   >
-                    <Typography variant="p">
-                      {userTimetable &&
-                      userTimetable.lecturerSessions.length > 3
-                        ? userTimetable.lecturerSessions[3].lecture_title
-                        : "No Session"}
-                    </Typography>
-                    <Typography variant="p">
-                      {userTimetable &&
-                      userTimetable.lecturerSessions.length > 3
-                        ? userTimetable.lecturerSessions[3].venue
-                        : ""}
-                    </Typography>
-                  </TimelineContent>
-                </TimelineItem>
-              </Timeline>
-            </CardContent>
-          </Card>
-        </Grid>
+                    <strong>Your lecture schedule</strong>
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    color="#64748B"
+                    marginLeft={10}
+                    padding={2}
+                  >
+                    Today
+                  </Typography>
+                </Grid>
+
+                <Timeline
+                  sx={{
+                    [`& .${timelineOppositeContentClasses.root}`]: {
+                      flex: 0.2,
+                    },
+                  }}
+                >
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
+                      {sessionDetails &&
+                      sessionDetails.sessionsForToday.length > 0
+                        ? sessionDetails.sessionsForToday[0].start_time
+                        : "8:30 AM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 0
+                          ? sessionDetails.sessionsForToday[0].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {" "}
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 0
+                          ? sessionDetails.sessionsForToday[0].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
+                      {sessionDetails &&
+                      sessionDetails.sessionsForToday.length > 1
+                        ? sessionDetails.sessionsForToday[1].start_time
+                        : "10:30 AM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 1
+                          ? sessionDetails.sessionsForToday[1].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 1
+                          ? sessionDetails.sessionsForToday[1].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
+                      {sessionDetails &&
+                      sessionDetails.sessionsForToday.length > 2
+                        ? sessionDetails.sessionsForToday[2].start_time
+                        : "1:30 PM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 2
+                          ? sessionDetails.sessionsForToday[2].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 2
+                          ? sessionDetails.sessionsForToday[2].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                  <TimelineItem>
+                    <TimelineOppositeContent color="textSecondary">
+                      {sessionDetails &&
+                      sessionDetails.sessionsForToday.length > 3
+                        ? sessionDetails.sessionsForToday[3].start_time
+                        : "3:30 PM"}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="p">
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 3
+                          ? sessionDetails.sessionsForToday[3].lecture_title
+                          : "No Session"}
+                      </Typography>
+                      <Typography variant="p">
+                        {sessionDetails &&
+                        sessionDetails.sessionsForToday.length > 3
+                          ? sessionDetails.sessionsForToday[3].venue
+                          : ""}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                </Timeline>
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
 
         <Grid item xs={6}>
           <Card
