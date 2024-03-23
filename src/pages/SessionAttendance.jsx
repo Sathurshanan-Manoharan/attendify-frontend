@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "../axiosConfiguration/axiosconfig";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -33,7 +33,17 @@ function SessionAttendance() {
     try {
       const csvForm = new FormData();
       csvForm.append('csvFile', selectedFile);
-      const response = await axios.post('http://127.0.0.1:3000/api/v1/attendance/upload', csvForm, {
+
+      //Extract Id from the url
+      const url = window.location.href;
+      const objectId = url.split('/').pop(); //Extracts object from url
+
+      console.log(objectId);
+
+      const response = await axios.post(`https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/attendance/upload`, csvForm, {
+        params: {
+          objectId: objectId
+        },
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -42,6 +52,7 @@ function SessionAttendance() {
       setFileUploaded(true);
     } catch (error) {
       console.error('Error uploading file:', error);
+      console.error(error.stack);
     }
   };
 
