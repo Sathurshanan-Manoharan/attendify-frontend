@@ -7,6 +7,8 @@ import TabPanel from "@mui/lab/TabPanel";
 import axios from "../axiosConfiguration/axiosconfig";
 import { Card, CardContent, Typography } from "@mui/material";
 import {  useUser } from "@clerk/clerk-react";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function TimetableLecturer() {
   const [value, setValue] = useState("1");
@@ -75,8 +77,24 @@ export default function TimetableLecturer() {
     fetchData();
   }, []);
 
+  const handleStudentTimetableUpload = () => {
+    history.push('/createtimetable');
+  };
+
+  const handleLecturerTimetableUpload = () => {
+    history.push('/createtimetablelecturer');
+  };
+
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
+      <Button component={Link} to="/createtimetable" variant="outlined" color="primary" sx={{ marginRight: 2,backgroundColor: "#004AAD",
+              color: "white", }}>
+        Upload Timetable for Students
+      </Button>
+      <Button component={Link} to="/createtimetablelecturer" variant="outlined" color="primary" sx={{ marginRight: 2,backgroundColor: "#004AAD",
+              color: "white", }}>
+        Upload Timetable for Lecturers
+      </Button>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange}>
