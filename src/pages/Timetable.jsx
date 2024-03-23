@@ -30,7 +30,7 @@ export default function Timetable() {
       try {
 
         const userResponse = await axios.get(`/api/v1/student/student/${userEmailAddress}`);
-        const tutorialid = userResponse.data.data.student.level+userResponse.data.data.student.tutorialGroup+userResponse.data.data.student.course
+        const tutorialid = userResponse.data.data.student.level+userResponse.data.data.student.tutorial_group+userResponse.data.data.student.course
         
         
         console.log(userResponse.data.data.student);
