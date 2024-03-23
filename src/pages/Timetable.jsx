@@ -7,8 +7,11 @@ import TabPanel from "@mui/lab/TabPanel";
 import axios from "../axiosConfiguration/axiosconfig";
 import { Card, CardContent, Typography } from "@mui/material";
 import {  useUser } from "@clerk/clerk-react";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Timetable() {
+
   const [value, setValue] = useState("1");
   const [mondaySessions, setMondaySessions] = useState([]);
   const [tuesdaySessions, setTuesdaySessions] = useState([]);
@@ -23,11 +26,19 @@ export default function Timetable() {
   };
 
   const { user } = useUser();
-  const userEmailAddress = user.emailAddresses[0].emailAddress
+  const userEmailAddress = user.emailAddresses[0].emailAddress;
+
+  //const history = useHistory();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const isAdmin = user.publicMetadata?.role === "admin";
+
+        if (isAdmin) {
+          window.location.href = '/timetablelecturer';
+      }
+      
 
         const userResponse = await axios.get(`/api/v1/student/student/${userEmailAddress}`);
         const tutorialid = userResponse.data.data.student.level+userResponse.data.data.student.tutorial_group+userResponse.data.data.student.course
@@ -78,8 +89,22 @@ export default function Timetable() {
     fetchData();
   }, []);
 
+  const handleStudentTimetableUpload = () => {
+    history.push('/createtimetable');
+  };
+
+  const handleLecturerTimetableUpload = () => {
+    history.push('/createtimetablelecturer');
+  };
+
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
+      <Button component={Link} to="/createtimetable" variant="outlined" color="primary" sx={{ marginRight: 2 }}>
+        Upload Timetable for Students
+      </Button>
+      <Button component={Link} to="/createtimetablelecturer" variant="outlined" color="primary">
+        Upload Timetable for Lecturers
+      </Button>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange}>
