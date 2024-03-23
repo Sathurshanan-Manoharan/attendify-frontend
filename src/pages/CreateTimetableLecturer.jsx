@@ -61,7 +61,7 @@ function CreateTimetableLecturer() {
       console.log(LecturerEmailEntered)
   
       const response = await axios.post(
-        "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/uploadtimetablelecturer",
+        "https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/timetablelecturer",
         csvForm,
         {
           headers: {
