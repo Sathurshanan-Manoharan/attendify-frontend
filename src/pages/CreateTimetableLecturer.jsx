@@ -31,12 +31,7 @@ function CreateTimetableLecturer() {
   const handleEmailChange = (event) => {
     const email = event.target.value;
     setEmail(email);
-    if (!email || !email.includes("@iit.ac.lk")) {
-      setErrorMessage("Please enter a valid IIT email address");
-      setSuccessMessage(""); // Clear success message
-    } else {
-      setErrorMessage("");
-    }
+    setErrorMessage("");
   };
 
 
