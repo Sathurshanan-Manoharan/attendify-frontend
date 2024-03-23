@@ -63,7 +63,7 @@ function SessionAttendance() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/v1/attendance/${id}`);
+        const response = await axios.get(`https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/attendance/${id}`);
 
         const { studentsPresent } = response.data.data;
         console.log(studentsPresent);
