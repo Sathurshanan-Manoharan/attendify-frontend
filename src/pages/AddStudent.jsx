@@ -30,7 +30,7 @@ function AddStudent() {
     iitEmail: "",
     course: "",
     level: "",
-    tutorialGroup: "",
+    tutorial_group: "",
   });
 
   const [students, setStudents] = useState([]);
@@ -80,7 +80,7 @@ function AddStudent() {
         iitEmail: "",
         course: "",
         level: "",
-        tutorialGroup: "",
+        tutorial_group: "",
       });
 
       setSnackbarMessage({
@@ -139,7 +139,7 @@ function AddStudent() {
     student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     student.studentID.toLowerCase().includes(searchQuery.toLowerCase()) ||
     student.level.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    // student.tutorialGroup.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.tutorial_group.toLowerCase().includes(searchQuery.toLowerCase()) ||
     student.iitEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
     student.course.toLowerCase().includes(searchQuery.toLowerCase()) ||
     student.uid.toLowerCase().includes(searchQuery.toLowerCase())
@@ -279,10 +279,10 @@ function AddStudent() {
                 <InputLabel id="tutorialGroupLabel">Tutorial Group</InputLabel>
                 <Select
                   labelId="tutorialGroupLabel"
-                  id="tutorialGroup"
+                  id="tutorial_group"
                   label="Tutorial Group"
-                  name="tutorialGroup"
-                  value={formData.tutorialGroup}
+                  name="tutorial_group"
+                  value={formData.tutorial_group}
                   onChange={handleChange}
                 >
               
@@ -463,7 +463,7 @@ function AddStudent() {
                     <TableCell align="center">{student.level}</TableCell>
                     <TableCell align="center">{student.course}</TableCell>
                     <TableCell align="center">{student.iitEmail}</TableCell>
-                    <TableCell align="center">{student.tutorialGroup}</TableCell>
+                    <TableCell align="center">{student.tutorial_group}</TableCell>
                     <TableCell align="center">{student.uid}</TableCell>
                   </TableRow>
                 ))
@@ -475,7 +475,7 @@ function AddStudent() {
                     <TableCell align="center">{student.level}</TableCell>
                     <TableCell align="center">{student.course}</TableCell>
                     <TableCell align="center">{student.iitEmail}</TableCell>
-                    <TableCell align="center">{student.tutorialGroup}</TableCell>
+                    <TableCell align="center">{student.tutorial_group}</TableCell>
                     <TableCell align="center">{student.uid}</TableCell>
                   </TableRow>
     ))
