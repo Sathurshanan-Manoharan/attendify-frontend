@@ -40,7 +40,7 @@ function SessionAttendance() {
 
       console.log(objectId);
 
-      const response = await axios.post(`https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/attendance/upload`, csvForm, {
+      const response = await axios.post(`https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/upload`, csvForm, {
         params: {
           objectId: objectId
         },
