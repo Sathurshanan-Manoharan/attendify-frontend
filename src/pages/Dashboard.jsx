@@ -55,7 +55,7 @@ function Dashboard() {
       try {
         // Make an API request to fetch session data for the student
         const response = await axios.get(
-          `https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/dashboard/student/shathurshmanoahran@gmail.com/timetable`
+          `https://attendify-backend-i3rpgzeqlq-uc.a.run.app/api/v1/dashboard/student/${userEmail}/timetable`
         );
         setSessionDetails(response.data); // Update state with the fetched data
         console.log(response.data.sessionsForToday);
