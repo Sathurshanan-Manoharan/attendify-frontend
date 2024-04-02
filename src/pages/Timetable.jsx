@@ -6,11 +6,9 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import axios from "../axiosConfiguration/axiosconfig";
 import { Card, CardContent, Typography } from "@mui/material";
-import {  useUser } from "@clerk/clerk-react";
-
+import { useUser } from "@clerk/clerk-react";
 
 export default function Timetable() {
-
   const [value, setValue] = useState("1");
   const [mondaySessions, setMondaySessions] = useState([]);
   const [tuesdaySessions, setTuesdaySessions] = useState([]);
@@ -27,31 +25,32 @@ export default function Timetable() {
   const { user } = useUser();
   const userEmailAddress = user.emailAddresses[0].emailAddress;
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const isAdmin = user.publicMetadata?.role === "admin";
 
         if (isAdmin) {
-          window.location.href = '/timetablelecturer';
-      }
-      
+          window.location.href = "/timetablelecturer";
+        }
 
-        const userResponse = await axios.get(`/api/v1/student/student/${userEmailAddress}`);
-        const tutorialid = userResponse.data.data.student.level+userResponse.data.data.student.tutorial_group+userResponse.data.data.student.course
-        
-        
+        const userResponse = await axios.get(
+          `/api/v1/student/student/${userEmailAddress}`
+        );
+        const tutorialid =
+          userResponse.data.data.student.level +
+          userResponse.data.data.student.tutorial_group +
+          userResponse.data.data.student.course;
+
         console.log(userResponse.data.data.student);
         const response = await axios.get(
           `/api/v1/timetable/tutorialgroup/${tutorialid}`
         );
         const { tutorial_groups } = response.data.data.timetable;
 
-
-        tutorial_groups.forEach(group => {
+        tutorial_groups.forEach((group) => {
           // Iterate over each day's sessions and set state accordingly
-          group.days.forEach(day => {
+          group.days.forEach((day) => {
             switch (day.day) {
               case "Monday":
                 setMondaySessions(day.sessions);
@@ -79,7 +78,6 @@ export default function Timetable() {
             }
           });
         });
-        
       } catch (error) {
         console.error(error);
       }
@@ -87,11 +85,8 @@ export default function Timetable() {
     fetchData();
   }, []);
 
- 
-
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
-      
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange}>
@@ -104,261 +99,419 @@ export default function Timetable() {
             <Tab label="Sunday" value="7" />
           </TabList>
         </Box>
-        
 
         <TabPanel value="1">
           {mondaySessions.map((session, index) => (
             <Card
-            key={index}
-            sx={{
-              boxShadow: 3,
-              marginBottom: "15px",
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                {session.start_time + "-" + session.end_time}
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                {session.lecture_title}
-              </Typography>
-              <Typography variant="h8" sx={{ marginRight: 2 }}>
-                {session.instructor}
-              </Typography>
-            </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
+              key={index}
+              sx={{
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                marginBottom: "20px",
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body1" sx={{ marginBottom: "8px" }}>
+                      {`${session.start_time} - ${session.end_time}`}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginBottom: "8px",
+                        fontWeight: "bold",
+                        color: "#333",
+                      }}
+                    >
+                      {session.lecture_title}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "#666", marginBottom: "8px" }}
+                    >
+                      {session.instructor}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#F4F6F8",
+                      borderRadius: "4px",
+                      padding: "8px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      {session.venue}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           ))}
         </TabPanel>
+        {/* TabPanel for Tuesday */}
         <TabPanel value="2">
-        {tuesdaySessions.map((session, index) => (
+          {tuesdaySessions.map((session, index) => (
             <Card
-            key={index}
-            sx={{
-              boxShadow: 3,
-              marginBottom: "15px",
-            }}
-          >
-             <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                {session.start_time + "-" + session.end_time}
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                {session.lecture_title}
-              </Typography>
-              <Typography variant="h8" sx={{ marginRight: 2 }}>
-                {session.instructor}
-              </Typography>
-            </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
+              key={index}
+              sx={{
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                marginBottom: "20px",
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body1" sx={{ marginBottom: "8px" }}>
+                      {`${session.start_time} - ${session.end_time}`}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginBottom: "8px",
+                        fontWeight: "bold",
+                        color: "#333",
+                      }}
+                    >
+                      {session.lecture_title}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "#666", marginBottom: "8px" }}
+                    >
+                      {session.instructor}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#F4F6F8",
+                      borderRadius: "4px",
+                      padding: "8px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      {session.venue}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           ))}
         </TabPanel>
+        {/* TabPanel for Wednesday */}
         <TabPanel value="3">
-        {wednesdaySessions.map((session, index) => (
+          {wednesdaySessions.map((session, index) => (
             <Card
-            key={index}
-            sx={{
-              boxShadow: 3,
-              marginBottom: "15px",
-            }}
-          >
-             <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                {session.start_time + "-" + session.end_time}
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                {session.lecture_title}
-              </Typography>
-              <Typography variant="h8" sx={{ marginRight: 2 }}>
-                {session.instructor}
-              </Typography>
-            </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
+              key={index}
+              sx={{
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                marginBottom: "20px",
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body1" sx={{ marginBottom: "8px" }}>
+                      {`${session.start_time} - ${session.end_time}`}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginBottom: "8px",
+                        fontWeight: "bold",
+                        color: "#333",
+                      }}
+                    >
+                      {session.lecture_title}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "#666", marginBottom: "8px" }}
+                    >
+                      {session.instructor}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#F4F6F8",
+                      borderRadius: "4px",
+                      padding: "8px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      {session.venue}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           ))}
         </TabPanel>
+        {/* TabPanel for Thursday */}
         <TabPanel value="4">
-        {thursdaySessions.map((session, index) => (
+          {thursdaySessions.map((session, index) => (
             <Card
-            key={index}
-            sx={{
-              boxShadow: 3,
-              marginBottom: "15px",
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                {session.start_time + "-" + session.end_time}
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                {session.lecture_title}
-              </Typography>
-              <Typography variant="h8" sx={{ marginRight: 2 }}>
-                {session.instructor}
-              </Typography>
-            </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
+              key={index}
+              sx={{
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                marginBottom: "20px",
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body1" sx={{ marginBottom: "8px" }}>
+                      {`${session.start_time} - ${session.end_time}`}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginBottom: "8px",
+                        fontWeight: "bold",
+                        color: "#333",
+                      }}
+                    >
+                      {session.lecture_title}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "#666", marginBottom: "8px" }}
+                    >
+                      {session.instructor}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#F4F6F8",
+                      borderRadius: "4px",
+                      padding: "8px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      {session.venue}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           ))}
         </TabPanel>
+        {/* TabPanel for Friday */}
         <TabPanel value="5">
-        {fridaySessions.map((session, index) => (
+          {fridaySessions.map((session, index) => (
             <Card
-            key={index}
-            sx={{
-              boxShadow: 3,
-              marginBottom: "15px",
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                {session.start_time + "-" + session.end_time}
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                {session.lecture_title}
-              </Typography>
-              <Typography variant="h8" sx={{ marginRight: 2 }}>
-                {session.instructor}
-              </Typography>
-            </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
+              key={index}
+              sx={{
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                marginBottom: "20px",
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body1" sx={{ marginBottom: "8px" }}>
+                      {`${session.start_time} - ${session.end_time}`}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginBottom: "8px",
+                        fontWeight: "bold",
+                        color: "#333",
+                      }}
+                    >
+                      {session.lecture_title}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "#666", marginBottom: "8px" }}
+                    >
+                      {session.instructor}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#F4F6F8",
+                      borderRadius: "4px",
+                      padding: "8px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      {session.venue}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           ))}
         </TabPanel>
+        {/* TabPanel for Saturday */}
         <TabPanel value="6">
-        {saturdaySessions.map((session, index) => (
+          {saturdaySessions.map((session, index) => (
             <Card
-            key={index}
-            sx={{
-              boxShadow: 3,
-              marginBottom: "15px",
-            }}
-          >
-           <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                {session.start_time + "-" + session.end_time}
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                {session.lecture_title}
-              </Typography>
-              <Typography variant="h8" sx={{ marginRight: 2 }}>
-                {session.instructor}
-              </Typography>
-            </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
+              key={index}
+              sx={{
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                marginBottom: "20px",
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body1" sx={{ marginBottom: "8px" }}>
+                      {`${session.start_time} - ${session.end_time}`}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginBottom: "8px",
+                        fontWeight: "bold",
+                        color: "#333",
+                      }}
+                    >
+                      {session.lecture_title}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "#666", marginBottom: "8px" }}
+                    >
+                      {session.instructor}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#F4F6F8",
+                      borderRadius: "4px",
+                      padding: "8px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      {session.venue}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           ))}
         </TabPanel>
+        {/* TabPanel for Sunday */}
         <TabPanel value="7">
-        {sundaySessions.map((session, index) => (
+          {sundaySessions.map((session, index) => (
             <Card
-            key={index}
-            sx={{
-              boxShadow: 3,
-              marginBottom: "15px",
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}> {/* Change the flex direction to column */}
-              <Typography variant="body" sx={{ marginRight: 2 }}>
-                {session.start_time + "-" + session.end_time}
-              </Typography>
-              <Typography variant="h5" sx={{ marginRight: 2 }}>
-                {session.lecture_title}
-              </Typography>
-              <Typography variant="h8" sx={{ marginRight: 2 }}>
-                {session.instructor}
-              </Typography>
-            </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body" sx={{ fontWeight: "bold" }} >{session.venue}</Typography>
+              key={index}
+              sx={{
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                marginBottom: "20px",
+                borderRadius: "8px",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body1" sx={{ marginBottom: "8px" }}>
+                      {`${session.start_time} - ${session.end_time}`}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginBottom: "8px",
+                        fontWeight: "bold",
+                        color: "#333",
+                      }}
+                    >
+                      {session.lecture_title}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "#666", marginBottom: "8px" }}
+                    >
+                      {session.instructor}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#F4F6F8",
+                      borderRadius: "4px",
+                      padding: "8px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      {session.venue}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           ))}
         </TabPanel>
-        
       </TabContext>
     </Box>
   );
